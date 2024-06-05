@@ -1293,7 +1293,11 @@ function showResultPopup(result, stage, money, join, resultwingo) {
     case 3:
     case 7:
     case 9:
+<<<<<<< HEAD
       backgroundStyle = 'background-color: rgb(0 177 0) !important;'; // Green
+=======
+      backgroundStyle = 'background-color: #00ff00 !important;'; // Green
+>>>>>>> 20a40fa (pop up)
       break;
     case 2:
     case 4:
