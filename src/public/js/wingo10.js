@@ -1,10 +1,11 @@
-function showResultPopup(result, stage, money, join,resultwingo) {
+function showResultPopup(result, stage, money, join, resultwingo) {
+  let popupResult = result === 'win' ? 'Congratulations' : 'Sorry';
   let popupOutcome = result === 'win' ? 'Win' : 'Lose';
   let colorText = '';
   let sizeText = join === 'n' ? 'Small' : 'Big';
 
-   // Set colorText based on resultwingo
-   if ([2, 4, 6, 8].includes(resultwingo)) {
+  // Set colorText based on resultwingo
+  if ([2, 4, 6, 8].includes(resultwingo)) {
     colorText = 'Red';
   } else if ([1, 3, 7, 9].includes(resultwingo)) {
     colorText = 'Green';
@@ -15,17 +16,16 @@ function showResultPopup(result, stage, money, join,resultwingo) {
   }
 
   // Generate a random number for specific join values
-  let randomNumber;
-  
-  randomNumber=resultwingo;
+  let randomNumber = resultwingo;
 
   // Set sizeText based on randomNumber if join is not 'l' or 'n'
-    sizeText = (randomNumber >= 0 && randomNumber <= 4) ? 'Small' : 'Big';
-  
+  sizeText = (randomNumber >= 0 && randomNumber <= 4) ? 'Small' : 'Big';
 
   document.getElementById('popupColor').innerText = colorText;
   document.getElementById('popupNumber').innerText = randomNumber;
   document.getElementById('popupSize').innerText = sizeText;
+  document.getElementById('popupOutcome').innerText = popupOutcome;
+  document.getElementById('popupResult').innerText = popupResult;
 
   // Set the background color or image based on randomNumber
   let backgroundStyle = '';
@@ -37,19 +37,19 @@ function showResultPopup(result, stage, money, join,resultwingo) {
     case 3:
     case 7:
     case 9:
-      backgroundStyle = 'background-color: #00ff00;'; // Green
+      backgroundStyle = 'background-color: #00ff00 !important;'; // Green
       break;
     case 2:
     case 4:
     case 6:
     case 8:
-      backgroundStyle = 'background-color: #ff0000;'; // Red
+      backgroundStyle = 'background-color: #ff0000 !important;'; // Red
       break;
     case 5:
       backgroundStyle = 'background-image: linear-gradient(to bottom right, #5cba47 50%, #eb43dd 0) !important;';
       break;
     default:
-      backgroundStyle = 'background-color: #ffffff;'; // Default white
+      backgroundStyle = 'background-color: #ffffff !important;'; // Default white
   }
 
   document.getElementById('popupColor').style = backgroundStyle;
@@ -58,21 +58,22 @@ function showResultPopup(result, stage, money, join,resultwingo) {
 
   let popupBody = document.querySelector('#popup-bg');
   if (result == 'lose') {
-    popupBody.style.backgroundImage = "url('/images/lose.png')";
+    popupBody.style.backgroundImage = "url('/images/loss.png')";
   } else {
-    popupBody.style.backgroundImage = "url('/images/winner.png')";
+    popupBody.style.backgroundImage = "url('/images/winning.png')";
   }
 
   // Show the money amount if the result is a win
   if (result === 'win') {
-    document.getElementById('popupMoney').innerText = ` ${money}`;
+    document.getElementById('popupMoney').innerText = `₹ ${money}`;
     document.getElementById('popupMoney').style.display = 'block';
+    document.getElementById('popupOutcome').style.display = 'none'; // Hide popupOutcome if result is win
   } else {
     document.getElementById('popupMoney').style.display = 'none';
+    document.getElementById('popupOutcome').style.display = 'block'; // Show popupOutcome if result is lose
   }
 
   document.body.style.backgroundColor = 'rgba(87, 62, 62, 0.7)';
-
 
   // Show the popup
   document.getElementById('resultPopup').style.display = 'block';
@@ -82,9 +83,25 @@ function showResultPopup(result, stage, money, join,resultwingo) {
   popup.addEventListener('click', () => {
     popup.style.display = 'none';
     document.body.style.backgroundColor = ''; // Reset the background color when the popup is closed
-
   });
 }
+
+// Add a cross icon to close the popup
+document.addEventListener('DOMContentLoaded', () => {
+  const resultPopup = document.getElementById('resultPopup');
+  const closeButton = document.createElement('span');
+  closeButton.innerHTML = '&times;';
+  closeButton.style.position = 'absolute';
+  closeButton.style.top = '10px';
+  closeButton.style.right = '10px';
+  closeButton.style.cursor = 'pointer';
+  closeButton.style.fontSize = '24px';
+  closeButton.addEventListener('click', () => {
+    resultPopup.style.display = 'none';
+    document.body.style.backgroundColor = ''; // Reset the background color when the popup is closed
+  });
+  resultPopup.appendChild(closeButton);
+});
 
 function showListOrder35(list_orders, x) {
   if (list_orders.length == 0) {
