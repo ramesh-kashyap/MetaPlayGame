@@ -290,6 +290,15 @@ input::placeholder {
     height: auto;
 } */
 
+.passwordInput__container-input img[data-v-9ee19ada] {
+    position: absolute;
+    top: 43%;
+    right: .9rem;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: .53333rem;
+    height: auto;
+}
     </style>
 </head>
 
@@ -423,10 +432,11 @@ input::placeholder {
                                     data-origin="https://bdgwin.com/assets/png/password-b827c2b3.png"
                                     src="https://bdgwin.com/assets/png/password-b827c2b3.png"><span
                                     data-v-9ee19ada="">Password</span></div>
-                            <div data-v-9ee19ada="" class="passwordInput__container-input"><input data-v-9ee19ada=""
-                                    type="password" placeholder="Password" maxlength="32"
-                                    autocomplete="new-password"><img data-v-9ee19ada=""
-                                    src="https://bdgwin.com/assets/png/eyeInvisible-2fa5c152.png" class="eye"></div>
+                            <div data-v-9ee19ada="" class="passwordInput__container-input">
+                                <input data-v-9ee19ada="" type="password" placeholder="Password" maxlength="32" autocomplete="new-password" id="password">
+                                <img data-v-9ee19ada="" src="images/eyeInvisible-2fa5c152.png" class="eye" id="togglePassword" onclick="togglePasswordVisibility()">
+                                <img data-v-9ee19ada="" src="images/eyeVisible-7bc1c956.png" class="eye" id="togglePassword" onclick="togglePasswordVisibility()">                                                                   
+                            </div>
                         </div>
                         <div data-v-4b0b5390="" class="signIn__container-remember">
                             <div data-v-4b0b5390="" role="checkbox" class="van-checkbox" tabindex="0"
@@ -604,6 +614,19 @@ input::placeholder {
                 'transform': 'scale(0.9)',
             });
         });
+    </script>
+      <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const togglePassword = document.getElementById('togglePassword');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                togglePassword.src = 'images/eyeVisible-7bc1c956.png'; // Change the image to visible icon
+            } else {
+                passwordInput.type = 'password';
+                togglePassword.src = 'images/eyeInvisible-2fa5c152.png'; // Change the image back to invisible icon
+            }
+        }
     </script>
     <script>
         
