@@ -1033,7 +1033,8 @@
 .game-list .tab[data-v-42f27458] {
     padding: 0 .26667rem;
     height: 1.33333rem;
-    line-height: 1.33333rem
+    line-height: 1.33333rem;
+    padding-top: 10px;
 }
 
 .game-list .tab .li[data-v-42f27458] {
