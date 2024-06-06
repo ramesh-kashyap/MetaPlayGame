@@ -322,6 +322,8 @@ const addK3 = async (game) => {
         if (game == 5) join = 'k3d5';
         if (game == 10) join = 'k3d10';
 
+          console.log("addk3");
+
         let result2 = makeid(3);
         let timeNow = Date.now();
         let [k5D] = await connection.query(`SELECT period FROM k3 WHERE status = 0 AND game = ${game} ORDER BY id DESC LIMIT 1 `);
@@ -794,7 +796,7 @@ const priceGet = {
 }
 
 async function plusMoney(game) {
-    const [order] = await connection.execute(`SELECT id, phone, bet, price, win_wallet, fee, amount, result, typeGame FROM result_k3 WHERE status = 0 AND game = ${game} `);
+    const [order] = await connection.execute(`SELECT id, phone, bet, price, money, fee, amount, result, typeGame FROM result_k3 WHERE status = 0 AND game = ${game} `);
     for (let i = 0; i < order.length; i++) {
         let orders = order[i];
         let phone = orders.phone;
@@ -808,7 +810,7 @@ async function plusMoney(game) {
             for (let i = 0; i < 3; i++) {
                 totalResult2 += Number(totalResult[i]);
             }
-            let total = (orders.win_wallet / arr.length / orders.amount);
+            let total = (orders.money / arr.length / orders.amount);
             let fee = total * 0.02;
             let price = total - fee;
             
@@ -917,7 +919,7 @@ async function plusMoney(game) {
                             lengthArr = arr.length;
                             count = count;
                         }
-                        let total = orders.win_wallet / orders.amount / (lengthArr + arr1.length);
+                        let total = orders.money / orders.amount / (lengthArr + arr1.length);
                         nhan_duoc += total * 12.83;
                     }
                 }
@@ -946,7 +948,7 @@ async function plusMoney(game) {
                                 bale = arr1.length;
                             }
                         }
-                        let total = orders.win_wallet / orders.amount / (lengthArr + bale);
+                        let total = orders.money / orders.amount / (lengthArr + bale);
                         nhan_duoc += total * 69.12;
                     }
                 }
@@ -973,7 +975,7 @@ async function plusMoney(game) {
                         bala = 1;
                     }
                     if (check1) {
-                        let total = (orders.win_wallet / (arr1.length + bala) / orders.amount);
+                        let total = (orders.money / (arr1.length + bala) / orders.amount);
                         nhan_duoc += total * 207.36 - orders.fee;
                     }
                 }
@@ -985,7 +987,7 @@ async function plusMoney(game) {
                         bala = arr1.length;
                     }
                 }
-                let total = (orders.win_wallet / (1 + bala) / orders.amount);
+                let total = (orders.money / (1 + bala) / orders.amount);
                 nhan_duoc += total * 34.56 - orders.fee;
             }
             await connection.execute('UPDATE `result_k3` SET `get` = ?, `status` = 1 WHERE `id` = ? ', [nhan_duoc, id]);
@@ -1015,10 +1017,10 @@ async function plusMoney(game) {
                         bala2 = 1;
                     }
                     if (!check1) {
-                        let total = (orders.win_wallet / (arr1.length + bala + bala2) / orders.amount);
+                        let total = (orders.money / (arr1.length + bala + bala2) / orders.amount);
                         nhan_duoc += total * 34.56 - orders.fee;
                         if (arr2 == "u") {
-                            let total = (orders.win_wallet / (1 + bala + bala2) / orders.amount);
+                            let total = (orders.money / (1 + bala + bala2) / orders.amount);
                             nhan_duoc += (total - orders.fee) * 8.64;
                         }
                     }
@@ -1037,7 +1039,7 @@ async function plusMoney(game) {
                         bala2 = arr3.length;
                     }
                 }
-                let total = (orders.win_wallet / (1 + bala + bala2) / orders.amount);
+                let total = (orders.money / (1 + bala + bala2) / orders.amount);
                 nhan_duoc += (total - orders.fee) * 8.64;
             }
             for (let i = 0; i < arr3.length; i++) {
@@ -1050,7 +1052,7 @@ async function plusMoney(game) {
                         }
                     }
                     if (!check1) {
-                        let total = (orders.win_wallet / (arr3.length + bala) / orders.amount);
+                        let total = (orders.money / (arr3.length + bala) / orders.amount);
                         nhan_duoc += total * 6.91 - orders.fee;
                     }
                 }
@@ -1065,6 +1067,8 @@ async function plusMoney(game) {
 const handlingK3 = async (typeid) => {
 
     let game = Number(typeid);
+
+    console.log("handlingk3");
 
     await funHanding(game);
 
