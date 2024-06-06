@@ -448,69 +448,69 @@ const addWinGo = async (game) => {
 
         const [winGoNow] = await connection.query(`SELECT period FROM wingo WHERE status = 0 AND game = "${join}" ORDER BY id DESC LIMIT 1 `);
         const [setting] = await connection.query('SELECT * FROM `admin` ');
-        let period = winGoNow[0].period; // current demand
-        let amount = Math.floor(Math.random() * 10); //blue red purple
-        // let amount = 1;
-        // console.log("Winning Amt: "+amount);
-        let timeNow = Date.now();
-
-        let nextResult = '';
-        if (game == 1) nextResult = setting[0].wingo1;
-        if (game == 3) nextResult = setting[0].wingo3;
-        if (game == 5) nextResult = setting[0].wingo5;
-        if (game == 10) nextResult = setting[0].wingo10;
-
-        let newArr = '';
-        if (nextResult == '-1') {
-            await connection.execute(`UPDATE wingo SET amount = ?,status = ? WHERE period = ? AND game = "${join}"`, [amount, 1, period]);
-            newArr = '-1';
-        } else {
-            let result = '';
-            let arr = nextResult.split('|');
-            let check = arr.length;
-            if (check == 1) {
+        // Check if winGoNow is not empty
+        if (winGoNow && winGoNow.length > 0) {
+            let period = winGoNow[0].period; // current demand
+            let amount = Math.floor(Math.random() * 10); //blue red purple
+            let timeNow = Date.now();
+            let nextResult = '';
+            if (game == 1) nextResult = setting[0].wingo1;
+            if (game == 3) nextResult = setting[0].wingo3;
+            if (game == 5) nextResult = setting[0].wingo5;
+            if (game == 10) nextResult = setting[0].wingo10;
+    
+            let newArr = '';
+            if (nextResult == '-1') {
+                await connection.execute(`UPDATE wingo SET amount = ?,status = ? WHERE period = ? AND game = "${join}"`, [amount, 1, period]);
                 newArr = '-1';
             } else {
-                for (let i = 1; i < arr.length; i++) {
-                    newArr += arr[i] + '|';
+                let result = '';
+                let arr = nextResult.split('|');
+                let check = arr.length;
+                if (check == 1) {
+                    newArr = '-1';
+                } else {
+                    for (let i = 1; i < arr.length; i++) {
+                        newArr += arr[i] + '|';
+                    }
+                    newArr = newArr.slice(0, -1);
                 }
-                newArr = newArr.slice(0, -1);
-            }
-            result = arr[0];
-
-            // console.log('new Number '+result);
-            await connection.execute(`UPDATE wingo SET amount = ?,status = ? WHERE period = ? AND game = "${join}"`, [result, 1, period]);
-        }
-          const currentDate = new Date();
-        // Extract individual components
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth() + 1; // Months are zero-based, so add 1
-        const day = currentDate.getDate().toString().padStart(2, "0");
-        const todaysDate = year+""+month+""+day;
+                result = arr[0];
     
-        const newPeriod = Number(Number(period.slice(7))+1);
-        const finalPeriod = todaysDate +""+ newPeriod;
-        
-       const sql = `INSERT INTO wingo SET 
-        period = ?,
-        amount = ?,
-        game = ?,
-        status = ?,
-        time = ?`;
-        await connection.execute(sql, [finalPeriod, 0, join, 0, timeNow]);
+                // console.log('new Number '+result);
+                await connection.execute(`UPDATE wingo SET amount = ?,status = ? WHERE period = ? AND game = "${join}"`, [result, 1, period]);
+            }
+            const currentDate = new Date();
+            // Extract individual components
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth() + 1; // Months are zero-based, so add 1
+            const day = currentDate.getDate().toString().padStart(2, "0");
+            const todaysDate = year + "" + month + "" + day;
+            
+            const newPeriod = Number(Number(period.slice(7)) + 1);
+            const finalPeriod = todaysDate + "" + newPeriod;
+            const sql = `INSERT INTO wingo SET 
+            period = ?,
+            amount = ?,
+            game = ?,
+            status = ?,
+            time = ?`;
+            await connection.execute(sql, [finalPeriod, 0, join, 0, timeNow]);
 
-        if (game == 1) join = 'wingo1';
-        if (game == 3) join = 'wingo3';
-        if (game == 5) join = 'wingo5';
-        if (game == 10) join = 'wingo10';
+            if (game == 1) join = 'wingo1';
+            if (game == 3) join = 'wingo3';
+            if (game == 5) join = 'wingo5';
+            if (game == 10) join = 'wingo10';
 
-        await connection.execute(`UPDATE admin SET ${join} = ?`, [newArr]);
-    } catch (error) {
-        if (error) {
-            console.log(error);
+            await connection.execute(`UPDATE admin SET ${join} = ?`, [newArr]);
+        } else {
+            console.log("No data found for the specified conditions.");
         }
+    } catch (error) {
+        console.log(error);
     }
 }
+
 
 const checkPeriodAndStage = async (req, res) => {
     try {
