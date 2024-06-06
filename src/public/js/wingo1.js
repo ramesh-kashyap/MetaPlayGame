@@ -25,7 +25,7 @@ function showListOrder3(list_orders, x) {
                                 <!---->
                                 <span data-v-a9660e98="" class="${
                                   list_orders.amount % 2 == 0 ? "red" : "green"
-                                }"> ${list_orders.amount} </span>
+                                }"> ${list_orders.amount} </span> 
                             </div>
                         </div>
                         <div data-v-a9660e98="" class="van-col van-col--5 ">
@@ -255,7 +255,7 @@ $(".van-overlay, .foot .left").click(function (e) {
   });
   $(".stepper-box .digit-box input").val(1);
   $(".amount-box").attr("data-money", "1000");
-  $(".foot .right span:eq(1)").text(1000 + "₹");
+  $(".foot .right span:eq(1)").text("₹"+1000);
 });
 
 function xlad(x, color) {
