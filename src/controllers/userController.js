@@ -1780,7 +1780,7 @@ const fundTransfer = async (req, res) => {
     const auth = req.cookies.auth;
     const amount = req.body.amount;
     const password = req.body.password;
-    const timeNow = new Date().toISOString();  // Ensure you have the correct `timeNow` initialization
+    const timeNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     if (!auth || !amount || !password || amount <= 0) {
         return res.status(200).json({

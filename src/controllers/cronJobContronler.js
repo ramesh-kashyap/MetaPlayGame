@@ -20,7 +20,6 @@ const cronJobGame1p = (io) => {
         const data2 = k5D; // The new bridge has not yet come to fruition
         io.emit('data-server-5d', { data: data2, 'game': '1' });
 
-        console.log("hiii");
         await k3Controller.addK3(1);
         await k3Controller.handlingK3(1);
         const [k3] = await connection.execute('SELECT * FROM k3 WHERE `game` = 1 ORDER BY `id` DESC LIMIT 2 ', []);

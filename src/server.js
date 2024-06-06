@@ -9,7 +9,6 @@ require('dotenv').config();
 const xss = require('xss');
 let cookieParser = require('cookie-parser');
 
-
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
@@ -17,7 +16,6 @@ const io = require('socket.io')(server);
 const port = process.env.PORT || 3000;
 app.use(xssMiddleware);
 app.use(cookieParser());
-// app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -26,17 +24,20 @@ configViewEngine(app);
 // init Web Routes
 routes.initWebRouter(app);
 
-// Cron game 1 Phut 
+// Cron job game 1 minute
 cronJobContronler.cronJobGame1p(io);
 
-// Check xem ai connect vào sever 
+// Check who connects to the server
 socketIoController.sendMessageAdmin(io);
 
-// app.all('*', (req, res) => {
-//     return res.render("404.ejs"); 
-// });
-
+// Listen for connections
 server.listen(port, () => {
     console.log("Connected success port: " + port);
+}).on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.error(`Port ${port} is already in use`);
+        // You can choose to use a different port or handle the error as needed
+    } else {
+        console.error(err);
+    }
 });
-

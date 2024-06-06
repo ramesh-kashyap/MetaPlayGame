@@ -104,6 +104,8 @@ const betWinGo = async (req, res) => {
     if (typeid == 10) gameJoin = 'wingo10';
     const [winGoNow] = await connection.query(`SELECT period FROM wingo WHERE status = 0 AND game = '${gameJoin}' ORDER BY id DESC LIMIT 1 `);
     const [user] = await connection.query('SELECT `phone`, `code`, `invite`, `level`, `money` FROM users WHERE token = ? AND veri = 1  LIMIT 1 ', [auth]);
+
+    console.log(money);
     if (!winGoNow[0] || !user[0] || !isNumber(x) || !isNumber(money)) {
         return res.status(200).json({
             message: 'Error!',
@@ -425,7 +427,6 @@ const GetMyEmerdList = async (req, res) => {
         return others;
     });
 
-    console.log(datas);
 
     return res.status(200).json({
         code: 0,
@@ -569,7 +570,6 @@ const checkPeriodAndStage3 = async (req, res) => {
             'SELECT period FROM wingo WHERE game = "wingo3" AND status = 1 ORDER BY period DESC LIMIT 1'
         );
         
-        console.log(gamePeriodResult[0].period);
 
         if (gamePeriodResult.length === 0) {
             return res.status(200).json({
@@ -619,7 +619,6 @@ const checkPeriodAndStage5 = async (req, res) => {
             'SELECT period FROM wingo WHERE game = "wingo5" AND status = 1 ORDER BY period DESC LIMIT 1'
         );
         
-        console.log(gamePeriodResult[0].period);
 
         if (gamePeriodResult.length === 0) {
             return res.status(200).json({
@@ -669,7 +668,6 @@ const checkPeriodAndStage10 = async (req, res) => {
             'SELECT period FROM wingo WHERE game = "wingo10" AND status = 1 ORDER BY period DESC LIMIT 1'
         );
         
-        console.log(gamePeriodResult[0].period);
 
         if (gamePeriodResult.length === 0) {
             return res.status(200).json({
@@ -857,7 +855,6 @@ const handlingWinGo1P = async (typeid) => {
         const [users] = await connection.execute('SELECT `win_wallet` FROM `users` WHERE `phone` = ?', [phone]);
   let win_wallet = parseInt(users[0].win_wallet, 10);
  let totals = win_wallet + nhan_duoc;
-  console.log(totals);
   await connection.execute('UPDATE `minutes_1` SET `get` = ?, `status` = 1 WHERE `id` = ? ', [nhan_duoc, id]);
   const sql = 'UPDATE `users` SET `win_wallet` = ? WHERE `phone` = ? ';
  await connection.execute(sql, [totals, phone]);

@@ -322,7 +322,6 @@ const addK3 = async (game) => {
         if (game == 5) join = 'k3d5';
         if (game == 10) join = 'k3d10';
 
-          console.log("addk3");
 
         let result2 = makeid(3);
         let timeNow = Date.now();
@@ -1068,7 +1067,6 @@ const handlingK3 = async (typeid) => {
 
     let game = Number(typeid);
 
-    console.log("handlingk3");
 
     await funHanding(game);
 
