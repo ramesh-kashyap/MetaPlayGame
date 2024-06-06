@@ -68,125 +68,130 @@
     background-position: center;
 }
 
-#popup-bg {
-  /* background-image: url(/images/winner.png); */
+.WinningTip__C-body.isL {
+    background-image: url(/images/loss.png);
 }
 .WinningTip__C-body {
-  position: absolute;
-  width: 10.93333rem;
-  height: 10.93333rem;
-  /* background-image: url(/images/winner.png); */
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  left: 50%;
-  top: 20%;
-  transform: translate(-50%, -50%);
-  padding-top: 3.33333rem;
-  display: flex;
-  z-index: 100;
+    position: absolute;
+    width: 7.73333rem;
+    height: 10.93333rem;
+    background-image: url(/images/loss.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    left: 50%;
+    top: 23%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translate(-50%) translateY(-50%);
+    padding-top: 3.33333rem;
+    z-index: 1111;
 }
 
 .WinningTip__C-body.isL .WinningTip__C-body-l1, .WinningTip__C-body.isL .WinningTip__C-body-l2, .WinningTip__C-body.isL .WinningTip__C-body-l4 {
-  color: #686c94;
+    color: #686c94;
 }
 
 .WinningTip__C-body-l1 {
-  font-weight: 700;
-  font-size: .64rem;
-  text-align: center;
-  color: #8f5206;
-  height: .77333rem;
-  line-height: .77333rem;
-  margin-bottom: .90667rem;
+    font-weight: 700;
+    font-size: .8rem;
+    text-align: center;
+    color: #8f5206;
+    height: .77333rem;
+    line-height: .77333rem;
+    margin-bottom: .90667rem;
 }
 
-.WinningTip__C-body-l2.type2 > div, .WinningTip__C-body-l2.type4 > div, .WinningTip__C-body-l2.type6 > div, .WinningTip__C-body-l2.type8 > div {
-  background-color: #fb4e4e;
-  display: flex;
-}
+/* .WinningTip__C-body-l2.type2>div, .WinningTip__C-body-l2.type4>div, .WinningTip__C-body-l2.type6>div, .WinningTip__C-body-l2.type8>div {
+    background-color: #fb4e4e;
+} */
 
-.WinningTip__C-body-l2 > div:first-child {
-  margin-left: .32rem;
+.WinningTip__C-body-l2>div:first-child {
+    margin-left: .32rem;
 }
 .WinningTip__C-body-l2 .colorW {
-  color: #fff;
+    color: #fff;
 }
-.WinningTip__C-body-l2 > div {
-  height: .58667rem;
-  background: #40ad72;
-  border-radius: .13333rem;
-  padding: 0 .32rem;
+.WinningTip__C-body-l2>div {
+    height: .58667rem;
+    background: #40ad72;
+    border-radius: .13333rem;
+    padding: 0 .32rem;
 }
 
 .WinningTip__C-body-l3 {
-  height: 1.73333rem;
+    height: 1.73333rem;
 }
 
 .WinningTip__C-body-l3 .isLose {
-  font-weight: 700;
-  font-size: .64rem;
-  line-height: 1rem;
-  color: #587ba4;
-  text-align: center;
-  margin-bottom: .34667rem;
-  padding-top: .26667rem;
+    font-weight: 700;
+    font-size: 50px;
+    line-height: 1rem;
+    color: #587ba4;
+    text-align: center;
+    margin-bottom: .34667rem;
+    padding-top: 36px;
 }
 
 .WinningTip__C-body.isL .gameDetail {
-  color: #6b6b6b;
+    color: #6b6b6b;
 }
 .WinningTip__C-body-l3 .gameDetail {
-  height: .37333rem;
-  line-height: .37333rem;
-  font-size: .29333rem;
-  text-align: center;
-  color: #bf5d2b;
+    height: .37333rem;
+    line-height: .37333rem;
+    font-size: .29333rem;
+    text-align: center;
+    color: #bf5d2b;
 }
 
 .WinningTip__C-body.isL .WinningTip__C-body-l1, .WinningTip__C-body.isL .WinningTip__C-body-l2, .WinningTip__C-body.isL .WinningTip__C-body-l4 {
-  color: #686c94;
+    color: #686c94;
 }
 
 .WinningTip__C-body-l4 {
-  height: .64rem;
-  line-height: .64rem;
-  font-size: .32rem;
-  color: #8f5206;
-  position: absolute;
-  left: .74667rem;
-  bottom: .74667rem;
-  display: flex;
-  align-items: center;
+    height: .64rem;
+    line-height: .64rem;
+    font-size: .32rem;
+    color: #8f5206;
+    position: absolute;
+    left: .74667rem;
+    bottom: .74667rem;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
 }
 
 .WinningTip__C-body-l4 .acitveBtn {
-  height: .56rem;
-  width: .56rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, .26);
-  border: .01333rem solid #ffffff;
-  margin-right: .18667rem;
-  position: relative;
+    height: .56rem;
+    width: .56rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .26);
+    border: .01333rem solid #ffffff;
+    margin-right: .18667rem;
+    position: relative;
 }
 
 .WinningTip__C .closeBtn {
-  width: .8rem;
-  height: .8rem;
-  background-image: url(/assets/png/close-7b93ef94.png);
-  background-repeat: no-repeat;
-  background-size: .8rem;
-  background-position: center;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 100%);
-  bottom: -.26667rem;
+    width: .8rem;
+    height: .8rem;
+    background-image: url(/images/cross.png);
+    background-repeat: no-repeat;
+    background-size: .8rem;
+    background-position: center;
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(100%);
+    transform: translate(-50%) translateY(100%);
+    bottom: -.26667rem;
 }
+
 
 #pop-result {
   display: flex;
-  margin-left: 188px;
-  margin-top: 65px;
+  margin-left: 35px;
+  margin-top: 50px;
 }
 #popupSize {
   margin: 2px;
@@ -208,16 +213,6 @@
 }
 
 .popup-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  cursor: pointer;
-  color: #000;
-  z-index: 1000;
-}
-
-.popup-close {
   width: .8rem;
     height: .8rem;
     background-image: url(/images/cross.png);
@@ -230,6 +225,7 @@
     transform: translate(-50%) translateY(100%);
     bottom: -.26667rem;
 }
+
 
 
   </style>
@@ -339,15 +335,25 @@
       <div id="resultPopup" class="popup" style="display:none;">
         <div class="WinningTip__C-body isL" id="popup-bg">
           <div class="WinningTip__C-body-l1 isL" id="popupResult"></div>
+     
           <div class="WinningTip__C-body-l2 type4" style="display: flex;" id="pop-result">
+            <span style="
+            margin-right: 3px;
+            margin-top: 3px;
+        ">
+           Lottery results
+          </span>
             <div class="colorW" id="popupColor"></div>
             <div class="WinningNum" id="popupNumber"></div>
             <div class="colorW" id="popupSize"></div>
           </div>
+     
           <div class="WinningTip__C-body-l3">
             <div class="isLose" id="popupOutcome"></div>
             <div class="gameDetail" id="popupDetails"></div>
-            <div class="money" id="popupMoney" style="display: block;margin-top: 111px;color: #633905;margin-left: -149px;font-size: 36px;font-weight: bolder;"></div> 
+            <div class="money" id="popupMoney"
+              style="font-size: 36px;font-weight: bolder;text-align: center;color: #633905;margin-top: 35px;">
+            </div>
           </div>
           <!-- Add the cross icon here -->
           <div class="popup-close" id="popupClose"></div>
