@@ -28,9 +28,9 @@ function showListOrder3(list_orders, x) {
                                 }"> ${list_orders.amount} </span>
                             </div>
                         </div>
-                        <div data-v-a9660e98="" class="van-col van-col--5">
+                        <div data-v-a9660e98="" class="van-col van-col--5 ">
                             <div data-v-a9660e98="" class="c-tc goItem">
-                                <span data-v-a9660e98=""> ${
+                                <span data-v-a9660e98="" style="font-size:20px !important"> ${
                                   list_orders.amount < 5 ? "Small" : "Big"
                                 } </span>
                                 <!---->
