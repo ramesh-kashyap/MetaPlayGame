@@ -339,7 +339,7 @@ input::placeholder {
     cursor: pointer;
 }
 
-.dropdown__list[data-v-9ee19ada] {
+/* .dropdown__list[data-v-9ee19ada] {
     position: absolute;
     top: 100%;
     left: 0;
@@ -355,7 +355,7 @@ input::placeholder {
     overflow-y: scroll;
     -webkit-transition: opacity .2s ease-in-out, height .2s ease-in-out;
     transition: opacity .2s ease-in-out, height .2s ease-in-out;
-}
+} */
     </style>
 </head>
 
@@ -379,12 +379,13 @@ input::placeholder {
                                     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGDSURBVHgB7ZnNTcNAEIXfOOGeEuiAcEFEuVBCJILELXEF0EGcDqAChxtS0gO+QMTNVID7IHgY83Mju4uyzghpPsmnfWvN8/5YmgcYxk5QqPAxv+h3iCcM9NEiUlDJ3L0dpPdVoN7P8914VjMy7BNCNpis5n6ZB5Xifwgw4TSwzi8PQZtXKNJhOj5Jl+W28cQ1mfF2DWU2qKeucacBIjqCMr4anAb+A2ZAGzOgjRnQxgxoYwa0MQPamAFtzIA2ZsDYEWdb5Sk/HxGSHlThapCuim2jXcfMpiNwJS84gy7F9/Mrdoi16SIuhWy8yiWQ7naPwCNEIpoBAi1Op8s0RLvOxwuZMEEEom2hmvklVCurUCIS8VZAbiz5st7CEnCv/rrdEIOIZ4ClFY8Hn6r+/PXEKb7BrlFt3AHHHw5mW/hq8CQ0yQLKEA5uXONOA8Mmm2J4k8K2kHBx7otbg2JWuR4zUc6wR5rih+kq8+mCg+4msSQJ/bjl3Ixkz7/L1h06kknDiMgH3mlqrSokw/4AAAAASUVORK5CYII="
                                     class="phoneInput__container-label__icon"><span data-v-93f53084="">Phone
                                     number</span></div>
-                            <div data-v-93f53084="" class="phoneInput__container-input">
-                                <div data-v-6f85c91a="" data-v-93f53084="" class="dropdown">
-                                    <div data-v-6f85c91a="" class="dropdown__value"><span
-                                            data-v-6f85c91a="">+91</span><i data-v-6f85c91a=""
-                                            class="van-badge__wrapper van-icon van-icon-arrow-down">
-                                            </i></div>
+                                    <div data-v-93f53084="" class="phoneInput__container-input">
+                                        <div data-v-6f85c91a="" data-v-93f53084="" class="dropdown">
+                                            <div data-v-6f85c91a="" class="dropdown__value" id="dropdownValue">
+                                                <span data-v-6f85c91a="">+91</span>
+                                                <i data-v-6f85c91a=""
+                                                    class="van-badge__wrapper van-icon van-icon-arrow-down"></i>
+                                            </div>
                                             <div data-v-6f85c91a="" class="dropdown__list active" id="dropdownList">
                                                 <div data-v-6f85c91a="" class="dropdown__list-item"
                                                     onclick="selectCountryCode('+1')">+1 USA</div>
@@ -484,9 +485,11 @@ input::placeholder {
                                                 <div data-v-6f85c91a="" class="dropdown__list-item"
                                                     onclick="selectCountryCode('+263')">+263 Zimbabwe</div>
                                             </div>
-                                </div><input data-v-93f53084="" type="text" name="userNumber"
-                                    placeholder="Please enter the phone number">
-                            </div>
+                                        </div>
+                                        <input data-v-93f53084="" type="text" id="username"
+                                            placeholder="Please enter phone number"
+                                            oninput="value=value.replace(/\D/g,'')">
+                                    </div>
                         </div>
                         <div data-v-9ee19ada="" data-v-4b0b5390="" class="passwordInput__container">
                             <div data-v-9ee19ada="" class="passwordInput__container-label"><img data-v-9ee19ada=""
