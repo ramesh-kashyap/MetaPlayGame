@@ -675,7 +675,7 @@ $(".foot .right").click(function (e) {
     });
     $(".stepper-box .digit-box input").val(1);
     $(".amount-box").attr("data-money", "1000");
-    $(".foot .right span:eq(1)").text(1000 + "₹");
+    $(".foot .right span:eq(1)").text("₹"+1000);
     $(".foot .right").removeClass("block-click");
   }, 500);
 });
@@ -1686,7 +1686,7 @@ window.onload = function() {
         });
         $(".stepper-box .digit-box input").val(1);
         $(".amount-box").attr("data-money", "1000");
-        $(".foot .right span:eq(1)").text(1000 + " ₹");
+        $(".foot .right span:eq(1)").text("₹"+1000);
 
         $(".box .mark-box ").css("display", "flex");
         $(".box .mark-box .item:eq(0)").text(seconds1);

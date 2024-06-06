@@ -235,7 +235,7 @@ function reload_money() {
                 unsetCookie();
                 return false;
             }
-            $(".num span").text(`₹${data.data.money_user} `);
+            $(".num span").text(`₹ ${data.data.money_user} `);
             $('.Loading').fadeOut(0);
         });
 }
@@ -361,9 +361,9 @@ function result() {
 
     let result = join.length * Number(value) * Number(amount);
     if (result <= 0) {
-        result = 1000;
+        result = 1;
     }
-    $("#total").html(result + '');
+    $("#total").html('₹'+result + '');
 }
 
 $('.van-overlay, .canned-alert').click(function (e) {
@@ -538,7 +538,7 @@ $('.foot .right').click(function (e) {
                 $('.foot .right').removeClass('block-click');
             }, 500);
             if (response.status == true) {
-                $('#money_show').text(response.money + '');
+                $('#money_show').text('₹'+response.money);
                 showMeJoin();
             }
         }
@@ -656,7 +656,7 @@ function GetMyEmerdList(datas) {
               </div>
               <div data-v-42f27458="" class="detailLi c-row c-row-between c-row-middle">
                   <div data-v-42f27458="">Quantity Purchased</div>
-                  <div data-v-42f27458="">${data.amount}</div>
+                  <div data-v-42f27458="">₹ ${data.amount}</div>
               </div>
               <div data-v-42f27458="" class="detailLi c-row c-row-between c-row-middle">
                   <div data-v-42f27458="">After Tax Amount</div>
@@ -680,7 +680,7 @@ function GetMyEmerdList(datas) {
                   <div data-v-42f27458="">Choose</div>
                   <div data-v-42f27458="" class="c-row c-row-middle">
                       <div data-v-42f27458="" class="c-row m-r-5">
-                          <div data-v-42f27458="">${(data.join_bet == 'total') ? "SUM" : data.join_bet.toUpperCase()}</div>
+                          <div data-v-42f27458=""> ${(data.join_bet == 'total') ? "SUM" : data.join_bet.toUpperCase()}</div>
                       </div>
                       ${join}
                   </div>
