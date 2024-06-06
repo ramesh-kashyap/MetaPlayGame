@@ -322,6 +322,10 @@ const addK3 = async (game) => {
         if (game == 5) join = 'k3d5';
         if (game == 10) join = 'k3d10';
 
+<<<<<<< HEAD
+=======
+          console.log("addk3");
+>>>>>>> 02cf980 (hlo)
 
         let result2 = makeid(3);
         let timeNow = Date.now();
