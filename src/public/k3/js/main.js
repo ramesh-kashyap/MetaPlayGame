@@ -8,7 +8,7 @@ function totalMoney() {
     $('.info-bet').attr("money", money);
 
     let result = Number(amount) * Number(money) * Number(listJoin.length);
-    $('.result').text(result + '');
+    $('.result').text('₹'+result + '');
 }
 
 function totalMoney2() {
