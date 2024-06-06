@@ -828,7 +828,7 @@ function sendGame1() {
         type: "POST",
         url: "/api/webapi/action/k3/join",
         data: {
-            listJoin: listJoin,
+            listJoin: listJoin, 
             game: $('html').attr('data-dpr'),
             gameJoin: 1,
             xvalue: xvalue,
