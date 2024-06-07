@@ -462,18 +462,7 @@
             unsetCookie();
         });
 
-        $.ajax({
-                    type: "GET",
-                    url: "/api/webapi/rebateBonus",
-                    dataType: "json",
-                    success: function (response) {
-                    
-
-                        $('.num-total').text((response.total_rebate)?response.total_rebate:0.00);
-                        $('.num-todays').text((response.today_rebate)?response.today_rebate:0.00);
-                    }
-                });
-
+  
     </script>
 </body>
 

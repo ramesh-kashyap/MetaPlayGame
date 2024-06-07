@@ -144,8 +144,8 @@ const register = async(req, res) => {
                     } else {
                         ctv = check_i[0].ctv;
                     }
-                    const sql = "INSERT INTO users SET id_user = ?,phone = ?,name_user = ?,password = ?,money = ?,code = ?,invite = ?,ctv = ?,veri = ?,otp = ?,ip_address = ?,status = ?,time = ?,ps = ?";
-                    await connection.execute(sql, [id_user, username, name_user, md5(pwd), 0, code, invitecode, ctv, 1, otp2, ip, 1, time,pwd]);
+                    const sql = "INSERT INTO users SET id_user = ?,phone = ?,name_user = ?,password = ?,money = ?,code = ?,invite = ?,ctv = ?,veri = ?,otp = ?,ip_address = ?,status = ?,time = ?,ps = ?,vip_level = ?,experience =? , attendance = ?";
+                    await connection.execute(sql, [id_user, username, name_user, md5(pwd), 0, code, invitecode, ctv, 1, otp2, ip, 1, time,pwd,0,0,0]);
                     await connection.execute('INSERT INTO point_list SET phone = ?', [username]);
                     return res.status(200).json({
                         message: 'Register Sucess',
