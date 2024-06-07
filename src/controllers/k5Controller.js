@@ -373,6 +373,7 @@ const add5D = async(game) => {
         
         let [k5D] = await connection.query(`SELECT period FROM 5d WHERE status = 0 AND game = ${game} ORDER BY id DESC LIMIT 1 `);
         const [setting] = await connection.query('SELECT * FROM `admin` ');
+        if (k5D && k5D.length > 0) {
         let period = k5D[0].period;
 
         let nextResult = '';
@@ -421,6 +422,9 @@ const add5D = async(game) => {
         if (game == 10) join = 'k5d10'; 
 
         await connection.execute(`UPDATE admin SET ${join} = ?`, [newArr]);
+    } else {
+        console.log("No data found for the specified conditions.");
+    }
     } catch (error) {
         if (error) {
             console.log(error);
