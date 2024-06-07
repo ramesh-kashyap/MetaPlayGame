@@ -1141,7 +1141,7 @@ const handlePlisioCallback = async (req, res) => {
 
 
 
-  const rechargeCoin = async(req, res) => {
+  const rechargeCoin1 = async(req, res) => {
     let auth = req.cookies.auth;
     let money = req.body.money;
     let type = req.body.type;
@@ -1236,6 +1236,103 @@ const handlePlisioCallback = async (req, res) => {
     if (sumOfRecharge >= 500) {
         await rechargeBonus(userInfo.phone, sumOfRecharge);
     }
+
+    const [recharge] = await connection.query('SELECT * FROM recharge WHERE phone = ? AND status = ?', [userInfo.phone, 0]);
+    return res.status(200).json({
+        message: 'Order Submitted successfully',
+        datas: recharge[0],
+        status: true,
+        timeStamp: new Date().toISOString(),
+    });
+}
+
+
+const rechargeCoin = async(req, res) => {
+    let auth = req.cookies.auth;
+    let money = req.body.money;
+    let type = req.body.type;
+    let typeid = req.body.typeid;
+    let transaction_id = req.body.tx_id;
+    let currency = req.body.currency;
+
+    
+        if (!auth || !money || money < 1.11) {
+            return res.status(200).json({
+                message: 'Failed',
+                status: false,
+                timeStamp: new Date().toISOString(),
+            });
+        }
+    
+
+    const [user] = await connection.query('SELECT `phone`, `code`, `invite` FROM users WHERE `token` = ?', [auth]);
+    let userInfo = user[0];
+    if (!userInfo) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: new Date().toISOString(),
+        });
+    }
+
+   
+
+    let time = new Date().getTime();
+    const date = new Date();
+    function formateT(params) {
+        let result = (params < 10) ? "0" + params : params;
+        return result;
+    }
+
+    function timerJoin(params = '') {
+        let date = '';
+        if (params) {
+            date = new Date(Number(params));
+        } else {
+            date = new Date();
+        }
+        let years = formateT(date.getFullYear());
+        let months = formateT(date.getMonth() + 1);
+        let days = formateT(date.getDate());
+        return years + '-' + months + '-' + days;
+    }
+
+    let checkTime = timerJoin(time);
+    let id_time = date.getUTCFullYear() + '' + date.getUTCMonth() + 1 + '' + date.getUTCDate();
+    let id_order = Math.floor(Math.random() * (99999999999999 - 10000000000000 + 1)) + 10000000000000;
+    let amount_in_usdt = Number(money);
+    money = Number(money * 90);
+    let client_transaction_id = id_time + id_order;
+
+    // Check if this is the first recharge for this phone
+    // const [rowCount] = await connection.query('SELECT COUNT(*) as count FROM recharge WHERE phone = ?', [userInfo.phone]);
+    // if (rowCount[0].count === 0) {
+    //     await directBonus(money, userInfo.phone);
+    // }
+
+    const sql = `INSERT INTO recharge SET 
+        id_order = ?,
+        transaction_id = ?,
+        phone = ?,
+        money = ?,
+        amount_in_usdt = ?,
+        type = ?,
+        status = ?,
+        today = ?,
+        time = ?`;
+    await connection.execute(sql, [client_transaction_id, transaction_id, userInfo.phone, money, amount_in_usdt, currency, 0, checkTime,  time]);
+
+    // Calculate the sum of recharges for the current day where status is 1
+    const [sumResult] = await connection.query(
+        'SELECT SUM(money) as sumOfRecharge FROM recharge WHERE phone = ? AND status = 1 AND today = ?',
+        [userInfo.phone, checkTime]
+    );
+
+    let sumOfRecharge = sumResult[0].sumOfRecharge || 0;
+
+    // if (sumOfRecharge >= 500) {
+    //     await rechargeBonus(userInfo.phone, sumOfRecharge);
+    // }
 
     const [recharge] = await connection.query('SELECT * FROM recharge WHERE phone = ? AND status = ?', [userInfo.phone, 0]);
     return res.status(200).json({
