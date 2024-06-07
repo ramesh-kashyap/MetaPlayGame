@@ -566,7 +566,8 @@
 }
 
 .c-row-middle {
-    align-items: center
+    align-items: center;
+    
 }
 
 .c-row-center,.c-row-middle-center {
