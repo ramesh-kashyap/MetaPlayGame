@@ -914,6 +914,62 @@ const createPayment = async (req, res) => {
     }
   };
 
+  const createPayment10 = async (req, res) => {
+    let auth = req.cookies.auth;
+    let money = req.body.money;
+    let typeid = req.body.typeid;
+
+    if (!auth || !money || money < 1) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: new Date().toISOString(),
+        });
+    }
+
+    try {
+        const [userResult] = await connection.query('SELECT `phone`, `name_user`, `invite` FROM users WHERE `token` = ?', [auth]);
+        let userInfo = userResult[0];
+
+        if (!userInfo) {
+            return res.status(200).json({
+                message: 'Failed',
+                status: false,
+                timeStamp: new Date().toISOString(),
+            });
+        }
+
+        let walletAddress;
+        if (typeid === 'USDT(BEP20)') {
+            const [adminResult] = await connection.query('SELECT `bep20` AS wallet_address FROM admin WHERE id = 1');
+            walletAddress = adminResult[0].wallet_address;
+        } else {
+            const [adminResult] = await connection.query('SELECT `trc20` AS wallet_address FROM admin WHERE id = 1');
+            walletAddress = adminResult[0].wallet_address;
+        }
+
+        return res.status(200).json({
+            message: 'Order created successfully',
+            datas: {
+                amount: money,
+                wallet_address: walletAddress,
+                user: userInfo
+            },
+            status: true,
+            timeStamp: new Date().toISOString(),
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            status: false,
+            timeStamp: new Date().toISOString(),
+        });
+    }
+};
+
+
+
   const createPayment1 = async (req, res) => {
     let auth = req.cookies.auth;
     let money = req.body.money;
@@ -3049,7 +3105,7 @@ module.exports = {
     calculateTeamRecharge,
     calculateDailyEarnings,
     listIncomeReport,
-    createPayment1,
+    createPayment10,
     handlePlisioCallback,
     insertStreakBonus,
     getVipDetails,
