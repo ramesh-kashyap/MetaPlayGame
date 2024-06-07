@@ -1841,7 +1841,7 @@ const fundTransferGame = async (req, res) => {
     const auth = req.cookies.auth;
     const amount = parseFloat(req.body.amount); // Ensure amount is a number
     const password = req.body.password;
-    const timeNow = new Date().toISOString();
+    const timeNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     if (!auth || !amount || !password || amount <= 0) {
         return res.status(200).json({
