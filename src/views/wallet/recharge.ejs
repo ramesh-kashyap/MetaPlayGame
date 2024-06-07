@@ -7814,6 +7814,8 @@
         .Recharge__content-paymoney__money-input .amount-input[data-v-723e6ff9] input {
             color: rgb(217, 172, 79);
             font-weight: 700;
+            font-size: 14px;
+    margin-top: 3px;
         }
 
         .van-field__control {
@@ -8136,15 +8138,33 @@
                                 </div> -->
                             </div>
                             <div data-v-25d9c352="" class="number-box c-row">
-                                <div data-v-25d9c352="" class="symbol c-row c-row-middle">₹</div>
-                                <div data-v-25d9c352="" class="input c-row c-row-middle van-cell van-field">
-                                    <div class="van-cell__value van-cell__value--alone van-field__value">
-                                        <div class="van-field__body">
-                                            <input type="tel" inputmode="numeric" id="usd_amount" readonly value="1.11"
-                                                placeholder="USD amount" class="van-field__control">
+
+                                <div data-v-723e6ff9="" class="Recharge__content-paymoney__money-input">
+                                    <div data-v-723e6ff9="" class="place-div">$</div>
+                                    <div data-v-723e6ff9="" class="van-cell van-field amount-input"
+                                        modelmodifiers="[object Object]">
+                                        <!---->
+                                        <!---->
+                                        <div class="van-cell__value van-field__value">
+                                            <div class="van-field__body"><input type="tel" inputmode="numeric"
+                                                    id="usd_amount" readonly value="1.11" class="van-field__control"
+                                                    placeholder="USD amount" fdprocessedid="nvdg27">
+                                                <!---->
+                                                <!---->
+                                                <!---->
+                                            </div>
+                                            <!---->
+                                            <!---->
                                         </div>
+                                        <!---->
+                                        <!---->
                                     </div>
-                                </div> 
+                                    <!---->
+
+                                    <!---->
+                                </div>
+
+
                             </div>
                             <div data-v-67caa467="" class="list m-t-10 c-row c-row-between c-flex-warp">
                                 <div data-v-67caa467="" data-money="100" class="li action">
@@ -8369,35 +8389,80 @@
                 }
             });
 
+            // $('#href-bank').click(function (e) {
+            //     e.preventDefault();
+            //     let money = $('#amount_in_usdt').val().trim();
+            //     let transaction_id = $('#transaction_id').val().trim();
+            //     let currency = $('#currency').val().trim();
+            //     let url = $('#url').val().trim();
+            //     $.ajax({
+            //         type: "POST",
+            //         url: "/api/webapi/rechargeCoin",
+            //         data: {
+            //             money: money,
+            //             transaction_id: transaction_id,
+            //             currency: currency,
+            //             url: url,
+            //         },
+            //         dataType: "json",
+            //         success: function (response) {
+            //             alertMess(response.message, $(this));
+            //             $('.Loading').fadeIn(0);
+            //             $('.create-payment').show();
+            //             $('.confirmation').hide();
+            //             setTimeout(() => {
+            //                 $('.Loading').fadeOut(0);
+            //                 location.reload();
+            //             }, 1500);
+            //         }
+            //     });
+            //     return true;
+            // });
+
             $('#href-bank').click(function (e) {
-                e.preventDefault();
-                let money = $('#amount_in_usdt').val().trim();
-                let transaction_id = $('#transaction_id').val().trim();
-                let currency = $('#currency').val().trim();
-                let url = $('#url').val().trim();
-                $.ajax({
-                    type: "POST",
-                    url: "/api/webapi/rechargeCoin",
-                    data: {
-                        money: money,
-                        transaction_id: transaction_id,
-                        currency: currency,
-                        url: url,
-                    },
-                    dataType: "json",
-                    success: function (response) {
-                        alertMess(response.message, $(this));
-                        $('.Loading').fadeIn(0);
-                        $('.create-payment').show();
-                        $('.confirmation').hide();
-                        setTimeout(() => {
-                            $('.Loading').fadeOut(0);
-                            location.reload();
-                        }, 1500);
-                    }
-                });
-                return true;
-            });
+    e.preventDefault();
+    
+   console.log("hi");
+
+    let money = $('#amount_in_usdt').val().trim();
+    console.log(money);
+    let currency = $('#currency').val().trim();
+    console.log(currency);
+
+
+    let tx_id = $('#tx_id').val().trim(); // Get the user-entered transaction hash
+    console.log(tx_id);
+
+
+    // Validate that none of the required fields are empty
+    if (!money  || !currency  || !tx_id) {
+        alertMess('All fields are required. Please fill in all the details.', $(this));
+        return false;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/api/webapi/rechargeCoin",
+        data: {
+            money: money,
+            currency: currency,
+            tx_id: tx_id, // Include the user-entered transaction hash
+        },
+        dataType: "json",
+        success: function (response) {
+            alertMess(response.message, $(this));
+            $('.Loading').fadeIn(0);
+            $('.create-payment').show();
+            $('.confirmation').hide();
+            setTimeout(() => {
+                $('.Loading').fadeOut(0);
+                location.reload();
+            }, 1500);
+        }
+    });
+    return true;
+});
+
 
             $('.pay-box:eq(0) .item').click(function (e) {
                 e.preventDefault();
@@ -8440,7 +8505,6 @@
                                 `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(response.datas.wallet_address)}&format=png`;
                             $("#qrcode").attr("src", qrCodeUrl);
 
-                            $('#transaction_id').val(response.datas.txn_id);
                             $('#amount_in_usdt').val(response.datas.amount);
                             $('#url').val(response.datas.checkout_url);
                             $('#currency').val(type);

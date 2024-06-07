@@ -548,7 +548,7 @@ const settingGet = async(req, res) => {
     });
 }
 
-const rechargeDuyet = async(req, res) => {
+const rechargeDuyet = async (req, res) => {
     let auth = req.cookies.auth;
     let id = req.body.id;
     let type = req.body.type;
@@ -556,29 +556,115 @@ const rechargeDuyet = async(req, res) => {
         return res.status(200).json({
             message: 'Failed',
             status: false,
-            timeStamp: timeNow,
+            timeStamp: new Date().toISOString(),
         });
     }
-    if (type == 'confirm') {
+    if (type === 'confirm') {
         await connection.query(`UPDATE recharge SET status = 1 WHERE id = ?`, [id]);
         const [info] = await connection.query(`SELECT * FROM recharge WHERE id = ?`, [id]);
-        await connection.query('UPDATE users SET money = money + ?, total_money = total_money + ? WHERE phone = ? ', [info[0].money, info[0].money, info[0].phone]);
+        const rechargeInfo = info[0];
+        
+        // Update user's money
+        await connection.query('UPDATE users SET money = money + ?, total_money = total_money + ? WHERE phone = ? ', 
+            [rechargeInfo.money, rechargeInfo.money, rechargeInfo.phone]);
+
+        // Check if this is the first recharge for this phone
+        const [rowCount] = await connection.query('SELECT COUNT(*) as count FROM recharge WHERE phone = ? AND status = ?', 
+            [rechargeInfo.phone, 1]);
+        if (rowCount[0].count === 1) {
+            await directBonus(rechargeInfo.money, rechargeInfo.phone);
+        }
+
+        // Calculate the sum of recharges for the current day where status is 1
+        let checkTime = new Date().toISOString().split('T')[0];
+        const [sumResult] = await connection.query(
+            'SELECT SUM(money) as sumOfRecharge FROM recharge WHERE phone = ? AND status = 1 AND today = ?',
+            [rechargeInfo.phone, checkTime]
+        );
+
+        let sumOfRecharge = sumResult[0].sumOfRecharge || 0;
+        if (sumOfRecharge >= 500) {
+            await rechargeBonus(rechargeInfo.phone, sumOfRecharge);
+        }
+
         return res.status(200).json({
             message: 'Xác nhận đơn thành công',
             status: true,
-            datas: recharge,
+            datas: rechargeInfo,
         });
     }
-    if (type == 'delete') {
+    if (type === 'delete') {
         await connection.query(`UPDATE recharge SET status = 2 WHERE id = ?`, [id]);
-
         return res.status(200).json({
             message: 'Hủy đơn thành công',
             status: true,
-            datas: recharge,
         });
     }
-}
+};
+
+const rechargeBonus = async (phone, sumOfRecharge) => {
+    let bonus = 0;
+
+    if (sumOfRecharge >= 500 && sumOfRecharge < 5000) {
+        bonus = 5;
+    } else if (sumOfRecharge >= 5000 && sumOfRecharge < 50000) {
+        bonus = 50;
+    } else if (sumOfRecharge >= 50000 && sumOfRecharge < 100000) {
+        bonus = 500;
+    } else if (sumOfRecharge >= 100000 && sumOfRecharge < 200000) {
+        bonus = 1000;
+    } else if (sumOfRecharge >= 200000) {
+        bonus = 2000;
+    }
+
+    if (bonus > 0) {
+        const [userResult] = await connection.query('SELECT `id` FROM users WHERE phone = ?', [phone]);
+        let user = userResult[0];
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        const sql = `INSERT INTO incomes (user_id, amount, comm, remarks, rname) VALUES (?, ?, ?, ?, ?)`;
+        await connection.execute(sql, [user.id, sumOfRecharge, bonus, 'Recharge Bonus', phone]);
+
+        // Update the user's money with the bonus
+        await connection.query('UPDATE users SET money = money + ? WHERE id = ?', [bonus, user.id]);
+    }
+};
+
+const directBonus = async (money, phone) => {
+    // Select the user where phone column matches with phone parameter
+    const [userResult] = await connection.query('SELECT `id`, `invite` FROM users WHERE phone = ?', [phone]);
+    let user = userResult[0];
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    // Get the invite code from the user
+    let invite = user.invite;
+
+    // Select the sponsor where code matches the invite code
+    const [sponsorResult] = await connection.query('SELECT `id`, `money` FROM users WHERE code = ?', [invite]);
+    let sponsor = sponsorResult[0];
+
+    if (!sponsor) {
+        throw new Error('Sponsor not found');
+    }
+
+    // Calculate the bonus
+    let bonus = 0.05 * money;
+
+    // Insert data into incomes table
+    const sql = `INSERT INTO incomes (user_id, amount, comm, remarks, rname) VALUES (?, ?, ?, ?, ?)`;
+    await connection.execute(sql, [sponsor.id, money, bonus, 'Direct Bonus', phone]);
+
+    // Update the sponsor's money
+    const updateSql = 'UPDATE users SET money = money + ? WHERE id = ?';
+    await connection.execute(updateSql, [bonus, sponsor.id]);
+};
+
 
 const handlWithdraw = async(req, res) => {
     let auth = req.cookies.auth;
