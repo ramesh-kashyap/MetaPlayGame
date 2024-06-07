@@ -55,7 +55,7 @@ const initWebRouter = (app) => {
     router.get('/wallet/recharge', middlewareController, homeController.rechargePage);
     router.get('/wallet/rechargeCrypto', middlewareController, homeController.rechargeCryptoPage);
 
-    router.get('/wallet/withdrawal', middlewareController, homeController.withdrawalPage);
+    router.get('/wallet/withdrawal', middlewareController, homeController.withdrawalCryptoPage);
     router.get('/wallet/withdrawalCrypto', middlewareController, homeController.withdrawalCryptoPage);
     router.get('/wallet/rechargerecord', middlewareController, homeController.rechargerecordPage);
     router.get('/wallet/withdrawalrecord', middlewareController, homeController.withdrawalrecordPage);
