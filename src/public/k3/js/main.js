@@ -8,7 +8,7 @@ function totalMoney() {
     $('.info-bet').attr("money", money);
 
     let result = Number(amount) * Number(money) * Number(listJoin.length);
-    $('.result').text(result + '');
+    $('.result').text('₹'+result + '');
 }
 
 function totalMoney2() {
@@ -839,7 +839,7 @@ function sendGame1() {
             alertMess(response.message);
             let change = String(response.change);
             if (response.status) {
-                $('.moneyU').text(response.money + '');
+                $('.moneyU').text('₹'+response.money + '');
                 socket.emit('data-server-3', { change, gameJoin: 1, listJoin, money, xvalue, game: $('html').attr('data-dpr') });
             }
             dropDown();

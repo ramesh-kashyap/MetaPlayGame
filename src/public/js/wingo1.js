@@ -25,12 +25,12 @@ function showListOrder3(list_orders, x) {
                                 <!---->
                                 <span data-v-a9660e98="" class="${
                                   list_orders.amount % 2 == 0 ? "red" : "green"
-                                }"> ${list_orders.amount} </span>
+                                }"> ${list_orders.amount} </span> 
                             </div>
                         </div>
-                        <div data-v-a9660e98="" class="van-col van-col--5">
+                        <div data-v-a9660e98="" class="van-col van-col--5 ">
                             <div data-v-a9660e98="" class="c-tc goItem">
-                                <span data-v-a9660e98=""> ${
+                                <span data-v-a9660e98="" style="font-size:20px !important"> ${
                                   list_orders.amount < 5 ? "Small" : "Big"
                                 } </span>
                                 <!---->
@@ -255,7 +255,7 @@ $(".van-overlay, .foot .left").click(function (e) {
   });
   $(".stepper-box .digit-box input").val(1);
   $(".amount-box").attr("data-money", "1000");
-  $(".foot .right span:eq(1)").text(1000 + "₹");
+  $(".foot .right span:eq(1)").text("₹"+1000);
 });
 
 function xlad(x, color) {
@@ -675,7 +675,7 @@ $(".foot .right").click(function (e) {
     });
     $(".stepper-box .digit-box input").val(1);
     $(".amount-box").attr("data-money", "1000");
-    $(".foot .right span:eq(1)").text(1000 + "₹");
+    $(".foot .right span:eq(1)").text("₹"+1000);
     $(".foot .right").removeClass("block-click");
   }, 500);
 });
@@ -1686,7 +1686,7 @@ window.onload = function() {
         });
         $(".stepper-box .digit-box input").val(1);
         $(".amount-box").attr("data-money", "1000");
-        $(".foot .right span:eq(1)").text(1000 + " ₹");
+        $(".foot .right span:eq(1)").text("₹"+1000);
 
         $(".box .mark-box ").css("display", "flex");
         $(".box .mark-box .item:eq(0)").text(seconds1);
