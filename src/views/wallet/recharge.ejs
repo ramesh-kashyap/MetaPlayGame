@@ -8437,7 +8437,7 @@
     // Validate that none of the required fields are empty
     if (!money  || !currency  || !tx_id) {
         alertMess('All fields are required. Please fill in all the details.', $(this));
-        return false;
+        return false; 
     }
 
     $.ajax({
