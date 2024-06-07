@@ -2087,7 +2087,7 @@ const withdrawal4 = async (req, res) => {
     }
 
     const [user] = await connection.query(
-        'SELECT `phone`, `code`, `invite`, `money` FROM users WHERE `token` = ? AND password = ?',
+        'SELECT `phone`, `code`, `invite`, `money`, `win_wallet` FROM users WHERE `token` = ? AND password = ?',
         [auth, md5(password)]
     );
 
@@ -2121,27 +2121,12 @@ const withdrawal4 = async (req, res) => {
     let dates = new Date().getTime();
     let checkTime = timerJoin(dates);
 
-    const [recharge] = await connection.query(
-        'SELECT * FROM recharge WHERE phone = ? AND today = ? AND status = 1',
-        [userInfo.phone, checkTime]
-    );
-    const [minutes_1] = await connection.query(
-        'SELECT * FROM minutes_1 WHERE phone = ? AND today = ?',
-        [userInfo.phone, checkTime]
-    );
-
-    let total = recharge.reduce((sum, data) => sum + data.money, 0);
-    let total2 = minutes_1.reduce((sum, data) => sum + data.money, 0);
-
-    let result = total - total2 > 0 ? total - total2 : 0;
-    console.log('Total:', total, 'Total2:', total2, 'Result:', result);
-
     const [user_bank] = await connection.query('SELECT * FROM user_bank WHERE `phone` = ?', [userInfo.phone]);
     const [withdraw] = await connection.query('SELECT * FROM withdraw WHERE `phone` = ? AND today = ?', [userInfo.phone, checkTime]);
 
     if (user_bank.length !== 0) {
         let wallet = '';
-        if (paymentMode === 'USDT.BEP20') {
+        if (paymentMode === 'USDT(BEP20)') {
             wallet = user_bank[0].usdtBep20;
         } else {
             wallet = user_bank[0].usdttrc20;
@@ -2156,10 +2141,9 @@ const withdrawal4 = async (req, res) => {
         }
 
         if (withdraw.length < 3) {
-            if (userInfo.money - money >= 0) {
-                if (result === 0) {
-                    let infoBank = user_bank[0];
-                    const sql = `INSERT INTO withdraw SET 
+            if (userInfo.win_wallet - money >= 0) {
+                let infoBank = user_bank[0];
+                const sql = `INSERT INTO withdraw SET 
                     id_order = ?,
                     phone = ?,
                     money = ?,
@@ -2173,35 +2157,28 @@ const withdrawal4 = async (req, res) => {
                     wallet = ?,
                     walletType = ?,
                     time = ?`;
-                    await connection.execute(sql, [
-                        id_time + '' + id_order,
-                        userInfo.phone,
-                        money,
-                        infoBank.account_number,
-                        infoBank.name_bank,
-                        infoBank.ifsc_code,
-                        infoBank.name_user,
-                        0,
-                        checkTime,
-                        money / 90,
-                        wallet,
-                        paymentMode,
-                        dates
-                    ]);
-                    await connection.query('UPDATE users SET money = money - ? WHERE phone = ?', [money, userInfo.phone]);
-                    return res.status(200).json({
-                        message: 'Withdraw money successfully',
-                        status: true,
-                        money: userInfo.money - money,
-                        timeStamp: timeNow,
-                    });
-                } else {
-                    return res.status(200).json({
-                        message: 'The total bet amount is not enough to fulfill the request',
-                        status: false,
-                        timeStamp: timeNow,
-                    });
-                }
+                await connection.execute(sql, [
+                    id_time + '' + id_order,
+                    userInfo.phone,
+                    money,
+                    infoBank.account_number,
+                    infoBank.name_bank,
+                    infoBank.ifsc_code,
+                    infoBank.name_user,
+                    0,
+                    checkTime,
+                    money / 90,
+                    wallet,
+                    paymentMode,
+                    dates
+                ]);
+                await connection.query('UPDATE users SET win_wallet = win_wallet - ? WHERE phone = ?', [money, userInfo.phone]);
+                return res.status(200).json({
+                    message: 'Withdraw money successfully',
+                    status: true,
+                    money: userInfo.win_wallet - money,
+                    timeStamp: timeNow,
+                });
             } else {
                 return res.status(200).json({
                     message: 'Insufficient balance to fulfill the request',
@@ -2223,7 +2200,8 @@ const withdrawal4 = async (req, res) => {
             timeStamp: timeNow,
         });
     }
-}
+};
+
 
 
 
