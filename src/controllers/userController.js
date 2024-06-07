@@ -1931,9 +1931,11 @@ const withdrawal3 = async(req, res) => {
 
 const fundTransfer = async (req, res) => {
     const auth = req.cookies.auth;
-    const amount = req.body.amount;
+    const amount = parseFloat(req.body.amount); // Ensure amount is a number
     const password = req.body.password;
     const timeNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    
 
     if (!auth || !amount || !password || amount <= 0) {
         return res.status(200).json({
@@ -1959,8 +1961,10 @@ const fundTransfer = async (req, res) => {
 
     let userInfo = user[0];
 
+
     // Check if user has sufficient balance
-    if (userInfo.money < amount) {
+    if (parseFloat(userInfo.money) < amount) {
+        console.log('Insufficient balance check failed');
         return res.status(200).json({
             message: 'Insufficient balance to fulfill the request',
             status: false,
@@ -1976,7 +1980,7 @@ const fundTransfer = async (req, res) => {
         created_at = ?,    
         updated_at = ?,
         remarks = ?`;
-    await connection.execute(sql, [ userInfo.id, amount, 'active', timeNow, timeNow,0]);
+    await connection.execute(sql, [userInfo.id, amount, 'active', timeNow, timeNow, 0]);
 
     // Update the user's balance
     await connection.query('UPDATE users SET money = money - ?, ai_balance = ai_balance + ? WHERE id = ?', [amount, amount, userInfo.id]);
@@ -1984,11 +1988,12 @@ const fundTransfer = async (req, res) => {
     return res.status(200).json({
         message: 'Fund transfer successful',
         status: true,
-        balance: userInfo.money - amount,
-        ai_balance: userInfo.ai_balance + amount,
+        balance: parseFloat(userInfo.money) - amount,
+        ai_balance: parseFloat(userInfo.ai_balance) + amount,
         timeStamp: timeNow,
     });
 }
+
 
 const fundTransferGame = async (req, res) => {
     const auth = req.cookies.auth;
@@ -2061,90 +2066,98 @@ const fundTransferGame = async (req, res) => {
 };
 
 
-const withdrawal4 = async(req, res) => {
+const withdrawal4 = async (req, res) => {
     let auth = req.cookies.auth;
-    let money = req.body.money;
+    let money = parseFloat(req.body.money);
     let paymentMode = req.body.paymentMode;
     let password = req.body.password;
-    console.log(paymentMode);
-    if(!auth || !paymentMode || !money || !password || money < 200) {
+    const timeNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    console.log('Payment Mode:', paymentMode);
+    console.log('Money:', money);
+    console.log('Auth:', auth);
+    console.log('Password:', password);
+
+    if (!auth || !paymentMode || !money || !password || money < 200) {
         return res.status(200).json({
             message: 'Failed',
             status: false,
             timeStamp: timeNow,
-        })
+        });
     }
-    const [user] = await connection.query('SELECT `phone`, `code`,`invite`, `money` FROM users WHERE `token` = ? AND password = ?', [auth, md5(password)]);
-    if(user.length == 0) {
+
+    const [user] = await connection.query(
+        'SELECT `phone`, `code`, `invite`, `money` FROM users WHERE `token` = ? AND password = ?',
+        [auth, md5(password)]
+    );
+
+    if (user.length === 0) {
         return res.status(200).json({
-            message: 'incorrect password',
+            message: 'Incorrect password',
             status: false,
             timeStamp: timeNow,
         });
-    };
+    }
 
     let userInfo = user[0];
-    const date = new Date();
-    let id_time = date.getUTCFullYear() + '' + date.getUTCMonth() + 1 + '' + date.getUTCDate();
-    let id_order = Math.floor(Math.random() * (99999999999999 - 10000000000000 + 1) ) + 10000000000000;
+    console.log('User Info:', userInfo);
 
-    function formateT(params) {
-        let result = (params < 10) ? "0" + params : params;
-        return result;
+    const date = new Date();
+    let id_time = date.getUTCFullYear() + '' + (date.getUTCMonth() + 1) + '' + date.getUTCDate();
+    let id_order = Math.floor(Math.random() * (99999999999999 - 10000000000000 + 1)) + 10000000000000;
+
+    function formatT(params) {
+        return params < 10 ? "0" + params : params;
     }
-    
+
     function timerJoin(params = '') {
-        let date = '';
-        if (params) {
-            date = new Date(Number(params));
-        } else {
-            date = new Date();
-        }
-        let years = formateT(date.getFullYear());
-        let months = formateT(date.getMonth() + 1);
-        let days = formateT(date.getDate());
-        return years + '-' + months + '-' + days;
+        let date = params ? new Date(Number(params)) : new Date();
+        let years = formatT(date.getFullYear());
+        let months = formatT(date.getMonth() + 1);
+        let days = formatT(date.getDate());
+        return `${years}-${months}-${days}`;
     }
+
     let dates = new Date().getTime();
     let checkTime = timerJoin(dates);
-    const [recharge] = await connection.query('SELECT * FROM recharge WHERE phone = ? AND today = ? AND status = 1 ', [userInfo.phone, checkTime]); 
-    const [minutes_1] = await connection.query('SELECT * FROM minutes_1 WHERE phone = ? AND today = ? ', [userInfo.phone, checkTime]); 
-    let total = 0;
-    recharge.forEach((data) => {
-        total += data.money;
-    });
-    let total2 = 0;
-    minutes_1.forEach((data) => {
-        total2 += data.money;
-    });
 
-    let result = 0;
-    if(total - total2 > 0) result = total - total2;
-    
+    const [recharge] = await connection.query(
+        'SELECT * FROM recharge WHERE phone = ? AND today = ? AND status = 1',
+        [userInfo.phone, checkTime]
+    );
+    const [minutes_1] = await connection.query(
+        'SELECT * FROM minutes_1 WHERE phone = ? AND today = ?',
+        [userInfo.phone, checkTime]
+    );
+
+    let total = recharge.reduce((sum, data) => sum + data.money, 0);
+    let total2 = minutes_1.reduce((sum, data) => sum + data.money, 0);
+
+    let result = total - total2 > 0 ? total - total2 : 0;
+    console.log('Total:', total, 'Total2:', total2, 'Result:', result);
+
     const [user_bank] = await connection.query('SELECT * FROM user_bank WHERE `phone` = ?', [userInfo.phone]);
     const [withdraw] = await connection.query('SELECT * FROM withdraw WHERE `phone` = ? AND today = ?', [userInfo.phone, checkTime]);
-    if (user_bank.length != 0) {
-        let  wallet = '';
-        if (paymentMode=='USDT.BEP20') 
-        {
-          wallet = user_bank[0].usdtBep20 ;
+
+    if (user_bank.length !== 0) {
+        let wallet = '';
+        if (paymentMode === 'USDT.BEP20') {
+            wallet = user_bank[0].usdtBep20;
+        } else {
+            wallet = user_bank[0].usdttrc20;
         }
-        else
-        {
-         wallet = user_bank[0].usdttrc20;        
-        }
-        if(wallet=='') {
+
+        if (wallet === '') {
             return res.status(200).json({
                 message: 'Please link your Crypto Wallet',
                 status: false,
                 timeStamp: timeNow,
             });
-        };
-
+        }
 
         if (withdraw.length < 3) {
             if (userInfo.money - money >= 0) {
-                if (result == 0) {
+                if (result === 0) {
                     let infoBank = user_bank[0];
                     const sql = `INSERT INTO withdraw SET 
                     id_order = ?,
@@ -2160,8 +2173,22 @@ const withdrawal4 = async(req, res) => {
                     wallet = ?,
                     walletType = ?,
                     time = ?`;
-                    await connection.execute(sql, [id_time + '' + id_order, userInfo.phone, money, infoBank.account_number, infoBank.name_bank,infoBank.ifsc_code, infoBank.name_user, 0, checkTime,money/90,wallet,paymentMode, dates]);
-                    await connection.query('UPDATE users SET money = money - ? WHERE phone = ? ', [money, userInfo.phone]);
+                    await connection.execute(sql, [
+                        id_time + '' + id_order,
+                        userInfo.phone,
+                        money,
+                        infoBank.account_number,
+                        infoBank.name_bank,
+                        infoBank.ifsc_code,
+                        infoBank.name_user,
+                        0,
+                        checkTime,
+                        money / 90,
+                        wallet,
+                        paymentMode,
+                        dates
+                    ]);
+                    await connection.query('UPDATE users SET money = money - ? WHERE phone = ?', [money, userInfo.phone]);
                     return res.status(200).json({
                         message: 'Withdraw money successfully',
                         status: true,
@@ -2196,8 +2223,8 @@ const withdrawal4 = async(req, res) => {
             timeStamp: timeNow,
         });
     }
-
 }
+
 
 
 const recharge2 = async(req, res) => {

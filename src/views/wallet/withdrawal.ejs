@@ -7816,6 +7816,25 @@
         var amount = $(this).val();
         $('#amt-in-usdt').val((amount/90).toFixed(2));
 
+        document.addEventListener('DOMContentLoaded', () => {
+    const items = document.querySelectorAll('.Recharge__container-tabcard__items');
+
+    items.forEach(item => {
+        item.addEventListener('click', () => {
+            // Remove the active class from all items
+            items.forEach(i => i.classList.remove('active'));
+
+            // Add the active class to the clicked item
+            item.classList.add('active');
+
+            // Log the value of the selected payment mode
+            const activeItem = document.querySelector('.Recharge__container-tabcard__items.active');
+            const paymentValue = activeItem.dataset.payment;
+            console.log(paymentValue);
+        });
+    });
+});
+
     });
     </script>
 </body>
