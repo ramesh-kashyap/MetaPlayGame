@@ -7862,60 +7862,58 @@
 
 
         .Recharge__container-tabcard[data-v-d15449d7] {
-    margin-top: 0.4rem;
-    margin-bottom: 0.26667rem;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.26667rem;
-}
+            margin-top: 0.4rem;
+            margin-bottom: 0.26667rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.26667rem;
+        }
 
-.Recharge__container-tabcard__items[data-v-d15449d7] {
-    width: 100%;
-    height: 2.4rem;
-    background: rgb(63, 63, 63);
-    color: rgb(196, 147, 63);
-    border-radius: 0.13333rem;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    flex-direction: column;
-    position: relative;
-}
+        .Recharge__container-tabcard__items[data-v-d15449d7] {
+            width: 100%;
+            height: 2.4rem;
+            background: rgb(63, 63, 63);
+            color: rgb(196, 147, 63);
+            border-radius: 0.13333rem;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            flex-direction: column;
+            position: relative;
+        }
 
-.Recharge__container-tabcard .centers[data-v-d15449d7] {
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    flex-direction: column;
-    -webkit-box-align: center;
-    align-items: center;
-}
+        .Recharge__container-tabcard .centers[data-v-d15449d7] {
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            flex-direction: column;
+            -webkit-box-align: center;
+            align-items: center;
+        }
 
-.Recharge__container-tabcard__top[data-v-d15449d7] {
-    -webkit-box-flex: 0;
-    flex: 0 0 auto;
-    width: 0.93333rem;
-    height: 0.93333rem;
-    margin: 0.30667rem auto 0.13333rem;
-}
+        .Recharge__container-tabcard__top[data-v-d15449d7] {
+            -webkit-box-flex: 0;
+            flex: 0 0 auto;
+            width: 0.93333rem;
+            height: 0.93333rem;
+            margin: 0.30667rem auto 0.13333rem;
+        }
 
-.Recharge__container-tabcard__top img[data-v-d15449d7] {
-    width: 100%;
-    height: 100%;
-}
+        .Recharge__container-tabcard__top img[data-v-d15449d7] {
+            width: 100%;
+            height: 100%;
+        }
 
-.Recharge__container-tabcard__items .Recharge__container-tabcard__bot[data-v-d15449d7] {
-    font-size: 0.32rem;
-    text-align: center;
-}
-
-
-.Recharge__container-tabcard__items.active[data-v-d15449d7] {
-    background: linear-gradient(90deg, rgb(196, 147, 63) -2.95%, rgb(250, 229, 159) 100%);
-    color: rgb(143, 82, 6);
-}
+        .Recharge__container-tabcard__items .Recharge__container-tabcard__bot[data-v-d15449d7] {
+            font-size: 0.32rem;
+            text-align: center;
+        }
 
 
+        .Recharge__container-tabcard__items.active[data-v-d15449d7] {
+            background: linear-gradient(90deg, rgb(196, 147, 63) -2.95%, rgb(250, 229, 159) 100%);
+            color: rgb(143, 82, 6);
+        }
     </style>
 </head>
 
@@ -8022,9 +8020,42 @@
                             <div data-v-67caa467="" class="box c-row c-row-between c-row-middle" style="height: 6rem;">
                                 <div data-v-67caa467="" class="tit">Qr Code</div>
                                 <div data-v-67caa467="" class="c-row c-row-between con c-row-middle">
-                                    <div data-v-67caa467="" class="text">     <img id="qrcode" src="" alt="QR Code" />
+                                    <div data-v-67caa467="" class="text"> <img id="qrcode" src="" alt="QR Code" />
                                     </div>
                                 </div>
+                            </div>
+
+                            <div data-v-67caa467="" class="title c-row c-row-middle" style="
+                            margin-bottom: 10px;
+                        ">
+                                <div data-v-67caa467="" class="van-image" style="width: 20px; height: 20px;">
+                                    <img src="/images/htmls2.png" class="van-image__img">
+                                </div>
+                                <span data-v-67caa467="" class="m-l-10"> Transaction Hash </span>
+                            </div>
+
+                            <div data-v-723e6ff9="" class="Recharge__content-paymoney__money-input">
+                                <div data-v-723e6ff9="" class="van-cell van-field amount-input"
+                                    modelmodifiers="[object Object]">
+                                    <!---->
+                                    <!---->
+                                    <div class="van-cell__value van-field__value">
+                                        <div class="van-field__body"><input type="tel" inputmode="numeric" id="tx_id"
+                                                class="van-field__control"
+                                                placeholder="Please enter your transaction hash" fdprocessedid="nvdg27">
+                                            <!---->
+                                            <!---->
+                                            <!---->
+                                        </div>
+                                        <!---->
+                                        <!---->
+                                    </div>
+                                    <!---->
+                                    <!---->
+                                </div>
+                                <!---->
+
+                                <!---->
                             </div>
                             <input type="hidden" name="transaction_id" id="transaction_id">
                             <input type="hidden" name="amount_in_usdt" id="amount_in_usdt">
@@ -8113,7 +8144,7 @@
                                                 placeholder="USD amount" class="van-field__control">
                                         </div>
                                     </div>
-                                </div> -->
+                                </div> 
                             </div>
                             <div data-v-67caa467="" class="list m-t-10 c-row c-row-between c-flex-warp">
                                 <div data-v-67caa467="" data-money="100" class="li action">
@@ -8169,27 +8200,35 @@
                                 </div>
                             </div> -->
 
-                            <div data-v-d15449d7="" class="Recharge__container-tabcard" id="paymentMode">
-                                <div data-v-d15449d7="" class="Recharge__container-tabcard__items" data-payment="USDT(TRC20)">
-                                    <div data-v-d15449d7="" class="centers">
-                                        <div data-v-d15449d7="" class="Recharge__container-tabcard__top">
-                                            <img data-v-d15449d7="" class="img" src="https://ossimg.bdgadminbdg.com/IndiaBDG/payNameIcon/payNameIcon_20240110090829ntd3.png" alt="">
+                                <div data-v-d15449d7="" class="Recharge__container-tabcard" id="paymentMode">
+                                    <div data-v-d15449d7="" class="Recharge__container-tabcard__items"
+                                        data-payment="USDT(TRC20)">
+                                        <div data-v-d15449d7="" class="centers">
+                                            <div data-v-d15449d7="" class="Recharge__container-tabcard__top">
+                                                <img data-v-d15449d7="" class="img"
+                                                    src="https://ossimg.bdgadminbdg.com/IndiaBDG/payNameIcon/payNameIcon_20240110090829ntd3.png"
+                                                    alt="">
+                                            </div>
+                                            <div data-v-d15449d7="" class="Recharge__container-tabcard__bot">USDT(TRC20)
+                                            </div>
                                         </div>
-                                        <div data-v-d15449d7="" class="Recharge__container-tabcard__bot">USDT(TRC20)</div>
+                                    </div>
+                                    <div data-v-d15449d7="" class="Recharge__container-tabcard__items active"
+                                        data-payment="USDT(BEP20)">
+                                        <div data-v-d15449d7="" class="centers">
+                                            <div data-v-d15449d7="" class="Recharge__container-tabcard__top">
+                                                <img data-v-d15449d7="" class="img"
+                                                    src="https://ossimg.bdgadminbdg.com/IndiaBDG/payNameIcon/payNameIcon2_20231209230609ei1d.png"
+                                                    alt="">
+                                            </div>
+                                            <div data-v-d15449d7="" class="Recharge__container-tabcard__bot">USDT(BEP20)
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div data-v-d15449d7="" class="Recharge__container-tabcard__items active" data-payment="USDT(BEP20)">
-                                    <div data-v-d15449d7="" class="centers">
-                                        <div data-v-d15449d7="" class="Recharge__container-tabcard__top">
-                                            <img data-v-d15449d7="" class="img" src="https://ossimg.bdgadminbdg.com/IndiaBDG/payNameIcon/payNameIcon2_20231209230609ei1d.png" alt="">
-                                        </div>
-                                        <div data-v-d15449d7="" class="Recharge__container-tabcard__bot">USDT(BEP20)</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
 
-                               
+
+
 
 
                                 <br>
@@ -8371,48 +8410,50 @@
             });
 
             $('#create-bank').click(function (e) {
-    e.preventDefault();
-    $(this).addClass('block-click');
-    let money = $('#usd_amount').val().trim();
-    let type = $('.Recharge__container-tabcard__items.active').data('payment'); // Get the value of the selected payment mode
+                e.preventDefault();
+                $(this).addClass('block-click');
+                let money = $('#usd_amount').val().trim();
+                let type = $('.Recharge__container-tabcard__items.active').data(
+                'payment'); // Get the value of the selected payment mode
 
-    if (money && money >= 1 && money <= 1200) {
-        $.ajax({
-            type: "POST",
-            url: "/api/webapi/createPayment10",
-            data: {
-                money: money,
-                typeid: type,
-            },
-            dataType: "json",
-            success: function (response) {
-                alertMess(response.message, $(this));
-                $('.Loading').fadeIn(0);
-                $('.create-payment').hide();
-                $('.confirmation').show();
-                $('.info .box .text:eq(0)').html("₹" + response.datas.amount + " (₹" + (
-                    response.datas.amount * exchangeRate).toFixed(2) + ")");
-                $('#transaction_id_display').val(response.datas.txn_id);
-                $('.info .box .text:eq(1)').text(response.datas.wallet_address);
-                
-                // Set QR code image src
-                const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(response.datas.wallet_address)}&format=png`;
-                $("#qrcode").attr("src", qrCodeUrl);
-                
-                $('#transaction_id').val(response.datas.txn_id);
-                $('#amount_in_usdt').val(response.datas.amount);
-                $('#url').val(response.datas.checkout_url);
-                $('#currency').val(type);
-                setTimeout(() => {
-                    $('.Loading').fadeOut(0);
-                }, 1500);
-            }
-        });
-        return true;
-    }
-    $(this).addClass('block-click');
-    alertMess('Deposit amount range: 1.00~1200.00', $(this));
-});
+                if (money && money >= 1 && money <= 1200) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/webapi/createPayment10",
+                        data: {
+                            money: money,
+                            typeid: type,
+                        },
+                        dataType: "json",
+                        success: function (response) {
+                            alertMess(response.message, $(this));
+                            $('.Loading').fadeIn(0);
+                            $('.create-payment').hide();
+                            $('.confirmation').show();
+                            $('.info .box .text:eq(0)').html("$" + response.datas.amount + " (₹" + (
+                                response.datas.amount * exchangeRate).toFixed(2) + ")");
+                            $('#transaction_id_display').val(response.datas.txn_id);
+                            $('.info .box .text:eq(1)').text(response.datas.wallet_address);
+
+                            // Set QR code image src
+                            const qrCodeUrl =
+                                `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(response.datas.wallet_address)}&format=png`;
+                            $("#qrcode").attr("src", qrCodeUrl);
+
+                            $('#transaction_id').val(response.datas.txn_id);
+                            $('#amount_in_usdt').val(response.datas.amount);
+                            $('#url').val(response.datas.checkout_url);
+                            $('#currency').val(type);
+                            setTimeout(() => {
+                                $('.Loading').fadeOut(0);
+                            }, 1500);
+                        }
+                    });
+                    return true;
+                }
+                $(this).addClass('block-click');
+                alertMess('Deposit amount range: 1.00~1200.00', $(this));
+            });
 
             $('.cancel').click(function (e) {
                 e.preventDefault();
@@ -8434,27 +8475,24 @@
             });
 
             document.addEventListener('DOMContentLoaded', () => {
-    const items = document.querySelectorAll('.Recharge__container-tabcard__items');
+                const items = document.querySelectorAll('.Recharge__container-tabcard__items');
 
-    items.forEach(item => {
-        item.addEventListener('click', () => {
-            // Remove the active class from all items
-            items.forEach(i => i.classList.remove('active'));
-            
-            // Add the active class to the clicked item
-            item.classList.add('active');
+                items.forEach(item => {
+                    item.addEventListener('click', () => {
+                        // Remove the active class from all items
+                        items.forEach(i => i.classList.remove('active'));
 
-            // Log the value of the selected payment mode
-            const activeItem = document.querySelector('.Recharge__container-tabcard__items.active');
-            const paymentValue = activeItem.dataset.payment;
-            console.log(paymentValue);
-        });
-    });
-});
+                        // Add the active class to the clicked item
+                        item.classList.add('active');
 
-
-
-
+                        // Log the value of the selected payment mode
+                        const activeItem = document.querySelector(
+                            '.Recharge__container-tabcard__items.active');
+                        const paymentValue = activeItem.dataset.payment;
+                        console.log(paymentValue);
+                    });
+                });
+            });
         </script>
 </body>
 
