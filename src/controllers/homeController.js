@@ -145,6 +145,7 @@ const mianPage = async(req, res) => {
     let level = user[0].level;
     return res.render("member/index.ejs", {level}); 
 }
+
 const aboutPage = async(req, res) => {
     return res.render("member/about/index.ejs"); 
 }

@@ -144,7 +144,7 @@
                                 <img data-v-8cd483ca="" src="/images/avatar.svg" class="img">
                             </div>
                             <div data-v-8cd483ca="" class="p-l-10 infoName">
-                                <div data-v-8cd483ca="" class="name mb3 c-row c-row-middle"> </div>
+                                <div data-v-8cd483ca="" class="name mb3 c-row c-row-middle" style="padding-top:20px; margin-bottom: 10px;"> </div>
                                 <div data-v-8cd483ca="" class="id tag-read mb3" data-clipboard-text="42472"></div>
                                 <div data-v-8cd483ca="" class="number mb3"> </div>
                                 <!---->
@@ -385,7 +385,7 @@
                     return false;
                 };
                 $('.infoName .name').text(data.data.name_user);
-                $('.infoName .id').text(`ID:${data.data.id_user}`);
+                $('.infoName .id').text(`UID:${data.data.id_user}`);
                 $('.infoName .id').attr('data-clipboard-text', '');
                 // $('.infoName .number').text(`Mobile Number:${data.data.phone_user}`);
                 $('.money .txt').text(` ₹ ${data.data.money_user} `);
