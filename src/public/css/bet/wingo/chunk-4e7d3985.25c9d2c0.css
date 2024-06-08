@@ -609,12 +609,13 @@
 
 .game-list .list .hb .details[data-v-a9660e98] {
     padding: .4rem;
-    border-top: .05333rem solid #fbedf3
+    border-top: .05333rem solid #fbedf3;
+    background-color: #3a3a3a;
 }
 
 .game-list .list .hb .details .tit[data-v-a9660e98] {
     font-size: .53333rem;
-    color: #000;
+    color: #fff;
     margin-bottom: .26667rem
 }
 
@@ -622,8 +623,8 @@
     height: .66667rem;
     line-height: .66667rem;
     padding: 0 .26667rem;
-    background-color: #f9f9f9;
-    color: #969696;
+    background-color: #2b2b2b;
+    color: #fff;
     font-size: .37333rem;
     border-radius: .13333rem;
     margin-bottom: .21333rem
