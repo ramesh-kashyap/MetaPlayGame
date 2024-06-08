@@ -81,7 +81,9 @@ const initWebRouter = (app) => {
     router.get('/api/webapi/getVipDetails', middlewareController, userController.getVipDetails);
     router.post('/api/webapi/claimLevelUpBonus', middlewareController, userController.claimLevelUpBonus); // attendance
     router.get('/api/webapi/vipHistory', middlewareController, userController.vipHistory); // register
+   
 
+    // hi
 
     router.post('/api/webapi/insertStreakBonus', middlewareController, userController.insertStreakBonus); // register
     router.get('/api/webapi/listStreakBonusReport', middlewareController, userController.listStreakBonusReport); // register
