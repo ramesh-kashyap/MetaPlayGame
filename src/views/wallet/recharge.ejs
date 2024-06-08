@@ -7995,18 +7995,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div data-v-67caa467="" class="box c-row c-row-between c-row-middle">
-                                <div data-v-67caa467="" class="tit">TXN ID </div>
-                                <div data-v-67caa467="" class="c-row c-row-between con c-row-middle">
-                                    <div data-v-67caa467="" class="text"></div>
-                                    <div data-v-67caa467="">
-                                        <div data-v-67caa467="" class="tag-read van-image"
-                                            data-clipboard-text="1068 7531 6411 " style="width: 22px; height: 20px;">
-                                            <img src="/images/copy.png" class="van-image__img">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                             <div data-v-67caa467="" class="box c-row c-row-between c-row-middle">
                                 <div data-v-67caa467="" class="tit">Address</div>
                                 <div data-v-67caa467="" class="c-row c-row-between con c-row-middle">
@@ -8103,14 +8091,14 @@
                             <div data-v-67caa467="" class="box numberSize c-row c-row-between c-row-middle p-l-10">
 
                                 <div data-v-723e6ff9="" class="Recharge__content-paymoney__money-input">
-                                    <div data-v-723e6ff9="" class="place-div">₹</div>
+                                    <div data-v-723e6ff9="" class="place-div">$</div>
                                     <div data-v-723e6ff9="" class="van-cell van-field amount-input"
                                         modelmodifiers="[object Object]">
                                         <!---->
                                         <!---->
                                         <div class="van-cell__value van-field__value">
                                             <div class="van-field__body"><input type="tel" inputmode="numeric"
-                                                    value="100" id="amountt" class="van-field__control"
+                                                    value="10" id="usd_amount" class="van-field__control"
                                                     placeholder="Please enter the amount" fdprocessedid="nvdg27">
                                                 <!---->
                                                 <!---->
@@ -8140,15 +8128,15 @@
                             <div data-v-25d9c352="" class="number-box c-row">
 
                                 <div data-v-723e6ff9="" class="Recharge__content-paymoney__money-input">
-                                    <div data-v-723e6ff9="" class="place-div">$</div>
+                                    <div data-v-723e6ff9="" class="place-div">₹</div>
                                     <div data-v-723e6ff9="" class="van-cell van-field amount-input"
                                         modelmodifiers="[object Object]">
                                         <!---->
                                         <!---->
                                         <div class="van-cell__value van-field__value">
                                             <div class="van-field__body"><input type="tel" inputmode="numeric"
-                                                    id="usd_amount" readonly value="1.11" class="van-field__control"
-                                                    placeholder="USD amount" fdprocessedid="nvdg27">
+                                                    id="amountt" readonly value="100" class="van-field__control"
+                                                    placeholder="INR amount" fdprocessedid="nvdg27">
                                                 <!---->
                                                 <!---->
                                                 <!---->
@@ -8167,7 +8155,13 @@
 
                             </div>
                             <div data-v-67caa467="" class="list m-t-10 c-row c-row-between c-flex-warp">
-                                <div data-v-67caa467="" data-money="100" class="li action">
+                                <div data-v-67caa467="" data-money="10" class="li action">
+                                    <span data-v-67caa467="" class="number">10</span>
+                                </div>
+                                <div data-v-67caa467="" data-money="50" class="li">
+                                    <span data-v-67caa467="" class="number">50</span>
+                                </div>
+                                <div data-v-67caa467="" data-money="100" class="li">
                                     <span data-v-67caa467="" class="number">100</span>
                                 </div>
                                 <div data-v-67caa467="" data-money="200" class="li">
@@ -8188,12 +8182,7 @@
                                 <div data-v-67caa467="" data-money="10000" class="li">
                                     <span data-v-67caa467="" class="number">10000</span>
                                 </div>
-                                <div data-v-67caa467="" data-money="50000" class="li">
-                                    <span data-v-67caa467="" class="number">50000</span>
-                                </div>
-                                <div data-v-67caa467="" data-money="100000" class="li">
-                                    <span data-v-67caa467="" class="number">100000</span>
-                                </div>
+                                
                             </div>
 
                             <div data-v-67caa467="" class="pay-box">
@@ -8217,8 +8206,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                            </div> -->
+                                </div> -->
 
                                 <div data-v-d15449d7="" class="Recharge__container-tabcard" id="paymentMode">
                                     <div data-v-d15449d7="" class="Recharge__container-tabcard__items"
@@ -8265,9 +8253,7 @@
                                 <div data-v-67caa467="" class="btn-list c-row c-row-center m-t-30">
                                     <!---->
                                     <div data-v-67caa467="" class="item flex-cover" id="create-bank">
-                                        <button data-v-67caa467=""
-                                            class="next-btn van-button van-button--default van-button--normal van-button--block van-button--round"
-                                            style="color: rgb(255, 255, 255); background: rgb(215 130 7); border-color: rgb(215 130 7);">
+                                        <button data-v-67caa467="" class="next-btn van-button van-button--default van-button--normal van-button--block van-button--round" style="color: rgb(255 255 255);background: rgb(206 162 81);border-color: rgb(255 255 255);" fdprocessedid="gummg">
                                             <div data-v-67caa467="" class="van-button__content">
                                                 <span data-v-67caa467="" class="van-button__text"> RECHARGE </span>
                                             </div>
@@ -8296,10 +8282,10 @@
         <script>
             const exchangeRate = 90; // Example exchange rate, adjust as necessary
 
-            function calculateUSD() {
-                const inrAmount = document.getElementById('amountt').value;
-                const usdAmount = (inrAmount / exchangeRate).toFixed(2);
-                document.getElementById('usd_amount').value = usdAmount;
+            function calculateINR() {
+                const usdAmount = document.getElementById('usd_amount').value;
+                const inrAmount = (usdAmount * exchangeRate).toFixed(2);
+                document.getElementById('amountt').value = inrAmount;
             }
 
             function alertMess(text, sic) {
@@ -8365,13 +8351,13 @@
             });
 
             $('.pay-box .list .li').click(function (e) {
-                e.preventDefault();
-                let money = $(this).attr('data-money');
-                $('.pay-box .list .li').removeClass('action');
-                $(this).addClass('action');
-                $('#amountt').val(money);
-                $('#usd_amount').val((money / exchangeRate).toFixed(2));
-            });
+    e.preventDefault();
+    let money = parseFloat($(this).attr('data-money'));
+    $('.pay-box .list .li').removeClass('action');
+    $(this).addClass('action');
+    $('#usd_amount').val(money.toFixed(2));
+    $('#amountt').val((money * exchangeRate).toFixed(2));
+});
 
             $.ajax({
                 type: "POST",
@@ -8389,79 +8375,49 @@
                 }
             });
 
-            // $('#href-bank').click(function (e) {
-            //     e.preventDefault();
-            //     let money = $('#amount_in_usdt').val().trim();
-            //     let transaction_id = $('#transaction_id').val().trim();
-            //     let currency = $('#currency').val().trim();
-            //     let url = $('#url').val().trim();
-            //     $.ajax({
-            //         type: "POST",
-            //         url: "/api/webapi/rechargeCoin",
-            //         data: {
-            //             money: money,
-            //             transaction_id: transaction_id,
-            //             currency: currency,
-            //             url: url,
-            //         },
-            //         dataType: "json",
-            //         success: function (response) {
-            //             alertMess(response.message, $(this));
-            //             $('.Loading').fadeIn(0);
-            //             $('.create-payment').show();
-            //             $('.confirmation').hide();
-            //             setTimeout(() => {
-            //                 $('.Loading').fadeOut(0);
-            //                 location.reload();
-            //             }, 1500);
-            //         }
-            //     });
-            //     return true;
-            // });
-
             $('#href-bank').click(function (e) {
-    e.preventDefault();
-    
-   console.log("hi");
+                e.preventDefault();
+                
+                console.log("hi");
 
-    let money = $('#amount_in_usdt').val().trim();
-    console.log(money);
-    let currency = $('#currency').val().trim();
-    console.log(currency);
-
-
-    let tx_id = $('#tx_id').val().trim(); // Get the user-entered transaction hash
-    console.log(tx_id);
+                let money = $('#amount_in_usdt').val().trim();
+                console.log(money);
+                let currency = $('#currency').val().trim();
+                console.log(currency);
 
 
-    // Validate that none of the required fields are empty
-    if (!money  || !currency  || !tx_id) {
-        alertMess('All fields are required. Please fill in all the details.', $(this));
-        return false; 
-    }
+                let tx_id = $('#tx_id').val().trim(); // Get the user-entered transaction hash
+                console.log(tx_id);
 
-    $.ajax({
-        type: "POST",
-        url: "/api/webapi/rechargeCoin",
-        data: {
-            money: money,
-            currency: currency,
-            tx_id: tx_id, // Include the user-entered transaction hash
-        },
-        dataType: "json",
-        success: function (response) {
-            alertMess(response.message, $(this));
-            $('.Loading').fadeIn(0);
-            $('.create-payment').show();
-            $('.confirmation').hide();
-            setTimeout(() => {
-                $('.Loading').fadeOut(0);
-                location.reload();
-            }, 1500);
-        }
-    });
-    return true;
-});
+
+                // Validate that none of the required fields are empty
+                if (!money  || !currency  || !tx_id) {
+                    alertMess('All fields are required. Please fill in all the details.', $(this));
+                    return false; 
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/api/webapi/rechargeCoin",
+                    data: {
+                        money: money,
+                        currency: currency,
+                        tx_id: tx_id, // Include the user-entered transaction hash
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        alertMess(response.message, $(this));
+                        $('.Loading').fadeIn(0);
+                        $('.create-payment').show();
+                        $('.confirmation').hide();
+                        setTimeout(() => {
+                            $('.Loading').fadeOut(0);
+                            location.reload();
+                        }, 1500);
+                    }
+                });
+                return true;
+            });
 
 
             $('.pay-box:eq(0) .item').click(function (e) {
@@ -8481,7 +8437,7 @@
                 let type = $('.Recharge__container-tabcard__items.active').data(
                 'payment'); // Get the value of the selected payment mode
 
-                if (money && money >= 1 && money <= 1200) {
+                if (money && money >= 10 && money <= 10000) {
                     $.ajax({
                         type: "POST",
                         url: "/api/webapi/createPayment10",
@@ -8516,7 +8472,7 @@
                     return true;
                 }
                 $(this).addClass('block-click');
-                alertMess('Deposit amount range: 1.00~1200.00', $(this));
+                alertMess('Deposit amount range: 10.00~10,000.00', $(this));
             });
 
             $('.cancel').click(function (e) {
@@ -8533,9 +8489,9 @@
                 alertMess('Copy successful', $(this));
             });
 
-            // Initialize the USD amount based on the default INR amount
+            // Initialize the INR amount based on the default USD amount
             $(document).ready(function () {
-                calculateUSD();
+                calculateINR();
             });
 
             document.addEventListener('DOMContentLoaded', () => {
@@ -8550,15 +8506,20 @@
                         item.classList.add('active');
 
                         // Log the value of the selected payment mode
-                        const activeItem = document.querySelector(
-                            '.Recharge__container-tabcard__items.active');
+                        const activeItem = document.querySelector('.Recharge__container-tabcard__items.active');
                         const paymentValue = activeItem.dataset.payment;
                         console.log(paymentValue);
                     });
                 });
             });
+
+            // Update INR amount when USD amount changes
+            document.getElementById('usd_amount').addEventListener('input', calculateINR);
         </script>
 </body>
+
+
+
 
 
 

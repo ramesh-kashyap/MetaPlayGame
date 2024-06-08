@@ -7775,7 +7775,7 @@ th {
                 let password = $('input:eq(1)').val().trim();
                 console.log(amount);
 
-                if (amount && password ) {
+                if (amount && password && amount>=900) {
                     $.ajax({
                         type: "POST",
                         url: "/api/webapi/fundtransfer",
@@ -7797,7 +7797,7 @@ th {
                     alertMess('Please enter complete information', $(this));
                 } else {
                     $(this).addClass('block-click');
-                    alertMess('Withdrawal amount range 1000-Unlimited', $(this));
+                    alertMess('Withdrawal amount range 900-Unlimited', $(this));
                 }
             });
 
@@ -7837,7 +7837,7 @@ th {
                         <div data-v-14912091="" class="bd van-row">
                             <div data-v-14912091="" class="c-tc van-col van-col--8 " style=" text-align: center; padding: 8px;">${timerJoin(data.created_at)}</div>
                             <div data-v-14912091="" class="c-tc van-col van-col--8" style=" text-align: center; padding: 8px;">${data.amount}</div>
-                            <div data-v-14912091="" class="c-tc van-col van-col--8" style=" text-align: center; padding: 8px;">${data.status}</div>
+                            <div data-v-14912091="" class="c-tc van-col van-col--8" style=" text-align: center; padding: 8px;">${data.status?"transfer":"pending"}</div>
                         </div>`;
                 });
                 $('#van-list').html(html);
