@@ -2027,7 +2027,7 @@ const fundTransferGame = async (req, res) => {
         let userInfo = user[0];
 
         // Check if user has sufficient balance
-        if (userInfo.win_wallet < amount) {
+        if (parseFloat(userInfo.win_wallet) < amount) {
             return res.status(200).json({
                 message: 'Insufficient balance to fulfill the request',
                 status: false,
