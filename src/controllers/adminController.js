@@ -576,7 +576,8 @@ const rechargeDuyet = async (req, res) => {
         }
 
         // Calculate the sum of recharges for the current day where status is 1
-        let checkTime = new Date().toISOString().split('T')[0];
+        const checkTime = new Date().toISOString().slice(0, 10);
+      console.log(checkTime);
         const [sumResult] = await connection.query(
             'SELECT SUM(money) as sumOfRecharge FROM recharge WHERE phone = ? AND status = 1 AND today = ?',
             [rechargeInfo.phone, checkTime]
