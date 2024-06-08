@@ -552,6 +552,7 @@ const rechargeDuyet = async (req, res) => {
     let auth = req.cookies.auth;
     let id = req.body.id;
     let type = req.body.type;
+
     if (!auth || !id || !type) {
         return res.status(200).json({
             message: 'Failed',
@@ -559,49 +560,64 @@ const rechargeDuyet = async (req, res) => {
             timeStamp: new Date().toISOString(),
         });
     }
-    if (type === 'confirm') {
-        await connection.query(`UPDATE recharge SET status = 1 WHERE id = ?`, [id]);
-        const [info] = await connection.query(`SELECT * FROM recharge WHERE id = ?`, [id]);
-        const rechargeInfo = info[0];
-        
-        // Update user's money
-        await connection.query('UPDATE users SET money = money + ?, total_money = total_money + ? WHERE phone = ? ', 
-            [rechargeInfo.money, rechargeInfo.money, rechargeInfo.phone]);
 
-        // Check if this is the first recharge for this phone
-        const [rowCount] = await connection.query('SELECT COUNT(*) as count FROM recharge WHERE phone = ? AND status = ?', 
-            [rechargeInfo.phone, 1]);
-        if (rowCount[0].count === 1) {
-            await directBonus(rechargeInfo.money, rechargeInfo.phone);
+    try {
+        if (type === 'confirm') {
+            await connection.query('UPDATE recharge SET status = 1 WHERE id = ?', [id]);
+            const [info] = await connection.query('SELECT * FROM recharge WHERE id = ?', [id]);
+            const rechargeInfo = info[0];
+
+            // Update user's money
+            await connection.query('UPDATE users SET money = money + ?, total_money = total_money + ? WHERE phone = ?', 
+                [rechargeInfo.money, rechargeInfo.money, rechargeInfo.phone]);
+
+            // Check if this is the first recharge for this phone
+            const [rowCount] = await connection.query('SELECT COUNT(*) as count FROM recharge WHERE phone = ? AND status = ?', 
+                [rechargeInfo.phone, 1]);
+            if (rowCount[0].count === 1) {
+                await directBonus(rechargeInfo.money, rechargeInfo.phone);
+            }
+
+            // Calculate the sum of recharges for the current day where status is 1
+            const checkTime = new Date().toISOString().slice(0, 10);
+            console.log(checkTime);
+            const [sumResult] = await connection.query(
+                'SELECT SUM(money) as sumOfRecharge FROM recharge WHERE phone = ? AND status = 1 AND DATE(today) = ?',
+                [rechargeInfo.phone, checkTime]
+            );
+
+            let sumOfRecharge = sumResult[0].sumOfRecharge || 0;
+            if (sumOfRecharge >= 500) {
+                await rechargeBonus(rechargeInfo.phone, sumOfRecharge);
+            }
+
+            return res.status(200).json({
+                message: 'Xác nhận đơn thành công',
+                status: true,
+                datas: rechargeInfo,
+            });
+        } else if (type === 'delete') {
+            await connection.query('UPDATE recharge SET status = 2 WHERE id = ?', [id]);
+            return res.status(200).json({
+                message: 'Hủy đơn thành công',
+                status: true,
+            });
+        } else {
+            return res.status(400).json({
+                message: 'Invalid type',
+                status: false,
+            });
         }
-
-        // Calculate the sum of recharges for the current day where status is 1
-        const checkTime = new Date().toISOString().slice(0, 10);
-      console.log(checkTime);
-        const [sumResult] = await connection.query(
-            'SELECT SUM(money) as sumOfRecharge FROM recharge WHERE phone = ? AND status = 1 AND today = ?',
-            [rechargeInfo.phone, checkTime]
-        );
-
-        let sumOfRecharge = sumResult[0].sumOfRecharge || 0;
-        if (sumOfRecharge >= 500) {
-            await rechargeBonus(rechargeInfo.phone, sumOfRecharge);
-        }
-
-        return res.status(200).json({
-            message: 'Xác nhận đơn thành công',
-            status: true,
-            datas: rechargeInfo,
-        });
-    }
-    if (type === 'delete') {
-        await connection.query(`UPDATE recharge SET status = 2 WHERE id = ?`, [id]);
-        return res.status(200).json({
-            message: 'Hủy đơn thành công',
-            status: true,
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            status: false,
+            error: error.message,
         });
     }
 };
+
 
 const rechargeBonus = async (phone, sumOfRecharge) => {
     let bonus = 0;
