@@ -53,6 +53,7 @@
                   <th class="text-center">Account</th>
                   <th class="text-center">Type</th>
                   <th class="text-center">Amount</th>
+                  <th class="text-center">USDT</th>
                   <th class="text-center">Code</th>
                 
                   <th class="text-center">Time</th>
@@ -97,7 +98,10 @@
                     ${(data.type == 'bank') ? '<b style="color: #3498db">BANKING</b>' : '<b style="color: #a50064">'+data.type+'</b>'}
                   </td>
                   <td>
-                    <b>${formatMoney(data.money)}</b>
+                    <b>₹ ${formatMoney(data.money)}</b>
+                  </td>
+                  <td>
+                    <b>$ ${formatMoney(data.amount_in_usdt)}</b>
                   </td>
                   <td style="min-width: 190px;">
                     <b>${data.id_order}</b>
