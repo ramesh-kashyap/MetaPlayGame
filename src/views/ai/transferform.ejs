@@ -209,9 +209,9 @@
 
         .mian .selectBox .number-box[data-v-25d9c352] {
             padding: 0 .53333rem;
-            height: 1.06667rem;
+            height: 2.06667rem;
             line-height: 1.06667rem;
-            border-bottom: .02667rem solid #f6f6f6;
+            /* border-bottom: .02667rem solid #f6f6f6; */
             font-size: .66667rem;
             font-weight: 600
         }
@@ -7631,6 +7631,73 @@ th {
     -webkit-font-smoothing: antialiased;
 }
 
+.Recharge__content-paymoney__money-input[data-v-723e6ff9] {
+            position: relative;
+            height: 1.17333rem;
+            width: 100%;
+            display: flex;
+            background: rgb(41, 41, 41);
+            border-radius: 0.58667rem;
+            color: rgb(217, 172, 79);
+            border: 1px solid;
+        }
+
+        .Recharge__content-paymoney__money-input .place-div[data-v-723e6ff9] {
+            height: 1.17333rem;
+            width: 1.2rem;
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            justify-content: center;
+        }
+
+        .Recharge__content-paymoney__money-input .place-div[data-v-723e6ff9]::after {
+            position: static;
+            content: "";
+            height: 0.53333rem;
+            display: inline-block;
+            margin: 0px 0.13333rem 0.02667rem;
+            vertical-align: middle;
+            border-right: 0.02667rem solid rgb(111, 115, 129);
+            top: 0.34667rem;
+
+        }
+
+        .Recharge__content-paymoney__money-input .amount-input[data-v-723e6ff9] {
+            background-color: transparent;
+            margin-left: 0.33333rem;
+            font-size: 0.46rem;
+            margin-top: 11px;
+        }
+
+
+        .van-cell {
+            position: relative;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            box-sizing: border-box;
+            width: 100%;
+            padding: var(--van-cell-vertical-padding) var(--van-cell-horizontal-padding);
+            overflow: hidden;
+            color: var(--van-cell-text-color);
+            font-size: var(--van-cell-font-size);
+            line-height: var(--van-cell-line-height);
+            background: var(--van-cell-background);
+        }
+
+
+        .Recharge__content-paymoney__money-input .amount-input[data-v-723e6ff9] input {
+            color: rgb(217, 172, 79);
+            font-weight: 700;
+            font-size: 14px;
+            margin-top: -7px;
+        }
+
+
+
+
     </style>
 </head>
 
@@ -7664,11 +7731,23 @@ th {
                 </div>
                 
                 <div data-v-25d9c352="" class="number-box c-row">
-                    <div data-v-25d9c352="" class="symbol c-row c-row-middle">₹</div>
+                    <div data-v-25d9c352="" class="symbol c-row c-row-middle"></div>
                     <div data-v-25d9c352="" class="input c-row c-row-middle van-cell van-field">
                         <div class="van-cell__value van-cell__value--alone van-field__value">
                             <div class="van-field__body">
-                                <input type="tel" inputmode="numeric" placeholder="Please enter transfer amount" class="van-field__control">
+                                <!-- <input type="tel" inputmode="numeric" placeholder="Please enter transfer amount" class="van-field__control"> -->
+                                <!------>
+                                <div data-v-723e6ff9="" class="Recharge__content-paymoney__money-input">
+                                    <div data-v-723e6ff9="" class="place-div">₹</div>
+                                    <div data-v-723e6ff9="" class="van-cell van-field amount-input" modelmodifiers="[object Object]">
+                                        <div class="van-cell__value van-field__value">
+                                            <div class="van-field__body">
+                                                <input type="tel" inputmode="numeric" class="van-field__control" placeholder="Please enter the amount" fdprocessedid="nvdg27">        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!------>
                             </div>
                         </div>
                     </div>
