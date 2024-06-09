@@ -7913,7 +7913,7 @@ th {
                         <div data-v-14912091="" class="bd van-row">
                             <div data-v-14912091="" class="c-tc van-col van-col--8 " style=" text-align: center; padding: 8px;">${timerJoin(data.created_at)}</div>
                             <div data-v-14912091="" class="c-tc van-col van-col--8" style=" text-align: center; padding: 8px;">₹ ${data.amount}</div>
-                            <div data-v-14912091="" class="c-tc van-col van-col--8" style=" text-align: center; padding: 8px;">${data.status}</div>
+                            <div data-v-14912091="" class="c-tc van-col van-col--8" style=" text-align: center; padding: 8px;">${data.status?"transfer":"pending"}</div>
                         </div>`;
                 });
                 $('#van-list').html(html);
