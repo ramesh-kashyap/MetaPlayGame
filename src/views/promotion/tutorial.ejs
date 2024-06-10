@@ -101,25 +101,37 @@
                             <div data-v-7c8bbbf4="" class="c-tc van-col van-col--6">5000000000</div>
                             <div data-v-7c8bbbf4="" class="c-tc van-col van-col--6">500000000</div>
                         </div>
+                        <div data-v-7c8bbbf4="" class="bd van-row">
+                            <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--6">Lvl  7</div>
+                            <div data-v-7c8bbbf4="" class="c-tc van-col van-col--6">60</div>
+                            <div data-v-7c8bbbf4="" class="c-tc van-col van-col--6">5000000000</div>
+                            <div data-v-7c8bbbf4="" class="c-tc van-col van-col--6">500000000</div>
+                        </div>
                     </div>
                     <div data-v-7c8bbbf4="" class="tit c-row c-row-between m-t-15">Commission Calculation Method</div>
                     <div data-v-7c8bbbf4="" class="table">
-                        <div data-v-7c8bbbf4="" class="box" style="width: 420px;">
+                        <div data-v-7c8bbbf4="" class="box" style="width: 640px;">
                             <div data-v-7c8bbbf4="" class="hd dl van-row">
-                                <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--6">
+                                <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--4">
                                     Hierarchy<p data-v-7c8bbbf4="" class="txt">Rebate Ratio</p>
                                 </div>
-                                <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--4">
+                                <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--3">
                                     Tier 1<p data-v-7c8bbbf4="" class="txt">Commission</p>
                                 </div>
-                                <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--4">
+                                <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--3">
                                     Tier 2<p data-v-7c8bbbf4="" class="txt">Commission</p>
                                 </div>
-                                <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--5">
+                                <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--3">
                                     Tier 3<p data-v-7c8bbbf4="" class="txt">Commission</p>
                                 </div>
-                                <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--5">
+                                <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--3">
                                     Tier 4<p data-v-7c8bbbf4="" class="txt">Commission</p>
+                                </div>
+                                <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--3">
+                                    Tier 5<p data-v-7c8bbbf4="" class="txt">Commission</p>
+                                </div>
+                                <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--5">
+                                    Tier 6<p data-v-7c8bbbf4="" class="txt">Commission</p>
                                 </div>
                             </div>
                         </div>
@@ -140,11 +152,13 @@
             let html = datas.map((e) => {
                 let html = '';
                 return html += `<div data-v-7c8bbbf4="" class="bd van-row">
-                        <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--6">Lvl  ${e.level}</div>
-                        <div data-v-7c8bbbf4="" class="c-tc van-col van-col--4">${e.f1}%</div>
-                        <div data-v-7c8bbbf4="" class="c-tc van-col van-col--4">${e.f2}%</div>
-                        <div data-v-7c8bbbf4="" class="c-tc van-col van-col--5">${e.f3}%</div>
-                        <div data-v-7c8bbbf4="" class="c-tc van-col van-col--5">${e.f4}%</div>
+                        <div data-v-7c8bbbf4="" class="c-tc van-ellipsis van-col van-col--4">Lvl  ${e.level}</div>
+                        <div data-v-7c8bbbf4="" class="c-tc van-col van-col--3">${e.f1}%</div>
+                        <div data-v-7c8bbbf4="" class="c-tc van-col van-col--3">${e.f2}%</div>
+                        <div data-v-7c8bbbf4="" class="c-tc van-col van-col--3">${e.f3}%</div>
+                        <div data-v-7c8bbbf4="" class="c-tc van-col van-col--3">${e.f4}%</div>
+                         <div data-v-7c8bbbf4="" class="c-tc van-col van-col--3">${e.f4}%</div>
+                          <div data-v-7c8bbbf4="" class="c-tc van-col van-col--5">${e.f4}%</div>                        
                     </div>`;
             });
             $('.table:eq(1) .box').append(html);
