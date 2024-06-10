@@ -105,7 +105,7 @@ const rosesPlus = async (auth, money) => {
 
                 // Insert the bonus details into the incomes table
                 await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
-                                       [infoF1.id, money, rosesF1, userInfo.phone, 'Level Bonus']);
+                                       [infoF1.id, money, rosesF1, userInfo.phone, 'Team Comission Bonus']);
                 console.log('Income record inserted for F1 inviter:', infoF1.id, money, rosesF1, userInfo.phone);
 
                 // Fetch the inviter's inviter information (level 2)
@@ -123,7 +123,7 @@ const rosesPlus = async (auth, money) => {
 
                     // Insert the bonus details into the incomes table
                     await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
-                                           [infoF2.id, money, rosesF2, userInfo.phone, 'Level Bonus']);
+                                           [infoF2.id, money, rosesF2, userInfo.phone, 'Team Comission Bonus']);
                     console.log('Income record inserted for F2 inviter:', infoF2.id, money, rosesF2, userInfo.phone);
 
                     // Fetch the level 2 inviter's inviter information (level 3)
@@ -141,7 +141,7 @@ const rosesPlus = async (auth, money) => {
 
                         // Insert the bonus details into the incomes table
                         await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
-                                               [infoF3.id, money, rosesF3, userInfo.phone, 'Level Bonus']);
+                                               [infoF3.id, money, rosesF3, userInfo.phone, 'Team Comission Bonus']);
                         console.log('Income record inserted for F3 inviter:', infoF3.id, money, rosesF3, userInfo.phone);
 
                         // Fetch the level 3 inviter's inviter information (level 4)
@@ -159,7 +159,7 @@ const rosesPlus = async (auth, money) => {
 
                             // Insert the bonus details into the incomes table
                             await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
-                                                   [infoF4.id, money, rosesF4, userInfo.phone, 'Level Bonus']);
+                                                   [infoF4.id, money, rosesF4, userInfo.phone, 'Team Comission Bonus']);
                             console.log('Income record inserted for F4 inviter:', infoF4.id, money, rosesF4, userInfo.phone);
 
                             // Fetch the level 4 inviter's inviter information (level 5)
@@ -177,7 +177,7 @@ const rosesPlus = async (auth, money) => {
 
                                 // Insert the bonus details into the incomes table
                                 await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
-                                                       [infoF5.id, money, rosesF5, userInfo.phone, 'Level Bonus']);
+                                                       [infoF5.id, money, rosesF5, userInfo.phone, 'Team Comission Bonus']);
                                 console.log('Income record inserted for F5 inviter:', infoF5.id, money, rosesF5, userInfo.phone);
 
                                 // Fetch the level 5 inviter's inviter information (level 6)
@@ -195,7 +195,7 @@ const rosesPlus = async (auth, money) => {
 
                                     // Insert the bonus details into the incomes table
                                     await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
-                                                           [infoF6.id, money, rosesF6, userInfo.phone, 'Level Bonus']);
+                                                           [infoF6.id, money, rosesF6, userInfo.phone, 'Team Comission Bonus']);
                                     console.log('Income record inserted for F6 inviter:', infoF6.id, money, rosesF6, userInfo.phone);
                                 }
                             }
@@ -248,7 +248,7 @@ const rosesPlus2 = async (auth, money) => {
 
                 // Insert the bonus details into the incomes table
                 await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
-                                       [infoF1.id, money, rosesF1, userInfo.phone, 'Level Bonus']);
+                                       [infoF1.id, money, rosesF1, userInfo.phone, 'Team Comission Bonus']);
                 console.log('Income record inserted for F1 inviter:', infoF1.id, money, rosesF1, userInfo.phone);
 
                 // Fetch the second level inviter information
@@ -275,7 +275,7 @@ const rosesPlus2 = async (auth, money) => {
 
                     // Insert the bonus details into the incomes table
                     await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
-                                           [infoF2.id, money, rosesF2, userInfo.phone, 'Level Bonus']);
+                                           [infoF2.id, money, rosesF2, userInfo.phone, 'Team Comission Bonus']);
                     console.log('Income record inserted for F2 inviter:', infoF2.id, money, rosesF2, userInfo.phone);
 
                     // Fetch the third level inviter information
@@ -302,7 +302,7 @@ const rosesPlus2 = async (auth, money) => {
 
                         // Insert the bonus details into the incomes table
                         await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
-                                               [infoF3.id, money, rosesF3, userInfo.phone, 'Level Bonus']);
+                                               [infoF3.id, money, rosesF3, userInfo.phone, 'Team Comission Bonus']);
                         console.log('Income record inserted for F3 inviter:', infoF3.id, money, rosesF3, userInfo.phone);
 
                         // Fetch the fourth level inviter information
@@ -329,7 +329,7 @@ const rosesPlus2 = async (auth, money) => {
 
                             // Insert the bonus details into the incomes table
                             await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
-                                                   [infoF4.id, money, rosesF4, userInfo.phone, 'Level Bonus']);
+                                                   [infoF4.id, money, rosesF4, userInfo.phone, 'Team Comission Bonus']);
                             console.log('Income record inserted for F4 inviter:', infoF4.id, money, rosesF4, userInfo.phone);
                         }
                     }

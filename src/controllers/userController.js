@@ -1368,7 +1368,7 @@ const rechargeBonus = async (phone, sumOfRecharge) => {
         }
 
         const sql = `INSERT INTO incomes (user_id, amount, comm, remarks, rname) VALUES (?, ?, ?, ?, ?)`;
-        await connection.execute(sql, [user.id, sumOfRecharge, bonus, 'Recharge Bonus', phone]);
+        await connection.execute(sql, [user.id, sumOfRecharge, bonus, 'Daily Recharge Bonus', phone]);
 
         // Update the user's money with the bonus
         await connection.query('UPDATE users SET money = money + ? WHERE id = ?', [bonus, user.id]);
