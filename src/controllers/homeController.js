@@ -137,6 +137,10 @@ const AiDashboardPage = async(req, res) => {
     return res.render("ai/dashboard.ejs"); 
 }
 
+const gamehistory = async(req, res) => {
+    return res.render("daily/table/listBet.ejs"); 
+}
+
 
 // member page
 const mianPage = async(req, res) => { 
@@ -244,4 +248,5 @@ module.exports = {
     vipdashboard,
     viprule,
     vipHistory,
+    gamehistory,
 }

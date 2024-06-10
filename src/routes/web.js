@@ -44,6 +44,9 @@ const initWebRouter = (app) => {
     router.get('/VipDashboard', middlewareController, homeController.vipdashboard);
     router.get('/VipRule', middlewareController, homeController.viprule);
     router.get('/vipHistory', middlewareController, homeController.vipHistory);
+    router.get('/gamehistory', middlewareController, homeController.gamehistory);
+
+
 
     router.get('/promotion', middlewareController, homeController.promotionPage);
     router.get('/promotion/myTeam', middlewareController, homeController.promotionmyTeamPage);
@@ -237,6 +240,7 @@ const initWebRouter = (app) => {
     router.post('/admin/member/listWithdraw/:phone', adminController.middlewareAdminController, adminController.listWithdrawMem);
     router.post('/admin/member/redenvelope/:phone', adminController.middlewareAdminController, adminController.listRedenvelope);
     router.post('/admin/member/bet/:phone', adminController.middlewareAdminController, adminController.listBet);
+
 
 
     router.get('/admin/manager/recharge', adminController.middlewareAdminController, adminController.rechargePage); // get info account
