@@ -171,6 +171,136 @@ const rosesPlus = async (auth, money) => {
     }
 }
 
+const rosesPlus2 = async (auth, money) => {
+    try {
+        console.log('Starting rosesPlus2 function');
+        
+        // Fetch the user information based on the provided auth token
+        const [user] = await connection.query('SELECT `id`, `phone`, `code`, `invite`, `vip_level` FROM users WHERE token = ? AND veri = 1 LIMIT 1', [auth]);
+        if (user.length === 0) {
+            console.error('User not found or not verified');
+            return;
+        }
+        let userInfo = user[0];
+        console.log('User info fetched:', userInfo);
+
+        if (money >= 10) {
+            // Fetch the first level inviter information
+            const [f1] = await connection.query('SELECT `id`, `phone`, `code`, `invite`, `vip_level` FROM users WHERE code = ? AND veri = 1 LIMIT 1', [userInfo.invite]);
+            console.log('F1 inviter info fetched:', f1);
+            
+            if (f1.length > 0) {
+                let infoF1 = f1[0];
+                // Fetch the level information based on the inviter's vip_level
+                const [levelF1] = await connection.query('SELECT * FROM level WHERE level = ?', [infoF1.vip_level]);
+                if (levelF1.length === 0) {
+                    console.error('Level not found for F1');
+                    return;
+                }
+                let level1 = levelF1[0];
+                console.log('Level info fetched for F1:', level1);
+
+                let rosesF1 = (money / 100) * level1.f1;
+
+                // Update the inviter's money and roses information
+                await connection.query('UPDATE users SET money = money + ?, roses_f1 = roses_f1 + ?, roses_f = roses_f + ?, roses_today = roses_today + ? WHERE phone = ?', 
+                                       [rosesF1, rosesF1, rosesF1, rosesF1, infoF1.phone]);
+                console.log('F1 inviter money and roses updated:', infoF1.phone, rosesF1);
+
+                // Insert the bonus details into the incomes table
+                await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
+                                       [infoF1.id, money, rosesF1, userInfo.phone, 'Level Bonus']);
+                console.log('Income record inserted for F1 inviter:', infoF1.id, money, rosesF1, userInfo.phone);
+
+                // Fetch the second level inviter information
+                const [f2] = await connection.query('SELECT `id`, `phone`, `code`, `invite`, `vip_level` FROM users WHERE code = ? AND veri = 1 LIMIT 1', [infoF1.invite]);
+                console.log('F2 inviter info fetched:', f2);
+
+                if (f2.length > 0) {
+                    let infoF2 = f2[0];
+                    // Fetch the level information based on the inviter's vip_level
+                    const [levelF2] = await connection.query('SELECT * FROM level WHERE level = ?', [infoF2.vip_level]);
+                    if (levelF2.length === 0) {
+                        console.error('Level not found for F2');
+                        return;
+                    }
+                    let level2 = levelF2[0];
+                    console.log('Level info fetched for F2:', level2);
+
+                    let rosesF2 = (money / 100) * level2.f2;
+
+                    // Update the level 2 inviter's money and roses information
+                    await connection.query('UPDATE users SET money = money + ?, roses_f = roses_f + ?, roses_today = roses_today + ? WHERE phone = ?', 
+                                           [rosesF2, rosesF2, rosesF2, infoF2.phone]);
+                    console.log('F2 inviter money and roses updated:', infoF2.phone, rosesF2);
+
+                    // Insert the bonus details into the incomes table
+                    await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
+                                           [infoF2.id, money, rosesF2, userInfo.phone, 'Level Bonus']);
+                    console.log('Income record inserted for F2 inviter:', infoF2.id, money, rosesF2, userInfo.phone);
+
+                    // Fetch the third level inviter information
+                    const [f3] = await connection.query('SELECT `id`, `phone`, `code`, `invite`, `vip_level` FROM users WHERE code = ? AND veri = 1 LIMIT 1', [infoF2.invite]);
+                    console.log('F3 inviter info fetched:', f3);
+
+                    if (f3.length > 0) {
+                        let infoF3 = f3[0];
+                        // Fetch the level information based on the inviter's vip_level
+                        const [levelF3] = await connection.query('SELECT * FROM level WHERE level = ?', [infoF3.vip_level]);
+                        if (levelF3.length === 0) {
+                            console.error('Level not found for F3');
+                            return;
+                        }
+                        let level3 = levelF3[0];
+                        console.log('Level info fetched for F3:', level3);
+
+                        let rosesF3 = (money / 100) * level3.f3;
+
+                        // Update the level 3 inviter's money and roses information
+                        await connection.query('UPDATE users SET money = money + ?, roses_f = roses_f + ?, roses_today = roses_today + ? WHERE phone = ?', 
+                                               [rosesF3, rosesF3, rosesF3, infoF3.phone]);
+                        console.log('F3 inviter money and roses updated:', infoF3.phone, rosesF3);
+
+                        // Insert the bonus details into the incomes table
+                        await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
+                                               [infoF3.id, money, rosesF3, userInfo.phone, 'Level Bonus']);
+                        console.log('Income record inserted for F3 inviter:', infoF3.id, money, rosesF3, userInfo.phone);
+
+                        // Fetch the fourth level inviter information
+                        const [f4] = await connection.query('SELECT `id`, `phone`, `code`, `invite`, `vip_level` FROM users WHERE code = ? AND veri = 1 LIMIT 1', [infoF3.invite]);
+                        console.log('F4 inviter info fetched:', f4);
+
+                        if (f4.length > 0) {
+                            let infoF4 = f4[0];
+                            // Fetch the level information based on the inviter's vip_level
+                            const [levelF4] = await connection.query('SELECT * FROM level WHERE level = ?', [infoF4.vip_level]);
+                            if (levelF4.length === 0) {
+                                console.error('Level not found for F4');
+                                return;
+                            }
+                            let level4 = levelF4[0];
+                            console.log('Level info fetched for F4:', level4);
+
+                            let rosesF4 = (money / 100) * level4.f4;
+
+                            // Update the level 4 inviter's money and roses information
+                            await connection.query('UPDATE users SET money = money + ?, roses_f = roses_f + ?, roses_today = roses_today + ? WHERE phone = ?', 
+                                                   [rosesF4, rosesF4, rosesF4, infoF4.phone]);
+                            console.log('F4 inviter money and roses updated:', infoF4.phone, rosesF4);
+
+                            // Insert the bonus details into the incomes table
+                            await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
+                                                   [infoF4.id, money, rosesF4, userInfo.phone, 'Level Bonus']);
+                            console.log('Income record inserted for F4 inviter:', infoF4.id, money, rosesF4, userInfo.phone);
+                        }
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error in rosesPlus2 function:', error);
+    }
+}
 
 
 
