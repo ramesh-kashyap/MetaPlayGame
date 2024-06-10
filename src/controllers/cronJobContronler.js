@@ -100,6 +100,13 @@ const cronJobGame1p = (io) => {
         timezone: "Asia/Kolkata"
     });
 
+    // cron.schedule('*/1 * * * *', async () => {
+    //     await roiCalculation();
+    // }, {
+    //     scheduled: true,
+    //     timezone: "Asia/Kolkata"
+    // });
+
     cron.schedule('0 8 * * *', async() => {
         await userController.calculateTeamRecharge();
     }, {

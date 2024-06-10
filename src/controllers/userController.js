@@ -1970,7 +1970,7 @@ const fundTransfer = async (req, res) => {
     }
 
     // Check if this is the first recharge for this phone
-    const [rowCount] = await connection.query('SELECT COUNT(*) as count FROM fund_transfer WHERE phone = ? AND remarks = 0', [userInfo.phone]);
+    const [rowCount] = await connection.query('SELECT COUNT(*) as count FROM fund_transfer WHERE user_id = ? AND remarks = 0', [userInfo.id]);
     if (rowCount[0].count === 0) {
         await directBonus(amount, userInfo.phone); // Assuming you want to call directBonus with the amount
     }
