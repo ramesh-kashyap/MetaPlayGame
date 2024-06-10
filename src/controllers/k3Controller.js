@@ -161,6 +161,44 @@ const rosesPlus = async (auth, money) => {
                             await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
                                                    [infoF4.id, money, rosesF4, userInfo.phone, 'Level Bonus']);
                             console.log('Income record inserted for F4 inviter:', infoF4.id, money, rosesF4, userInfo.phone);
+
+                            // Fetch the level 4 inviter's inviter information (level 5)
+                            const [f5] = await connection.query('SELECT `id`, `phone`, `code`, `invite`, `rank` FROM users WHERE code = ? AND veri = 1 LIMIT 1', [infoF4.invite]);
+                            console.log('F5 inviter info fetched:', f5);
+
+                            if (f5.length > 0) {
+                                let infoF5 = f5[0];
+                                let rosesF5 = (money / 100) * level0.f5;
+
+                                // Update the level 5 inviter's money and roses information
+                                await connection.query('UPDATE users SET money = money + ?, roses_f = roses_f + ?, roses_today = roses_today + ? WHERE phone = ?', 
+                                                       [rosesF5, rosesF5, rosesF5, infoF5.phone]);
+                                console.log('F5 inviter money and roses updated:', infoF5.phone, rosesF5);
+
+                                // Insert the bonus details into the incomes table
+                                await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
+                                                       [infoF5.id, money, rosesF5, userInfo.phone, 'Level Bonus']);
+                                console.log('Income record inserted for F5 inviter:', infoF5.id, money, rosesF5, userInfo.phone);
+
+                                // Fetch the level 5 inviter's inviter information (level 6)
+                                const [f6] = await connection.query('SELECT `id`, `phone`, `code`, `invite`, `rank` FROM users WHERE code = ? AND veri = 1 LIMIT 1', [infoF5.invite]);
+                                console.log('F6 inviter info fetched:', f6);
+
+                                if (f6.length > 0) {
+                                    let infoF6 = f6[0];
+                                    let rosesF6 = (money / 100) * level0.f6;
+
+                                    // Update the level 6 inviter's money and roses information
+                                    await connection.query('UPDATE users SET money = money + ?, roses_f = roses_f + ?, roses_today = roses_today + ? WHERE phone = ?', 
+                                                           [rosesF6, rosesF6, rosesF6, infoF6.phone]);
+                                    console.log('F6 inviter money and roses updated:', infoF6.phone, rosesF6);
+
+                                    // Insert the bonus details into the incomes table
+                                    await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks) VALUES (?, ?, ?, ?, ?)', 
+                                                           [infoF6.id, money, rosesF6, userInfo.phone, 'Level Bonus']);
+                                    console.log('Income record inserted for F6 inviter:', infoF6.id, money, rosesF6, userInfo.phone);
+                                }
+                            }
                         }
                     }
                 }
@@ -170,6 +208,7 @@ const rosesPlus = async (auth, money) => {
         console.error('Error in rosesPlus function:', error);
     }
 }
+
 
 const rosesPlus2 = async (auth, money) => {
     try {
