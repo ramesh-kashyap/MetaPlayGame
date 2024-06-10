@@ -1401,7 +1401,7 @@ const directBonus = async (money, phone) => {
 
     // Insert data into incomes table
     const sql = `INSERT INTO incomes (user_id, amount, comm, remarks, rname) VALUES (?, ?, ?, ?, ?)`;
-    await connection.execute(sql, [sponsor.id, money, bonus, 'Direct Bonus', phone]);
+    await connection.execute(sql, [sponsor.id, money, bonus, 'AI Direct Bonus', phone]);
 
     // Update the sponsor's money
     const updateSql = 'UPDATE users SET money = money + ? WHERE id = ?';
@@ -1935,8 +1935,6 @@ const fundTransfer = async (req, res) => {
     const password = req.body.password;
     const timeNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-    
-
     if (!auth || !amount || !password || amount <= 0) {
         return res.status(200).json({
             message: 'Failed',
@@ -1947,7 +1945,7 @@ const fundTransfer = async (req, res) => {
 
     // Check user authentication and password
     const [user] = await connection.query(
-        'SELECT `id`,`phone`, `money`, `ai_balance` FROM users WHERE `token` = ? AND password = ?',
+        'SELECT `id`, `phone`, `money`, `ai_balance` FROM users WHERE `token` = ? AND password = ?',
         [auth, md5(password)]
     );
 
@@ -1961,7 +1959,6 @@ const fundTransfer = async (req, res) => {
 
     let userInfo = user[0];
 
-
     // Check if user has sufficient balance
     if (parseFloat(userInfo.money) < amount) {
         console.log('Insufficient balance check failed');
@@ -1970,6 +1967,12 @@ const fundTransfer = async (req, res) => {
             status: false,
             timeStamp: timeNow,
         });
+    }
+
+    // Check if this is the first recharge for this phone
+    const [rowCount] = await connection.query('SELECT COUNT(*) as count FROM fund_transfer WHERE phone = ? AND remarks = 0', [userInfo.phone]);
+    if (rowCount[0].count === 0) {
+        await directBonus(amount, userInfo.phone); // Assuming you want to call directBonus with the amount
     }
 
     // Insert the transfer details into fund_transfer table
@@ -1993,6 +1996,7 @@ const fundTransfer = async (req, res) => {
         timeStamp: timeNow,
     });
 }
+
 
 
 const fundTransferGame = async (req, res) => {
