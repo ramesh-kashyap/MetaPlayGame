@@ -547,6 +547,42 @@ const GetMyEmerdList = async (req, res) => {
     });
 }
 
+const WingoBetList = async (req, res) => {
+    const auth = req.cookies.auth;
+    const timeNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    if (!auth) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+
+    const [user] = await connection.query('SELECT `phone`, `code`, `invite` FROM users WHERE `token` = ? ', [auth]);
+    let userInfo = user[0];
+
+    if (!userInfo) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+
+    const [betData] = await connection.query('SELECT * FROM minutes_1 WHERE phone = ? ORDER BY id DESC', [userInfo.phone]);
+
+    return res.status(200).json({
+        code: 0,
+        msg: "Get success",
+        data: {
+            gameslist: betData,
+        },
+        status: true
+    });
+};
+
+
 const addWinGo = async (game) => {
     try {
         let join = '';
@@ -985,5 +1021,6 @@ module.exports = {
     checkPeriodAndStage,
     checkPeriodAndStage3,
     checkPeriodAndStage5,
-    checkPeriodAndStage10
+    checkPeriodAndStage10,
+    WingoBetList
 }
