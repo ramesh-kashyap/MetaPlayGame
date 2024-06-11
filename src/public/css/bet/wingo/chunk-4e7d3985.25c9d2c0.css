@@ -915,8 +915,8 @@
 
 .game-betting .content .time-box .out[data-v-a9660e98] {
     height: 100%;
-    border-left: .02667rem dashed #d78207;
-    position: relative;
+    /* border-left: .02667rem dashed #d78207; */
+    /* position: relative; */
     padding: .26667rem
 }
 
