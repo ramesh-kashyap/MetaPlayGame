@@ -574,7 +574,9 @@
 }
 
 .c-row-middle-center {
-    align-items: center
+    align-items: center;
+    background-color: #3b3b3b;
+    border:none
 }
 
 .c-column {
@@ -594,7 +596,8 @@
 }
 
 .c-flex-warp {
-    flex-wrap: wrap
+    flex-wrap: wrap;
+    
 }
 
 .flex-cover {

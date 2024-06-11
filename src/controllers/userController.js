@@ -117,6 +117,7 @@ const userInfo = async(req, res) => {
             name_user: others.name_user,
             phone_user: others.phone,
             money_user: others.money,
+            vip_level:others.vip_level,
         },
         totalRecharge: totalRecharge,
         totalWithdraw: totalWithdraw,
