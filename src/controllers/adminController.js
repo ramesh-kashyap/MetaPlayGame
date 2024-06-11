@@ -643,7 +643,7 @@ const rechargeBonus = async (phone, sumOfRecharge) => {
         }
 
         const sql = `INSERT INTO incomes (user_id, amount, comm, remarks, rname) VALUES (?, ?, ?, ?, ?)`;
-        await connection.execute(sql, [user.id, sumOfRecharge, bonus, 'Recharge Bonus', phone]);
+        await connection.execute(sql, [user.id, sumOfRecharge, bonus, 'Daily Recharge Bonus', phone]);
 
         // Update the user's money with the bonus
         await connection.query('UPDATE users SET money = money + ? WHERE id = ?', [bonus, user.id]);
@@ -651,36 +651,62 @@ const rechargeBonus = async (phone, sumOfRecharge) => {
 };
 
 const directBonus = async (money, phone) => {
-    // Select the user where phone column matches with phone parameter
-    const [userResult] = await connection.query('SELECT `id`, `invite` FROM users WHERE phone = ?', [phone]);
-    let user = userResult[0];
+    try {
+        console.log('Starting directBonus function');
 
-    if (!user) {
-        throw new Error('User not found');
+        // Select the user where phone column matches with phone parameter
+        const [userResult] = await connection.query('SELECT `id`, `invite` FROM users WHERE phone = ?', [phone]);
+        let user = userResult[0];
+
+        if (!user) {
+            console.error('User not found with phone:', phone);
+            throw new Error('User not found');
+        }
+        console.log('User found:', user);
+
+        // Get the invite code from the user
+        let invite = user.invite;
+
+        // Select the sponsor where code matches the invite code
+        const [sponsorResult] = await connection.query('SELECT `id`, `money` FROM users WHERE code = ?', [invite]);
+        let sponsor = sponsorResult[0];
+
+        if (!sponsor) {
+            console.error('Sponsor not found with invite code:', invite);
+            throw new Error('Sponsor not found');
+        }
+        console.log('Sponsor found:', sponsor);
+
+        // Calculate the bonus
+        let bonus = 0;
+        if (money >= 100 && money < 300) {
+            bonus = 20;
+        } else if (money >= 300 && money < 1000) {
+            bonus = 60;
+        } else if (money >= 1000) {
+            bonus = 150;
+        }
+        console.log('Calculated bonus:', bonus);
+
+        if (bonus > 0) {
+            // Insert data into incomes table
+            const sql = `INSERT INTO incomes (user_id, amount, comm, remarks, rname) VALUES (?, ?, ?, ?, ?)`;
+            await connection.execute(sql, [sponsor.id, money, bonus, 'Direct Bonus', phone]);
+            console.log('Inserted bonus into incomes table for sponsor:', sponsor.id);
+
+            // Update the sponsor's money
+            const updateSql = 'UPDATE users SET money = money + ? WHERE id = ?';
+            await connection.execute(updateSql, [bonus, sponsor.id]);
+            console.log('Updated sponsor money:', sponsor.id);
+        } else {
+            console.log('No bonus applicable for the amount:', money);
+        }
+    } catch (error) {
+        console.error('Error in directBonus function:', error);
+        throw error;
     }
-
-    // Get the invite code from the user
-    let invite = user.invite;
-
-    // Select the sponsor where code matches the invite code
-    const [sponsorResult] = await connection.query('SELECT `id`, `money` FROM users WHERE code = ?', [invite]);
-    let sponsor = sponsorResult[0];
-
-    if (!sponsor) {
-        throw new Error('Sponsor not found');
-    }
-
-    // Calculate the bonus
-    let bonus = 0.05 * money;
-
-    // Insert data into incomes table
-    const sql = `INSERT INTO incomes (user_id, amount, comm, remarks, rname) VALUES (?, ?, ?, ?, ?)`;
-    await connection.execute(sql, [sponsor.id, money, bonus, 'Direct Bonus', phone]);
-
-    // Update the sponsor's money
-    const updateSql = 'UPDATE users SET money = money + ? WHERE id = ?';
-    await connection.execute(updateSql, [bonus, sponsor.id]);
 };
+
 
 
 const handlWithdraw = async(req, res) => {

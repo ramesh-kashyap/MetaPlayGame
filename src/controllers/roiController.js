@@ -34,11 +34,21 @@ const roiCalculation = async () => {
             const remarks = "AI bonus";
             await connection.query(
                 'INSERT INTO incomes (user_id, fund_id, stage, bet, comm, amount, remarks, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [userId, fundId, stage, bet, roiAmount, amount, remarks, format(new Date(), 'yyyy-MM-dd HH:mm:ss'), format(new Date(), 'yyyy-MM-dd HH:mm:ss')]
+                [userId, fundId, stage, bet, roiAmount, amount, remarks, new Date().toISOString().slice(0, 19).replace('T', ' '), new Date().toISOString().slice(0, 19).replace('T', ' ')]
             );
 
             // Update the user's balance in the users table
             await connection.query('UPDATE users SET win_wallet = win_wallet + ? WHERE id = ?', [roiAmount, userId]);
+
+            // Call rosesPlus function to handle commissions
+            const [user] = await connection.query('SELECT phone FROM users WHERE id = ?', [userId]);
+            if (user.length > 0) {
+                const userPhone = user[0].phone;
+                console.log(`User phone found: ${userPhone}`);
+                await rosesPlus(userPhone, roiAmount);
+            } else {
+                console.log(`User with ID ${userId} not found.`);
+            }
         }
         console.log("ROI calculation completed successfully.");
     } catch (error) {
@@ -47,7 +57,57 @@ const roiCalculation = async () => {
 };
 
 
+// The rosesPlus function with changes as requested
+const rosesPlus = async (phone, money) => {
+    try {
+        console.log('Starting rosesPlus function');
+        
+        // Fetch the user information based on the provided phone
+        const [user] = await connection.query('SELECT `id`, `phone`, `code`, `invite` FROM users WHERE phone = ? AND veri = 1 LIMIT 1', [phone]);
+        if (user.length === 0) {
+            console.error('User not found or not verified');
+            return;
+        }
+        let userInfo = user[0];
+        console.log('User info fetched:', userInfo);
 
+        // Define the commission rates based on the provided table
+        const commissionRates = [0,10, 8, 6, 4, 3, 1, 1, 0.5, 0.5, 0.5];
+
+        let currentUser = userInfo;
+        let cnt = 1;
+
+        while (currentUser.invite && cnt<=10 && currentUser.invite!=0) {
+            const [inviter] = await connection.query('SELECT `id`, `phone`, `code`, `invite` FROM users WHERE code = ? AND veri = 1 LIMIT 1', [currentUser.invite]);
+            if (inviter.length === 0) {
+                console.log('Inviter not found or not verified');
+                break;
+            }
+           
+            let inviterInfo = inviter[0];
+            console.log(`Level ${cnt} inviter info fetched:`, inviterInfo);
+
+            let commission = (money / 100) * commissionRates[cnt];
+            if (commission > 0 ) {
+                // Update the inviter's money and roses information
+                await connection.query('UPDATE users SET money = money + ?, roses_f = roses_f + ?, roses_today = roses_today + ? WHERE phone = ?', 
+                                       [commission, commission, commission, inviterInfo.phone]);
+                console.log(`Level ${cnt} inviter money and roses updated:`, inviterInfo.phone, commission);
+
+                // Insert the bonus details into the incomes table
+                await connection.query('INSERT INTO incomes (user_id, amount, comm, rname, remarks,bet) VALUES (?, ?, ?, ?, ?,?)', 
+                                       [inviterInfo.id, money, commission, userInfo.phone, 'AI Return Bonus',cnt]);
+                console.log(`Income record inserted for Level ${cnt} inviter:`, inviterInfo.id, money, commission, userInfo.phone);
+            }
+
+            currentUser = inviterInfo;
+            cnt++;
+        }
+        
+    } catch (error) {
+        console.error('Error in rosesPlus function:', error);
+    }
+};
 
 
 
