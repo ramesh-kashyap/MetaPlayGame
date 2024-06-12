@@ -585,6 +585,89 @@ html, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, 
     color: var(--text_color_L1);
     padding-bottom: .10667rem;
 }
+
+.page-nav .arr[data-v-a9660e98] {
+    height: 1.06667rem;
+    width: 1.06667rem;
+    background-color: #d8820a;
+    border-radius: .13333rem;
+}
+
+.game .page-nav .arr[data-v-a9660e98] {
+    height: 1.06667rem;
+    width: 1.06667rem;
+    background-color: #d8820a;
+    border-radius: .13333rem;
+}
+.block-click {
+    pointer-events: none;
+}
+[data-v-a9660e98] {
+    touch-action: pan-y;
+}
+.c-row-middle-center {
+    align-items: center;
+}
+.c-row-center, .c-row-middle-center {
+    justify-content: center;
+}
+
+ .page-nav .arr .icon[data-v-a9660e98] {
+    color: #d8820a;
+}
+
+.game .page-nav .arr .icon[data-v-a9660e98] {
+    color: #7f7f7f;
+}
+.van-icon, .van-icon:before {
+    display: inline-block;
+}
+.van-icon {
+    position: relative;
+    font: normal normal normal .37333rem / 1 vant-icon;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+[data-v-a9660e98] {
+    touch-action: pan-y;
+}
+ .page-nav .number[data-v-a9660e98] {
+    width: 2.66667rem;
+    height: 1.06667rem;
+    line-height: 1.06667rem;
+    color:white
+}
+
+.game .page-nav .number[data-v-a9660e98] {
+    width: 2.66667rem;
+    height: 1.06667rem;
+    line-height: 1.06667rem;
+    background-color: #2a2a2a;
+}
+
+ .page-nav .arr.action[data-v-a9660e98] {
+    background-color: #d8820a;
+}
+
+.game .page-nav .arr.action[data-v-a9660e98] {
+    background-color: #d8820a;
+}
+
+ .page-nav .arr .icon.action[data-v-a9660e98] {
+    color: #fff;
+}
+
+.game .page-nav .arr .icon.action[data-v-a9660e98] {
+    color: #fff;
+}
+ .page-nav .arr .icon[data-v-a9660e98] {
+    color: #7f7f7f;
+}
+.game .page-nav .arr .icon[data-v-a9660e98] {
+    color: #7f7f7f;
+}
+
   </style>
 </head>
 
@@ -790,17 +873,28 @@ html, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, 
                     <div data-v-7189a457="" data-v-4f01bad5="" class="infiniteScroll"
                         id="refresh2cd7498b6a444323b4e16066a20ff5d4">
                         <div data-v-4f01bad5="" class="bet-container-items" id="bet-container-items">
-                            <!-- Betting items will be dynamically inserted here -->
                         </div>
-                        <!---->
-                        <!---->
-                        <!---->
-                        <!---->
-                        <!---->
-                        <div data-v-7189a457="" class="infiniteScroll__loading">
-                            <!---->
+                        
+                        <!-- <div data-v-7189a457="" class="infiniteScroll__loading">
                             <div data-v-7189a457="">No more</div>
-                        </div>
+                        </div> -->
+                    </div>
+                </div>
+
+                <div data-v-a9660e98="" class="page-nav c-row c-row-center c-tc" id="pagination-controls" style="
+                margin-bottom: 0.5333rem;
+                padding-bottom: .53333rem;
+                height: 1.06667rem;
+            ">                    <div data-v-a9660e98="" class="arr c-row c-row-middle-center" id="prev-page">
+                        <i data-v-a9660e98="" class="van-icon van-icon-arrow-left icon action" style="font-size: 20px;">
+                            <!---->
+                        </i>
+                    </div>
+                    <div data-v-a9660e98="" class="number" id="page-info">1/1</div>
+                    <div data-v-a9660e98="" class="arr c-row c-row-middle-center action" id="next-page">
+                        <i data-v-a9660e98="" class="van-icon van-icon-arrow icon action" style="font-size: 20px">
+                            <!---->
+                        </i>
                     </div>
                 </div>
                 <!---->
@@ -818,6 +912,9 @@ html, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, 
       </div>
     </div>
   </div>
+
+
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   
   <script src="/js/client.js"></script>
@@ -825,129 +922,155 @@ html, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, 
   <script src="/js/wingo1.js"></script>
   <script>
     $(document).ready(function() {
-    // Function to fetch data from the API
-    function fetchBets() {
-        $.ajax({
-            url: '/api/webapi/WingoBetList', // Replace with your actual API endpoint
-            method: 'POST',
-            success: function(response) {
-                if (response.status) {
-                    console.log(response.data.gameslist);
-                    renderBets(response.data.gameslist);
-                } else {
-                    console.error('Failed to fetch data:', response.message);
+        let currentPage = 1;
+        const limit = 5;
+    
+        // Function to fetch data from the API
+        function fetchBets(page = 1) {
+            $.ajax({
+                url: `/api/webapi/WingoBetList?page=${page}&limit=${limit}`, // Replace with your actual API endpoint
+                method: 'POST',
+                success: function(response) {
+                    if (response.status) {
+                        console.log(response.data.gameslist);
+                        renderBets(response.data.gameslist);
+                        updatePagination(response.data.currentPage, response.data.totalPages);
+                    } else {
+                        console.error('Failed to fetch data:', response.message);
+                    }
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
                 }
-            },
-            error: function(error) {
-                console.error('Error fetching data:', error);
-            }
-        });
-    }
-
-    // Function to render bets
-    function renderBets(bets) {
-        const container = $('#bet-container-items');
-        container.empty(); // Clear existing content
-
-        bets.forEach(bet => {
-            const betHtml = `
-                <div data-v-4f01bad5="" class="bet-container-lottery">
-                    <div data-v-4f01bad5="" class="bet-container-lottery-items">
-                        <div data-v-4f01bad5="" class="bet-container-lottery-card">
-                            <div data-v-4f01bad5="" class="bet-container-lottery-card-header ar-1px-b">
-                                <h1 data-v-4f01bad5="">
-                                    <h2 data-v-4f01bad5="">${bet.game == "wingo10"
-                                            ? "Wingo 10 minutes"
-                                            : bet.game == "wingo5"
-                                            ? "Wingo 5 minutes"
-                                            : bet.game == "wingo3"
-                                            ? "Wingo 3 minutes"
-                                            : "Wingo 1 minutes"}</h2>
-                                    <span data-v-4f01bad5="" class="${bet.status === 1 ? 'color40C592' : 'colorE98613'}">${bet.status === 1 ? 'Win' : 'Lose'}</span>
-                                </h1>
-                                <p data-v-4f01bad5="">${bet.today}</p>
-                            </div>
-                            <div data-v-4f01bad5="" class="bet-container-lottery-card-info">
-                                <img data-v-4f01bad5="" src="/images/orders1.png">
-                                <ul data-v-4f01bad5="">
-                                    <li data-v-4f01bad5="">
-                                        <h2 data-v-4f01bad5="">Type</h2><span data-v-4f01bad5="">${bet.game}</span>
-                                    </li>
-                                    <li data-v-4f01bad5="">
-                                        <h2 data-v-4f01bad5="">Period</h2><span data-v-4f01bad5="">${bet.stage}</span>
-                                    </li>
-                                    <li data-v-4f01bad5="">
-                                        <h2 data-v-4f01bad5="">Order number</h2><span data-v-4f01bad5="">${bet.id_product}</span>
-                                    </li>
-                                    <li data-v-4f01bad5="">
-                                        <h2 data-v-4f01bad5="">Select</h2><p data-v-4f01bad5="">${  bet.result == 0
-                                            ? "Red purple"
-                                            : bet.result == 5
-                                            ? "Purple green"
-                                            : bet.result % 2 == 0
-                                            ? "Red"
-                                            : "Green"}</p>
-                                    </li>
-                                    <li data-v-4f01bad5="">
-                                        <h2 data-v-4f01bad5="">Total bet</h2><span data-v-4f01bad5="">₹${bet.money+bet.fee}</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <img data-v-4f01bad5="" src="https://bdggame.org/assets/png/moonBar-31e52056.png">
-                        <div data-v-4f01bad5="" class="bet-container-lottery-note">
-                            <div data-v-4f01bad5="" class="bet-container-lottery-note-result">
-                                <img data-v-4f01bad5="" src="/images/orders2.png">
-                                <div>
-                                    <h1 data-v-4f01bad5="">Lottery results</h1>
-                                    <h2 data-v-4f01bad5="">
-                                        <p data-v-4f01bad5="">${bet.result}</p>
-                                        <span data-v-4f01bad5="" class="${bet.result  > 4 ? 'bigClass' : 'smallClass'}">${bet.result > 4 ? 'Big' : 'Small'}</span>
-                                        <span data-v-4f01bad5="" class="${bet.get >0 ? 'green' : 'red'}">${ bet.result == 0
-                                            ? "Red purple"
-                                            : bet.result == 5
-                                            ? "Purple green"
-                                            : bet.result % 2 == 0
-                                            ? "Red"
-                                            : "Green"}</span>
-                                    </h2>
+            });
+        }
+    
+        // Function to render bets
+        function renderBets(bets) {
+            const container = $('#bet-container-items');
+            container.empty(); // Clear existing content
+    
+            bets.forEach(bet => {
+                const betHtml = `
+                    <div data-v-4f01bad5="" class="bet-container-lottery">
+                        <div data-v-4f01bad5="" class="bet-container-lottery-items">
+                            <div data-v-4f01bad5="" class="bet-container-lottery-card">
+                                <div data-v-4f01bad5="" class="bet-container-lottery-card-header ar-1px-b">
+                                    <h1 data-v-4f01bad5="">
+                                        <h2 data-v-4f01bad5="">${bet.game == "wingo10"
+                                                ? "Wingo 10 minutes"
+                                                : bet.game == "wingo5"
+                                                ? "Wingo 5 minutes"
+                                                : bet.game == "wingo3"
+                                                ? "Wingo 3 minutes"
+                                                : "Wingo 1 minutes"}</h2>
+                                        <span data-v-4f01bad5="" class="${bet.status === 1 ? 'color40C592' : 'colorE98613'}">${bet.status === 1 ? 'Win' : 'Lose'}</span>
+                                    </h1>
+                                    <p data-v-4f01bad5="">${bet.today}</p>
+                                </div>
+                                <div data-v-4f01bad5="" class="bet-container-lottery-card-info">
+                                    <img data-v-4f01bad5="" src="/images/orders1.png">
+                                    <ul data-v-4f01bad5="">
+                                        <li data-v-4f01bad5="">
+                                            <h2 data-v-4f01bad5="">Type</h2><span data-v-4f01bad5="">${bet.game}</span>
+                                        </li>
+                                        <li data-v-4f01bad5="">
+                                            <h2 data-v-4f01bad5="">Period</h2><span data-v-4f01bad5="">${bet.stage}</span>
+                                        </li>
+                                        <li data-v-4f01bad5="">
+                                            <h2 data-v-4f01bad5="">Order number</h2><span data-v-4f01bad5="">${bet.id_product}</span>
+                                        </li>
+                                        <li data-v-4f01bad5="">
+                                            <h2 data-v-4f01bad5="">Select</h2><p data-v-4f01bad5="">${  bet.result == 0
+                                                ? "Red purple"
+                                                : bet.result == 5
+                                                ? "Purple green"
+                                                : bet.result % 2 == 0
+                                                ? "Red"
+                                                : "Green"}</p>
+                                        </li>
+                                        <li data-v-4f01bad5="">
+                                            <h2 data-v-4f01bad5="">Total bet</h2><span data-v-4f01bad5="">₹${bet.money + bet.fee}</span>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                            <div data-v-4f01bad5="" class="bet-container-lottery-note-box">
-                                <div data-v-4f01bad5="">
-                                    <div data-v-4f01bad5="" class="bet-container-lottery-note-box-para">
-                                        <h3 data-v-4f01bad5="">₹${bet.money}</h3><span data-v-4f01bad5="">Actual amount</span>
+                            <img data-v-4f01bad5="" src="https://bdggame.org/assets/png/moonBar-31e52056.png">
+                            <div data-v-4f01bad5="" class="bet-container-lottery-note">
+                                <div data-v-4f01bad5="" class="bet-container-lottery-note-result">
+                                    <img data-v-4f01bad5="" src="/images/orders2.png">
+                                    <div>
+                                        <h1 data-v-4f01bad5="">Lottery results</h1>
+                                        <h2 data-v-4f01bad5="">
+                                            <p data-v-4f01bad5="">${bet.result}</p>
+                                            <span data-v-4f01bad5="" class="${bet.result  > 4 ? 'bigClass' : 'smallClass'}">${bet.result > 4 ? 'Big' : 'Small'}</span>
+                                            <span data-v-4f01bad5="" class="${bet.get > 0 ? 'green' : 'red'}">${ bet.result == 0
+                                                ? "Red purple"
+                                                : bet.result == 5
+                                                ? "Purple green"
+                                                : bet.result % 2 == 0
+                                                ? "Red"
+                                                : "Green"}</span>
+                                        </h2>
                                     </div>
                                 </div>
-                                <div data-v-4f01bad5="">
-                                    <div data-v-4f01bad5="" class="bet-container-lottery-note-box-para">
-                                        <h3 data-v-4f01bad5="">₹${bet.fee}</h3><span data-v-4f01bad5="">Handling fee</span>
+                                <div data-v-4f01bad5="" class="bet-container-lottery-note-box">
+                                    <div data-v-4f01bad5="">
+                                        <div data-v-4f01bad5="" class="bet-container-lottery-note-box-para">
+                                            <h3 data-v-4f01bad5="">₹${bet.money}</h3><span data-v-4f01bad5="">Actual amount</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div data-v-4f01bad5="">
-                                    <div data-v-4f01bad5="" class="bet-container-lottery-note-box-para">
-                                        <h3 data-v-4f01bad5="">₹${bet.get}</h3><span data-v-4f01bad5="">Winnings</span>
+                                    <div data-v-4f01bad5="">
+                                        <div data-v-4f01bad5="" class="bet-container-lottery-note-box-para">
+                                            <h3 data-v-4f01bad5="">₹${bet.fee}</h3><span data-v-4f01bad5="">Handling fee</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div data-v-4f01bad5="">
-                                    <div data-v-4f01bad5="" class="bet-container-lottery-note-box-para">
-                                        <h4 data-v-4f01bad5="" class="${bet.result === 1 ? 'h4_green' : 'h4_red'}">₹${- bet.money +bet.get - bet.fee }</h4><span data-v-4f01bad5="">Profit/loss</span>
+                                    <div data-v-4f01bad5="">
+                                        <div data-v-4f01bad5="" class="bet-container-lottery-note-box-para">
+                                            <h3 data-v-4f01bad5="">₹${bet.get}</h3><span data-v-4f01bad5="">Winnings</span>
+                                        </div>
+                                    </div>
+                                    <div data-v-4f01bad5="">
+                                        <div data-v-4f01bad5="" class="bet-container-lottery-note-box-para">
+                                            <h4 data-v-4f01bad5="" class="${bet.result === 1 ? 'h4_green' : 'h4_red'}">₹${-bet.money + bet.get - bet.fee }</h4><span data-v-4f01bad5="">Profit/loss</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            `;
-            container.append(betHtml);
+                `;
+                container.append(betHtml);
+            });
+        }
+    
+        // Function to update pagination controls
+        function updatePagination(currentPage, totalPages) {
+            $('#page-info').text(`${currentPage}/${totalPages}`);
+            $('#prev-page').toggleClass('disabled', currentPage === 1);
+            $('#next-page').toggleClass('disabled', currentPage === totalPages);
+        }
+    
+        // Initial fetch
+        fetchBets(currentPage);
+    
+        // Pagination event listeners
+        $('#prev-page').click(function() {
+            if (!$(this).hasClass('disabled')) {
+                currentPage--;
+                fetchBets(currentPage);
+            }
         });
-    }
-
-    // Initial fetch
-    fetchBets();
-});
-
-  </script>
+    
+        $('#next-page').click(function() {
+            if (!$(this).hasClass('disabled')) {
+                currentPage++;
+                fetchBets(currentPage);
+            }
+        });
+    });
+    </script>
+    
  
 </body>
 

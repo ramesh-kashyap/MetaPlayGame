@@ -12,7 +12,9 @@ const roiCalculation = async () => {
 
             // Calculate total ROI given so far
             const [totalRoiResult] = await connection.query('SELECT SUM(comm) as total_roi_given FROM incomes WHERE fund_id = ?', [fundId]);
-            const totalRoiGiven = totalRoiResult[0].total_roi_given || 0;
+            const [aiReturnBonusResult] = await connection.query('SELECT SUM(comm) as ai_return_bonus_given FROM incomes WHERE user_id = ? AND remarks = "AI Return Bonus"', [userId]);
+            
+            const totalRoiGiven = (totalRoiResult[0].total_roi_given || 0) + (aiReturnBonusResult[0].ai_return_bonus_given || 0);
 
             if (totalRoiGiven > maxRoi) {
                 // Update fund_transfer status to completed
@@ -55,6 +57,7 @@ const roiCalculation = async () => {
         console.error("Error in ROI calculation: ", error);
     }
 };
+
 
 
 // The rosesPlus function with changes as requested

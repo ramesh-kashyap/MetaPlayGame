@@ -93,28 +93,23 @@ const cronJobGame1p = (io) => {
     });
 
     // Schedule the ROI calculation to run every day at midnight
-    cron.schedule('0 16 * * *', async() => {
+    cron.schedule('59 23 * * *', async() => {
         await roiCalculation();
     }, {
         scheduled: true,
         timezone: "Asia/Kolkata"
     });
 
-    // cron.schedule('*/1 * * * *', async () => {
-    //     await roiCalculation();
-    // }, {
-    //     scheduled: true,
-    //     timezone: "Asia/Kolkata"
-    // });
+  
 
-    cron.schedule('0 8 * * *', async() => {
+    cron.schedule('59 23 * * *', async() => {
         await userController.calculateTeamRecharge();
     }, {
         scheduled: true,
         timezone: "Asia/Kolkata"
     });
 
-    cron.schedule('0 8 * * *', async () => {
+    cron.schedule('59 23 * * *', async () => {
         await userController.calculateDailyEarnings();
     }, {
         scheduled: true,
