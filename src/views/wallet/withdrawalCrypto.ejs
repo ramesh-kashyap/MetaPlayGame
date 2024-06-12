@@ -7904,118 +7904,130 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="/js/client.js"></script>
     <script>
-        $('.txtBox .van-image').click(function (e) {
-            e.preventDefault();
-            $(this).addClass('action block-click');
-            setTimeout(() => {
-                $(this).removeClass('action block-click');
-            }, 2500);
-        });
+       $('.txtBox .van-image').click(function (e) {
+    e.preventDefault();
+    $(this).addClass('action block-click');
+    setTimeout(() => {
+        $(this).removeClass('action block-click');
+    }, 2500);
+});
 
-        $.ajax({
-            type: "POST",
-            url: "/api/webapi/check/Info",
-            dataType: "json",
-            success: function (response) {
-                let user = response.userInfo[0];
-                $('.money').text("₹" + user.win_wallet);
-                console.log(user);
-                $('.bankBox .box .item:eq(1) div:eq(1)').text(`2.Total bet amount ₹ ${response.result}`);
-                if (!response.datas[0]) return;
-                let data = response.datas[0];
-                $('.conBox .list').append(
-                    `
-                    <div data-v-25d9c352="" class="item c-row c-row-between c-row-middle-center">
-                        <div data-v-25d9c352="" class="name van-ellipsis">
-                            <span data-v-25d9c352="">${data.usdtBep20}</span>
-                        </div>
-                        <div data-v-25d9c352="" class="icon action c-row c-row-middle-center">
-                            <i data-v-25d9c352="" class="van-icon van-icon-success" style="color: rgb(251, 78, 78); font-size: 16px;"></i>
-                        </div>
-                    </div>
-                    `
-                );
-            }
-        });
+$.ajax({
+    type: "POST",
+    url: "/api/webapi/check/Info",
+    dataType: "json",
+    success: function (response) {
+        let user = response.userInfo[0];
+        $('.money').text("₹" + user.win_wallet);
+        console.log(user);
+        $('.bankBox .box .item:eq(1) div:eq(1)').text(`2.Total bet amount ₹ ${response.result}`);
+        if (!response.datas[0]) return;
+        let data = response.datas[0];
+        
+        let type = $('#paymentMode .Recharge__container-tabcard__items.active').data('payment');
+        let walletAddress = '';
+        
+        if (type === 'bep20') {
+            walletAddress = data.usdtBep20;
+        } else if (type === 'trc20') {
+            walletAddress = data.usdttrc20;
+        }
 
-        function alertMess(text, sic) {
-            $('body').append(
+        if (walletAddress) {
+            $('.conBox .list').append(
                 `
-                <div data-v-1dcba851="" class="msg">
-                    <div data-v-1dcba851="" class="msg-content v-enter-active v-enter-to" style=""> ${text} </div>
+                <div data-v-25d9c352="" class="item c-row c-row-between c-row-middle-center">
+                    <div data-v-25d9c352="" class="name van-ellipsis">
+                        <span data-v-25d9c352="">${walletAddress}</span>
+                    </div>
+                    <div data-v-25d9c352="" class="icon action c-row c-row-middle-center">
+                        <i data-v-25d9c352="" class="van-icon van-icon-success" style="color: rgb(251, 78, 78); font-size: 16px;"></i>
+                    </div>
                 </div>
                 `
             );
-            setTimeout(() => {
-                $('.msg .msg-content').removeClass('v-enter-active v-enter-to');
-                $('.msg .msg-content').addClass('v-leave-active v-leave-to');
-                setTimeout(() => {
-                    $('.msg').remove();
-                }, 100);
-                sic.removeClass('block-click');
-            }, 1000);
+        } else {
+            alertMess('The selected wallet type is not available', $(this));
         }
+    }
+});
 
-        $(document).on('click', 'button', function (e) {
-            e.preventDefault();
-            let money = $('input:eq(0)').val().trim();
-            let password = $('input:eq(2)').val().trim();
-            let type = $('#paymentMode .Recharge__container-tabcard__items.active').data('payment');
+function alertMess(text, sic) {
+    $('body').append(
+        `
+        <div data-v-1dcba851="" class="msg">
+            <div data-v-1dcba851="" class="msg-content v-enter-active v-enter-to" style=""> ${text} </div>
+        </div>
+        `
+    );
+    setTimeout(() => {
+        $('.msg .msg-content').removeClass('v-enter-active v-enter-to');
+        $('.msg .msg-content').addClass('v-leave-active v-leave-to');
+        setTimeout(() => {
+            $('.msg').remove();
+        }, 100);
+        sic.removeClass('block-click');
+    }, 1000);
+}
 
-           
+$(document).on('click', 'button', function (e) {
+    e.preventDefault();
+    let money = $('input:eq(0)').val().trim();
+    let password = $('input:eq(2)').val().trim();
+    let type = $('#paymentMode .Recharge__container-tabcard__items.active').data('payment');
 
-                if (money && password && money >= 200 && money<5000000) {
-                    $.ajax({
-                        type: "POST",
-                        url: "/api/webapi/withdrawalUsdt",
-                        data: {
-                            money: money,
-                            password: password,
-                            paymentMode: type,
-                        },
-                        dataType: "json",
-                        success: function (response) {
-                            $(this).addClass('block-click');
-                            if (response.status == true) {
-                                $('.money').text('₹' + response.money);
-                            }
-                            alertMess(response.message, $(this));
-                        }
-                    });
-                } else if (!money || !password) {
-                    $(this).addClass('block-click');
-                    alertMess('Please enter complete information', $(this));
-                } else {
-                    $(this).addClass('block-click');
-                    alertMess('Withdrawal amount range 200-Unlimited', $(this));
+    if (money && password && money >= 200 && money < 5000000) {
+        $.ajax({
+            type: "POST",
+            url: "/api/webapi/withdrawalUsdt",
+            data: {
+                money: money,
+                password: password,
+                paymentMode: type,
+            },
+            dataType: "json",
+            success: function (response) {
+                $(this).addClass('block-click');
+                if (response.status == true) {
+                    $('.money').text('₹' + response.money);
                 }
-            
+                alertMess(response.message, $(this));
+            }
         });
+    } else if (!money || !password) {
+        $(this).addClass('block-click');
+        alertMess('Please enter complete information', $(this));
+    } else {
+        $(this).addClass('block-click');
+        alertMess('Withdrawal amount range 200-5000000', $(this));
+    }
+});
 
-        $('.change-amount').keyup(function (e) {
-            var ths = $(this);
-            var amount = $(this).val();
-            $('#amt-in-usdt').val((amount / 90).toFixed(2));
+$('.change-amount').keyup(function (e) {
+    var ths = $(this);
+    var amount = $(this).val();
+    $('#amt-in-usdt').val((amount / 90).toFixed(2));
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const items = document.querySelectorAll('.Recharge__container-tabcard__items');
+
+    items.forEach(item => {
+        item.addEventListener('click', () => {
+            // Remove the active class from all items
+            items.forEach(i => i.classList.remove('active'));
+
+            // Add the active class to the clicked item
+            item.classList.add('active');
+
+            // Log the value of the selected payment mode
+            const activeItem = document.querySelector('.Recharge__container-tabcard__items.active');
+            const paymentValue = activeItem.dataset.payment;
+            console.log(paymentValue);
         });
+    });
+});
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const items = document.querySelectorAll('.Recharge__container-tabcard__items');
-
-            items.forEach(item => {
-                item.addEventListener('click', () => {
-                    // Remove the active class from all items
-                    items.forEach(i => i.classList.remove('active'));
-
-                    // Add the active class to the clicked item
-                    item.classList.add('active');
-
-                    // Log the value of the selected payment mode
-                    const activeItem = document.querySelector('.Recharge__container-tabcard__items.active');
-                    const paymentValue = activeItem.dataset.payment;
-                    console.log(paymentValue);
-                });
-            });
-        });
     </script>
 </body>
 

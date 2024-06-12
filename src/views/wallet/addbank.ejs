@@ -198,7 +198,7 @@
             let usdtBep20 = $('.ipt:eq(0)').val().trim();
             let usdttrc20 = $('.ipt:eq(1)').val().trim();
          
-            if (usdtBep20 && usdttrc20) {
+            if (usdtBep20 || usdttrc20) {
                 $.ajax({
                     type: "POST",
                     url: "/api/webapi/addBank",
@@ -219,7 +219,7 @@
                     }
                 });
             } else {
-                alertMess('Please enter full information', $(this));
+                alertMess('Please enter at least one wallet address', $(this));
             }
         });
     </script>

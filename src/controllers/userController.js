@@ -1703,54 +1703,90 @@ const manualRecharge = async(req, res) => {
 
 }
 
-const addBank = async(req, res) => {
+const addBank = async (req, res) => {
     let auth = req.cookies.auth;
     let usdtBep20 = req.body.usdtBep20;
     let usdttrc20 = req.body.usdttrc20;
     let timeNow = new Date().toISOString();
 
-    if (!auth || !usdtBep20 || !usdttrc20) {
+    // Check if both wallet addresses are missing
+    if (!auth || (!usdtBep20 && !usdttrc20)) {
         return res.status(200).json({
-            message: 'Failed',
+            message: 'Either one of the wallet addresses is required',
             status: false,
             timeStamp: timeNow,
         });
     }
 
-    const [user] = await connection.query('SELECT `phone`, `id` FROM users WHERE `token` = ?', [auth]);
-    let userInfo = user[0];
+    try {
+        const [user] = await connection.query('SELECT `phone`, `id` FROM users WHERE `token` = ?', [auth]);
+        let userInfo = user[0];
 
-    if (!userInfo) {
-        return res.status(200).json({
-            message: 'Failed',
-            status: false,
-            timeStamp: timeNow,
-        });
-    }
+        if (!userInfo) {
+            return res.status(200).json({
+                message: 'Failed',
+                status: false,
+                timeStamp: timeNow,
+            });
+        }
 
-    const [existingUserBank] = await connection.query('SELECT * FROM user_bank WHERE phone = ? ', [userInfo.phone]);
-    
-    if (existingUserBank.length === 0) {
-        let time = new Date().getTime();
-        const sql = `INSERT INTO user_bank SET 
-        phone = ?,
-        usdtBep20 = ?,
-        usdttrc20 = ?,
-        time = ?`;
-        await connection.execute(sql, [userInfo.phone, usdtBep20, usdttrc20, time]);
-        return res.status(200).json({
-            message: 'Added crypto addresses successfully',
-            status: true,
-            timeStamp: timeNow,
-        });
-    } else {
-        return res.status(200).json({
-            message: 'The account has already been linked to the bank',
+        const [existingUserBank] = await connection.query('SELECT * FROM user_bank WHERE phone = ? ', [userInfo.phone]);
+
+        if (existingUserBank.length === 0) {
+            // No existing wallet info, insert new record
+            let time = new Date().getTime();
+            const sql = `INSERT INTO user_bank SET 
+            phone = ?,
+            usdtBep20 = ?,
+            usdttrc20 = ?,
+            time = ?`;
+            await connection.execute(sql, [userInfo.phone, usdtBep20, usdttrc20, time]);
+            return res.status(200).json({
+                message: 'Added crypto addresses successfully',
+                status: true,
+                timeStamp: timeNow,
+            });
+        } else {
+            // Existing wallet info found, update if necessary
+            let updateFields = [];
+            let updateValues = [];
+            if (usdtBep20 && !existingUserBank[0].usdtBep20) {
+                updateFields.push('usdtBep20 = ?');
+                updateValues.push(usdtBep20);
+            }
+            if (usdttrc20 && !existingUserBank[0].usdttrc20) {
+                updateFields.push('usdttrc20 = ?');
+                updateValues.push(usdttrc20);
+            }
+
+            if (updateFields.length > 0) {
+                updateValues.push(userInfo.phone);
+                const sql = `UPDATE user_bank SET ${updateFields.join(', ')} WHERE phone = ?`;
+                await connection.execute(sql, updateValues);
+                return res.status(200).json({
+                    message: 'Updated crypto addresses successfully',
+                    status: true,
+                    timeStamp: timeNow,
+                });
+            } else {
+                return res.status(200).json({
+                    message: 'The account has already been linked to the bank with the provided addresses',
+                    status: false,
+                    timeStamp: timeNow,
+                });
+            }
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).json({
+            message: 'An error occurred while processing your request',
             status: false,
             timeStamp: timeNow,
         });
     }
 }
+
+
 
 
 const infoUserBank = async(req, res) => {
