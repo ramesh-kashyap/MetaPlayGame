@@ -570,17 +570,26 @@ const WingoBetList = async (req, res) => {
         });
     }
 
-    const [betData] = await connection.query('SELECT * FROM minutes_1 WHERE phone = ? ORDER BY id DESC', [userInfo.phone]);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const offset = (page - 1) * limit;
+
+    const [betData] = await connection.query('SELECT * FROM minutes_1 WHERE phone = ? ORDER BY id DESC LIMIT ? OFFSET ?', [userInfo.phone, limit, offset]);
+    const [[{ total }]] = await connection.query('SELECT COUNT(*) as total FROM minutes_1 WHERE phone = ?', [userInfo.phone]);
 
     return res.status(200).json({
         code: 0,
         msg: "Get success",
         data: {
             gameslist: betData,
+            total: total,
+            currentPage: page,
+            totalPages: Math.ceil(total / limit),
         },
         status: true
     });
 };
+
 
 
 const addWinGo = async (game) => {

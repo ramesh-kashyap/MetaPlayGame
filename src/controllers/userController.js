@@ -1703,54 +1703,90 @@ const manualRecharge = async(req, res) => {
 
 }
 
-const addBank = async(req, res) => {
+const addBank = async (req, res) => {
     let auth = req.cookies.auth;
     let usdtBep20 = req.body.usdtBep20;
     let usdttrc20 = req.body.usdttrc20;
     let timeNow = new Date().toISOString();
 
-    if (!auth || !usdtBep20 || !usdttrc20) {
+    // Check if both wallet addresses are missing
+    if (!auth || (!usdtBep20 && !usdttrc20)) {
         return res.status(200).json({
-            message: 'Failed',
+            message: 'Either one of the wallet addresses is required',
             status: false,
             timeStamp: timeNow,
         });
     }
 
-    const [user] = await connection.query('SELECT `phone`, `id` FROM users WHERE `token` = ?', [auth]);
-    let userInfo = user[0];
+    try {
+        const [user] = await connection.query('SELECT `phone`, `id` FROM users WHERE `token` = ?', [auth]);
+        let userInfo = user[0];
 
-    if (!userInfo) {
-        return res.status(200).json({
-            message: 'Failed',
-            status: false,
-            timeStamp: timeNow,
-        });
-    }
+        if (!userInfo) {
+            return res.status(200).json({
+                message: 'Failed',
+                status: false,
+                timeStamp: timeNow,
+            });
+        }
 
-    const [existingUserBank] = await connection.query('SELECT * FROM user_bank WHERE phone = ? ', [userInfo.phone]);
-    
-    if (existingUserBank.length === 0) {
-        let time = new Date().getTime();
-        const sql = `INSERT INTO user_bank SET 
-        phone = ?,
-        usdtBep20 = ?,
-        usdttrc20 = ?,
-        time = ?`;
-        await connection.execute(sql, [userInfo.phone, usdtBep20, usdttrc20, time]);
-        return res.status(200).json({
-            message: 'Added crypto addresses successfully',
-            status: true,
-            timeStamp: timeNow,
-        });
-    } else {
-        return res.status(200).json({
-            message: 'The account has already been linked to the bank',
+        const [existingUserBank] = await connection.query('SELECT * FROM user_bank WHERE phone = ? ', [userInfo.phone]);
+
+        if (existingUserBank.length === 0) {
+            // No existing wallet info, insert new record
+            let time = new Date().getTime();
+            const sql = `INSERT INTO user_bank SET 
+            phone = ?,
+            usdtBep20 = ?,
+            usdttrc20 = ?,
+            time = ?`;
+            await connection.execute(sql, [userInfo.phone, usdtBep20, usdttrc20, time]);
+            return res.status(200).json({
+                message: 'Added crypto addresses successfully',
+                status: true,
+                timeStamp: timeNow,
+            });
+        } else {
+            // Existing wallet info found, update if necessary
+            let updateFields = [];
+            let updateValues = [];
+            if (usdtBep20 && !existingUserBank[0].usdtBep20) {
+                updateFields.push('usdtBep20 = ?');
+                updateValues.push(usdtBep20);
+            }
+            if (usdttrc20 && !existingUserBank[0].usdttrc20) {
+                updateFields.push('usdttrc20 = ?');
+                updateValues.push(usdttrc20);
+            }
+
+            if (updateFields.length > 0) {
+                updateValues.push(userInfo.phone);
+                const sql = `UPDATE user_bank SET ${updateFields.join(', ')} WHERE phone = ?`;
+                await connection.execute(sql, updateValues);
+                return res.status(200).json({
+                    message: 'Updated crypto addresses successfully',
+                    status: true,
+                    timeStamp: timeNow,
+                });
+            } else {
+                return res.status(200).json({
+                    message: 'The account has already been linked to the bank with the provided addresses',
+                    status: false,
+                    timeStamp: timeNow,
+                });
+            }
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).json({
+            message: 'An error occurred while processing your request',
             status: false,
             timeStamp: timeNow,
         });
     }
 }
+
+
 
 
 const infoUserBank = async(req, res) => {
@@ -2288,32 +2324,46 @@ const checkRechargeStatus = async(req, res) => {
 
 }
 
-const listRecharge = async(req, res) => {
+const listRecharge = async (req, res) => {
     let auth = req.cookies.auth;
-    if(!auth) {
-        return res.status(200).json({
-            message: 'Failed',
-            status: false,
-            timeStamp: timeNow,
-        })
-    }
-    const [user] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `token` = ? ', [auth]);
-    let userInfo = user[0];
-    if(!user) {
+    const timeNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    if (!auth) {
         return res.status(200).json({
             message: 'Failed',
             status: false,
             timeStamp: timeNow,
         });
-    };
-    const [recharge] = await connection.query('SELECT * FROM recharge WHERE phone = ? ORDER BY id DESC ', [userInfo.phone]);
+    }
+
+    const [user] = await connection.query('SELECT `phone`, `code`, `invite` FROM users WHERE `token` = ?', [auth]);
+    let userInfo = user[0];
+
+    if (!userInfo) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const offset = (page - 1) * limit;
+
+    const [recharge] = await connection.query('SELECT * FROM recharge WHERE phone = ? ORDER BY id DESC LIMIT ? OFFSET ?', [userInfo.phone, limit, offset]);
+    const [[{ total }]] = await connection.query('SELECT COUNT(*) as total FROM recharge WHERE phone = ?', [userInfo.phone]);
+
     return res.status(200).json({
         message: 'Get success',
         datas: recharge,
         status: true,
         timeStamp: timeNow,
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
     });
-}
+};
+
 
 const search = async(req, res) => {
     let auth = req.cookies.auth;
@@ -2377,32 +2427,46 @@ const search = async(req, res) => {
 }
 
 
-const listWithdraw = async(req, res) => {
+const listWithdraw = async (req, res) => {
     let auth = req.cookies.auth;
-    if(!auth) {
-        return res.status(200).json({
-            message: 'Failed',
-            status: false,
-            timeStamp: timeNow,
-        })
-    }
-    const [user] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `token` = ? ', [auth]);
-    let userInfo = user[0];
-    if(!user) {
+    const timeNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    if (!auth) {
         return res.status(200).json({
             message: 'Failed',
             status: false,
             timeStamp: timeNow,
         });
-    };
-    const [recharge] = await connection.query('SELECT * FROM withdraw WHERE phone = ? ORDER BY id DESC ', [userInfo.phone]);
+    }
+
+    const [user] = await connection.query('SELECT `phone`, `code`, `invite` FROM users WHERE `token` = ?', [auth]);
+    let userInfo = user[0];
+
+    if (!userInfo) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const offset = (page - 1) * limit;
+
+    const [recharge] = await connection.query('SELECT * FROM withdraw WHERE phone = ? ORDER BY id DESC LIMIT ? OFFSET ?', [userInfo.phone, limit, offset]);
+    const [[{ total }]] = await connection.query('SELECT COUNT(*) as total FROM withdraw WHERE phone = ?', [userInfo.phone]);
+
     return res.status(200).json({
         message: 'Get success',
         datas: recharge,
         status: true,
         timeStamp: timeNow,
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
     });
-}
+};
+
 
 const useRedenvelope = async(req, res) => {
     let auth = req.cookies.auth;
@@ -2829,11 +2893,13 @@ const calculateDailyEarnings = async () => {
 
 const listIncomeReport = async (req, res) => {
     let auth = req.cookies.auth;
+    const timeNow = new Date().toISOString();
+
     if (!auth) {
         return res.status(200).json({
             message: 'Failed',
             status: false,
-            timeStamp: new Date().toISOString(),
+            timeStamp: timeNow,
         });
     }
 
@@ -2842,11 +2908,15 @@ const listIncomeReport = async (req, res) => {
         return res.status(200).json({
             message: 'Failed',
             status: false,
-            timeStamp: new Date().toISOString(),
+            timeStamp: timeNow,
         });
     }
 
     let userId = user[0].id;
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const offset = (page - 1) * limit;
 
     const [incomeReports] = await connection.query(
         `SELECT updated_at, comm, remarks 
@@ -2854,7 +2924,17 @@ const listIncomeReport = async (req, res) => {
          WHERE user_id = ? 
          AND remarks != 'Ai bonus' 
          AND (remarks != 'Daily Salary Bonus' OR (remarks = 'Daily Salary Bonus' AND rname != '0'))
-         ORDER BY updated_at DESC`, 
+         ORDER BY updated_at DESC 
+         LIMIT ? OFFSET ?`, 
+        [userId, limit, offset]
+    );
+
+    const [[{ total }]] = await connection.query(
+        `SELECT COUNT(*) as total 
+         FROM incomes 
+         WHERE user_id = ? 
+         AND remarks != 'Ai bonus' 
+         AND (remarks != 'Daily Salary Bonus' OR (remarks = 'Daily Salary Bonus' AND rname != '0'))`,
         [userId]
     );
 
@@ -2862,9 +2942,12 @@ const listIncomeReport = async (req, res) => {
         message: 'Receive success',
         incomeReports: incomeReports,
         status: true,
-        timeStamp: new Date().toISOString(),
+        timeStamp: timeNow,
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
     });
 };
+
 
 const insertStreakBonus = async (req, res) => {
     const auth = req.cookies.auth;
