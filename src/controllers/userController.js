@@ -2893,11 +2893,13 @@ const calculateDailyEarnings = async () => {
 
 const listIncomeReport = async (req, res) => {
     let auth = req.cookies.auth;
+    const timeNow = new Date().toISOString();
+
     if (!auth) {
         return res.status(200).json({
             message: 'Failed',
             status: false,
-            timeStamp: new Date().toISOString(),
+            timeStamp: timeNow,
         });
     }
 
@@ -2906,11 +2908,15 @@ const listIncomeReport = async (req, res) => {
         return res.status(200).json({
             message: 'Failed',
             status: false,
-            timeStamp: new Date().toISOString(),
+            timeStamp: timeNow,
         });
     }
 
     let userId = user[0].id;
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const offset = (page - 1) * limit;
 
     const [incomeReports] = await connection.query(
         `SELECT updated_at, comm, remarks 
@@ -2918,7 +2924,17 @@ const listIncomeReport = async (req, res) => {
          WHERE user_id = ? 
          AND remarks != 'Ai bonus' 
          AND (remarks != 'Daily Salary Bonus' OR (remarks = 'Daily Salary Bonus' AND rname != '0'))
-         ORDER BY updated_at DESC`, 
+         ORDER BY updated_at DESC 
+         LIMIT ? OFFSET ?`, 
+        [userId, limit, offset]
+    );
+
+    const [[{ total }]] = await connection.query(
+        `SELECT COUNT(*) as total 
+         FROM incomes 
+         WHERE user_id = ? 
+         AND remarks != 'Ai bonus' 
+         AND (remarks != 'Daily Salary Bonus' OR (remarks = 'Daily Salary Bonus' AND rname != '0'))`,
         [userId]
     );
 
@@ -2926,9 +2942,12 @@ const listIncomeReport = async (req, res) => {
         message: 'Receive success',
         incomeReports: incomeReports,
         status: true,
-        timeStamp: new Date().toISOString(),
+        timeStamp: timeNow,
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
     });
 };
+
 
 const insertStreakBonus = async (req, res) => {
     const auth = req.cookies.auth;
