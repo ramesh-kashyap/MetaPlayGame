@@ -24,6 +24,140 @@
             padding: 0;
             margin: 0;
         }
+        .rechargeh__container-content__item[data-v-e4760c44] {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    gap: .21333rem;
+    padding: .32rem .13333rem;
+    border-radius: .13333rem;
+    background-color: #2a2a2a;
+}
+.rechargeh__container-content__item-body[data-v-e4760c44] {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    gap: .13333rem;
+    font-size: .32rem;
+    color: #a8a5a1;
+}
+.rechargeh__container-content__item-body>div[data-v-e4760c44] {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+html, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    font-size: 100%;
+    vertical-align: baseline;
+    border: 0;
+}
+* {
+    box-sizing: border-box;
+    font-family: bahnschrift;
+}
+* {
+    -webkit-user-select: none;
+    user-select: none;
+}
+.rechargeh__container[data-v-e4760c44] {
+    padding-inline: .32rem;
+    padding-block: 0 1.49333rem;
+    font-family: bahnschrift;
+}
+.svg-icon {
+    width: 1em;
+    height: 1em;
+    fill: var(--svgHoticon);
+    vertical-align: middle;
+}
+svg:not(:root) {
+    overflow-clip-margin: content-box;
+    overflow: hidden;
+}
+.rechargeh__container-content__item-body>div:first-of-type span[data-v-e4760c44]:last-of-type {
+    color: #ed6a0c;
+}
+.rechargeh__container-content__item-body>div span[data-v-e4760c44]:nth-of-type(2) {
+    margin-left: auto;
+    text-align: right !important;
+}
+.rechargeh__container-content__item-body>div span[data-v-e4760c44]:last-of-type {
+    max-width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.rechargeh__container-content__item-body>div span[data-v-e4760c44] {
+    padding: 0 .26667rem;
+    margin: .06667rem 0;
+}
+.rechargeh__container-content__item-body>div span[data-v-e4760c44]:first-of-type {
+    -webkit-clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
+}
+.rechargeh__container-content__item-header[data-v-e4760c44] {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    gap: .13333rem;
+    padding-bottom: .13333rem;
+}
+.ar-1px-t, .ar-1px-b, .ar-1px-tb, .ar-1px-rb, .ar-1px-l, .ar-1px-r {
+    position: relative;
+}
+.rechargeh__container-content__item-header span[data-v-e4760c44]:first-of-type {
+    margin-left: .13333rem;
+    background: #d23838;
+    border: .01333rem solid #d23838;
+    border-radius: .13333rem;
+}
+.rechargeh__container-content__item-header span.stateG[data-v-e4760c44] {
+    color: #17b15e;
+}
+.rechargeh__container-content__item-header span[data-v-e4760c44]:last-of-type {
+    margin-left: auto;
+    text-align: right;
+    color: var(--main-color);
+}
+.rechargeh__container-content__item-header span[data-v-e4760c44]:nth-of-type(2) {
+    text-align: left;
+}
+.rechargeh__container-content__item-header span[data-v-e4760c44] {
+    min-width: 2rem;
+    height: .66667rem;
+    font-size: .37333rem;
+    text-align: center;
+    line-height: .66667rem;
+    color: #fff;
+}
+.rechargeh__container-content__item-header span[data-v-e4760c44]:last-of-type {
+    margin-left: auto;
+    text-align: right;
+    color: var(--main-color);
+}
+
+.infiniteScroll[data-v-cbab7763] {
+    min-height: 2.66667rem;
+    border-radius: .16rem;
+}
+
     </style>
 </head>
 
@@ -108,12 +242,26 @@
             let html = '';
             datas.map((data) => {
                 html += `
-                        <div data-v-14912091="" class="bd van-row">
-                            <div data-v-14912091="" class="c-tc van-col van-col--8">${timerJoin(data.updated_at)}</div>
-                            <div data-v-14912091="" class="c-tc van-col van-col--8">${data.comm}</div>
-                            <div data-v-14912091="" class="c-tc van-col van-col--8">${data.remarks}</div>
+                        <div data-v-cbab7763="" data-v-e4760c44="" class="infiniteScroll" id="refresh5fb40baadfa743dbbfe286bd2ff24447">
+                        <div data-v-e4760c44="" class="rechargeh__container-content__item">
+                            <!-- <div class="rechargeh__container-content__item-header ar-1px-b" @click="onToDetail(item.state)"> -->
+                          
+                            <div data-v-e4760c44="" class="rechargeh__container-content__item-body">
+                                <div data-v-e4760c44=""><span data-v-e4760c44="">Balance</span><span
+                                        data-v-e4760c44="">₹${data.comm}</span></div>
+                                <div data-v-e4760c44=""><span data-v-e4760c44="">Time</span><span
+                                        data-v-e4760c44="">${timerJoin(data.updated_at)}</span></div>
+                                <div data-v-e4760c44=""><span data-v-e4760c44="">Remark</span><span
+                                        data-v-e4760c44="">${data.remarks}</span><svg data-v-e4760c44=""
+                                        class="svg-icon icon-copy">
+                                        <use xlink:href="#icon-copy"></use>
+                                    </svg></div>
+                            </div>
                         </div>
-                        `;
+                        </div> 
+                        <br>
+                    </div>
+                    `;
             });
             $('#van-list').html(html);
         }
