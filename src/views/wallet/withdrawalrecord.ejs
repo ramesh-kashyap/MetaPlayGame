@@ -7815,21 +7815,33 @@ svg:not(:root) {
                 function loads(datas) {
                     let html = datas.map((data) => {
                         return `
-                        <div data-v-cbab7763="" data-v-e4760c44="" class="infiniteScroll" id="refresh5fb40baadfa743dbbfe286bd2ff24447">
-                            <div data-v-e4760c44="" class="rechargeh__container-content__item">
-                                <div data-v-e4760c44="" class="rechargeh__container-content__item-header ar-1px-b"><span data-v-e4760c44="">Withdraw</span><span
-                                        data-v-e4760c44="" class="stateG"><div data-v-4e585e69="" style="color: ${(data.status == 1) ? 'rgb(107, 190, 88)' : 'rgb(242, 65, 59)'}"> ${(data.status == 1) ? 'Confirm' : (data.status == 2) ? 'Cancelled' : 'Waiting'}</div></span></div>
-                                <div data-v-e4760c44="" class="rechargeh__container-content__item-body">
-                                    <div data-v-e4760c44=""><span data-v-e4760c44="">Balance</span><span data-v-e4760c44="">₹ ${data.money}</span></div>
-                                    <div data-v-e4760c44=""><span data-v-e4760c44="">Type</span><span data-v-e4760c44="">Crypto</span></div>
-                                    <div data-v-e4760c44=""><span data-v-e4760c44="">Time</span><span data-v-e4760c44="">${timerJoin(data.time)}</span></div>
-                                    <div data-v-e4760c44=""><span data-v-e4760c44="">Order number</span><span data-v-e4760c44="">${data.id_order}</span><svg data-v-e4760c44="" class="svg-icon icon-copy"><use xlink:href="#icon-copy"></use></svg></div>
-                                    <div data-v-e4760c44=""><span data-v-e4760c44="">Remarks</span></div>
-                                    <div data-v-e4760c44="">
-                                        <textarea data-v-e4760c44="" class="textarea" name="remark" cols="30" rows="10" readonly="" style="display: none;"></textarea></div>
-                                </div>
+                    <div data-v-cbab7763="" data-v-e4760c44="" class="infiniteScroll" id="refresh5fb40baadfa743dbbfe286bd2ff24447">
+                        <div data-v-e4760c44="" class="rechargeh__container-content__item">
+                            <!-- <div class="rechargeh__container-content__item-header ar-1px-b" @click="onToDetail(item.state)"> -->
+                            <div data-v-e4760c44="" class="rechargeh__container-content__item-header ar-1px-b"><span
+                                    data-v-e4760c44="">Withdraw</span><!-- <span>{{ item.withdrawName }}</span> --><span
+                                    data-v-e4760c44="" class="stateG"><div data-v-4e585e69="" style="color: ${(data.status == 1) ? 'rgb(107, 190, 88)' : 'rgb(242, 65, 59)'}"> ${(data.status == 1) ? 'Confirm' : (data.status == 2) ? 'Cancelled' : 'Waiting'}</div>
+                                    <!-- <van-icon name="arrow" /> --></span></div>
+                            <div data-v-e4760c44="" class="rechargeh__container-content__item-body">
+                                <div data-v-e4760c44=""><span data-v-e4760c44="">Balance</span><span
+                                        data-v-e4760c44="">₹ ${data.money}</span></div>
+                                <div data-v-e4760c44=""><span data-v-e4760c44="">Type</span><span data-v-e4760c44="">
+                                        Crypto</span></div>
+                                <div data-v-e4760c44=""><span data-v-e4760c44="">Time</span><span
+                                        data-v-e4760c44="">${timerJoin(data.time)}</span></div>
+                                <div data-v-e4760c44=""><span data-v-e4760c44="">Order number</span><span
+                                        data-v-e4760c44="">${data.id_order}</span><svg data-v-e4760c44=""
+                                        class="svg-icon icon-copy">
+                                        <use xlink:href="#icon-copy"></use>
+                                    </svg></div>
+                                <div data-v-e4760c44=""><span data-v-e4760c44="">Remarks</span></div>
+                                <div data-v-e4760c44="">
+                                    <!-- <span>{{ $t('remarksContent') }}</span> --><textarea
+                                        data-v-e4760c44="" class="textarea" name="remark" cols="30" rows="10"
+                                        readonly="" style="display: none;"></textarea></div>
                             </div>
                         </div>
+                        </div> 
                         <br>
                         `;
                     });
