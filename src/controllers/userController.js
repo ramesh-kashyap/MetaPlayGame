@@ -2413,32 +2413,46 @@ const search = async(req, res) => {
 }
 
 
-const listWithdraw = async(req, res) => {
+const listWithdraw = async (req, res) => {
     let auth = req.cookies.auth;
-    if(!auth) {
-        return res.status(200).json({
-            message: 'Failed',
-            status: false,
-            timeStamp: timeNow,
-        })
-    }
-    const [user] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `token` = ? ', [auth]);
-    let userInfo = user[0];
-    if(!user) {
+    const timeNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    if (!auth) {
         return res.status(200).json({
             message: 'Failed',
             status: false,
             timeStamp: timeNow,
         });
-    };
-    const [recharge] = await connection.query('SELECT * FROM withdraw WHERE phone = ? ORDER BY id DESC ', [userInfo.phone]);
+    }
+
+    const [user] = await connection.query('SELECT `phone`, `code`, `invite` FROM users WHERE `token` = ?', [auth]);
+    let userInfo = user[0];
+
+    if (!userInfo) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const offset = (page - 1) * limit;
+
+    const [recharge] = await connection.query('SELECT * FROM withdraw WHERE phone = ? ORDER BY id DESC LIMIT ? OFFSET ?', [userInfo.phone, limit, offset]);
+    const [[{ total }]] = await connection.query('SELECT COUNT(*) as total FROM withdraw WHERE phone = ?', [userInfo.phone]);
+
     return res.status(200).json({
         message: 'Get success',
         datas: recharge,
         status: true,
         timeStamp: timeNow,
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
     });
-}
+};
+
 
 const useRedenvelope = async(req, res) => {
     let auth = req.cookies.auth;
