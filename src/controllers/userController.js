@@ -2919,7 +2919,7 @@ const listIncomeReport = async (req, res) => {
     const offset = (page - 1) * limit;
 
     const [incomeReports] = await connection.query(
-        `SELECT updated_at, comm, remarks 
+        `SELECT updated_at,bet, comm, remarks 
          FROM incomes 
          WHERE user_id = ? 
          AND remarks != 'Ai bonus' 
