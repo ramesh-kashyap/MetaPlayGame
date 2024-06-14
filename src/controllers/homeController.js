@@ -103,6 +103,10 @@ const rechargeCryptoPage = async(req, res) => {
     return res.render("wallet/rechargeCrypto.ejs"); 
 }
 
+const levelincome = async(req, res) => {
+    return res.render("ai/levelincome.ejs"); 
+}
+
 
 const rechargerecordPage = async(req, res) => {
     return res.render("wallet/rechargerecord.ejs"); 
@@ -249,4 +253,5 @@ module.exports = {
     viprule,
     vipHistory,
     gamehistory,
+    levelincome,
 }
