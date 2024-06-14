@@ -4,7 +4,7 @@ import { format } from "date-fns";
 const roiCalculation = async () => {
     try {
         // Fetch all active fund transfers
-        const [activeFunds] = await connection.query('SELECT id, user_id, amount FROM fund_transfer WHERE status = "active"');
+        const [activeFunds] = await connection.query('SELECT id, user_id, amount FROM fund_transfer WHERE status = "active" AND remarks="0"');
 
         for (let fund of activeFunds) {
             const { id: fundId, user_id: userId, amount } = fund;

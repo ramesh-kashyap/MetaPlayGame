@@ -669,12 +669,36 @@ const addWinGo = async (game) => {
 
 const checkPeriodAndStage = async (req, res) => {
     try {
+        let auth = req.cookies.auth;
+
+        if (!auth) {
+            return res.status(200).json({
+                message: 'Failed',
+                status: false,
+                timeStamp: new Date().toISOString(),
+            });
+        }
+
+        // Query to get the user details using the token
+        const [userResult] = await connection.query(
+            'SELECT `phone`, `code`, `invite` FROM users WHERE `token` = ?',
+            [auth]
+        );
+
+        if (userResult.length === 0) {
+            return res.status(200).json({
+                message: 'User not found',
+                status: false,
+                timeStamp: new Date().toISOString(),
+            });
+        }
+
+        const userPhone = userResult[0].phone;
+
         // Query to select the period for the game "wingo" with status 1
         const [gamePeriodResult] = await connection.query(
             'SELECT period FROM wingo WHERE game = "wingo" AND status = 1 ORDER BY period DESC LIMIT 1'
         );
-        
-        console.log(gamePeriodResult[0].period);
 
         if (gamePeriodResult.length === 0) {
             return res.status(200).json({
@@ -686,15 +710,15 @@ const checkPeriodAndStage = async (req, res) => {
 
         const period = gamePeriodResult[0].period;
 
-        // Query to check if the period matches the stage in minutes_1 table
+        // Query to check if the period matches the stage in minutes_1 table and phone matches with user phone
         const [stageResult] = await connection.query(
-            'SELECT stage FROM minutes_1 WHERE stage = ?',
-            [period]
+            'SELECT stage FROM minutes_1 WHERE stage = ? AND phone = ?',
+            [period, userPhone]
         );
 
         if (stageResult.length === 0) {
             return res.status(200).json({
-                message: 'No matching stage found in minutes_1 table',
+                message: 'No matching stage found in minutes_1 table for the user phone',
                 status: false,
                 timeStamp: new Date().toISOString(),
             });
@@ -715,19 +739,43 @@ const checkPeriodAndStage = async (req, res) => {
         });
     }
 };
-
 
 const checkPeriodAndStage3 = async (req, res) => {
     try {
-        // Query to select the period for the game "wingo" with status 1
+        let auth = req.cookies.auth;
+
+        if (!auth) {
+            return res.status(200).json({
+                message: 'Failed',
+                status: false,
+                timeStamp: new Date().toISOString(),
+            });
+        }
+
+        // Query to get the user details using the token
+        const [userResult] = await connection.query(
+            'SELECT `phone`, `code`, `invite` FROM users WHERE `token` = ?',
+            [auth]
+        );
+
+        if (userResult.length === 0) {
+            return res.status(200).json({
+                message: 'User not found',
+                status: false,
+                timeStamp: new Date().toISOString(),
+            });
+        }
+
+        const userPhone = userResult[0].phone;
+
+        // Query to select the period for the game "wingo3" with status 1
         const [gamePeriodResult] = await connection.query(
             'SELECT period FROM wingo WHERE game = "wingo3" AND status = 1 ORDER BY period DESC LIMIT 1'
         );
-        
 
         if (gamePeriodResult.length === 0) {
             return res.status(200).json({
-                message: 'No period found for game wingo with status 1',
+                message: 'No period found for game wingo3 with status 1',
                 status: false,
                 timeStamp: new Date().toISOString(),
             });
@@ -735,15 +783,15 @@ const checkPeriodAndStage3 = async (req, res) => {
 
         const period = gamePeriodResult[0].period;
 
-        // Query to check if the period matches the stage in minutes_1 table
+        // Query to check if the period matches the stage in minutes_1 table and phone matches with user phone
         const [stageResult] = await connection.query(
-            'SELECT stage FROM minutes_1 WHERE stage = ?',
-            [period]
+            'SELECT stage FROM minutes_1 WHERE stage = ? AND phone = ?',
+            [period, userPhone]
         );
 
         if (stageResult.length === 0) {
             return res.status(200).json({
-                message: 'No matching stage found in minutes_1 table',
+                message: 'No matching stage found in minutes_1 table for the user phone',
                 status: false,
                 timeStamp: new Date().toISOString(),
             });
@@ -764,19 +812,45 @@ const checkPeriodAndStage3 = async (req, res) => {
         });
     }
 };
+
 
 
 const checkPeriodAndStage5 = async (req, res) => {
     try {
-        // Query to select the period for the game "wingo" with status 1
+        let auth = req.cookies.auth;
+
+        if (!auth) {
+            return res.status(200).json({
+                message: 'Failed',
+                status: false,
+                timeStamp: new Date().toISOString(),
+            });
+        }
+
+        // Query to get the user details using the token
+        const [userResult] = await connection.query(
+            'SELECT `phone`, `code`, `invite` FROM users WHERE `token` = ?',
+            [auth]
+        );
+
+        if (userResult.length === 0) {
+            return res.status(200).json({
+                message: 'User not found',
+                status: false,
+                timeStamp: new Date().toISOString(),
+            });
+        }
+
+        const userPhone = userResult[0].phone;
+
+        // Query to select the period for the game "wingo5" with status 1
         const [gamePeriodResult] = await connection.query(
             'SELECT period FROM wingo WHERE game = "wingo5" AND status = 1 ORDER BY period DESC LIMIT 1'
         );
-        
 
         if (gamePeriodResult.length === 0) {
             return res.status(200).json({
-                message: 'No period found for game wingo with status 1',
+                message: 'No period found for game wingo5 with status 1',
                 status: false,
                 timeStamp: new Date().toISOString(),
             });
@@ -784,15 +858,15 @@ const checkPeriodAndStage5 = async (req, res) => {
 
         const period = gamePeriodResult[0].period;
 
-        // Query to check if the period matches the stage in minutes_1 table
+        // Query to check if the period matches the stage in minutes_1 table and phone matches with user phone
         const [stageResult] = await connection.query(
-            'SELECT stage FROM minutes_1 WHERE stage = ?',
-            [period]
+            'SELECT stage FROM minutes_1 WHERE stage = ? AND phone = ?',
+            [period, userPhone]
         );
 
         if (stageResult.length === 0) {
             return res.status(200).json({
-                message: 'No matching stage found in minutes_1 table',
+                message: 'No matching stage found in minutes_1 table for the user phone',
                 status: false,
                 timeStamp: new Date().toISOString(),
             });
@@ -813,19 +887,45 @@ const checkPeriodAndStage5 = async (req, res) => {
         });
     }
 };
+
 
 
 const checkPeriodAndStage10 = async (req, res) => {
     try {
-        // Query to select the period for the game "wingo" with status 1
+        let auth = req.cookies.auth;
+
+        if (!auth) {
+            return res.status(200).json({
+                message: 'Failed',
+                status: false,
+                timeStamp: new Date().toISOString(),
+            });
+        }
+
+        // Query to get the user details using the token
+        const [userResult] = await connection.query(
+            'SELECT `phone`, `code`, `invite` FROM users WHERE `token` = ?',
+            [auth]
+        );
+
+        if (userResult.length === 0) {
+            return res.status(200).json({
+                message: 'User not found',
+                status: false,
+                timeStamp: new Date().toISOString(),
+            });
+        }
+
+        const userPhone = userResult[0].phone;
+
+        // Query to select the period for the game "wingo10" with status 1
         const [gamePeriodResult] = await connection.query(
             'SELECT period FROM wingo WHERE game = "wingo10" AND status = 1 ORDER BY period DESC LIMIT 1'
         );
-        
 
         if (gamePeriodResult.length === 0) {
             return res.status(200).json({
-                message: 'No period found for game wingo with status 1',
+                message: 'No period found for game wingo10 with status 1',
                 status: false,
                 timeStamp: new Date().toISOString(),
             });
@@ -833,15 +933,15 @@ const checkPeriodAndStage10 = async (req, res) => {
 
         const period = gamePeriodResult[0].period;
 
-        // Query to check if the period matches the stage in minutes_1 table
+        // Query to check if the period matches the stage in minutes_1 table and phone matches with user phone
         const [stageResult] = await connection.query(
-            'SELECT stage FROM minutes_1 WHERE stage = ?',
-            [period]
+            'SELECT stage FROM minutes_1 WHERE stage = ? AND phone = ?',
+            [period, userPhone]
         );
 
         if (stageResult.length === 0) {
             return res.status(200).json({
-                message: 'No matching stage found in minutes_1 table',
+                message: 'No matching stage found in minutes_1 table for the user phone',
                 status: false,
                 timeStamp: new Date().toISOString(),
             });
@@ -862,6 +962,7 @@ const checkPeriodAndStage10 = async (req, res) => {
         });
     }
 };
+
 
 
 

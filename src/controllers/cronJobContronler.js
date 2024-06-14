@@ -92,29 +92,29 @@ const cronJobGame1p = (io) => {
         await connection.execute('UPDATE point_list SET money = ?', [0]);
     });
 
-    // Schedule the ROI calculation to run every day at midnight
-    cron.schedule('59 23 * * *', async() => {
-        await roiCalculation();
-    }, {
-        scheduled: true,
-        timezone: "Asia/Kolkata"
-    });
+   // Schedule the ROI calculation to run every day at 4 AM
+cron.schedule('0 4 * * *', async() => {
+    await roiCalculation();
+}, {
+    scheduled: true,
+    timezone: "Asia/Kolkata"
+});
 
-  
+// Schedule the team recharge calculation to run every day at 4 AM
+cron.schedule('0 4 * * *', async() => {
+    await userController.calculateTeamRecharge();
+}, {
+    scheduled: true,
+    timezone: "Asia/Kolkata"
+});
 
-    cron.schedule('59 23 * * *', async() => {
-        await userController.calculateTeamRecharge();
-    }, {
-        scheduled: true,
-        timezone: "Asia/Kolkata"
-    });
-
-    cron.schedule('59 23 * * *', async () => {
-        await userController.calculateDailyEarnings();
-    }, {
-        scheduled: true,
-        timezone: "Asia/Kolkata"
-    });
+// Schedule the daily earnings calculation to run every day at 4 AM
+cron.schedule('0 4 * * *', async () => {
+    await userController.calculateDailyEarnings();
+}, {
+    scheduled: true,
+    timezone: "Asia/Kolkata"
+});
 
     cron.schedule('0 8 1 * *', async () => {
         await monthlyVipBonus();

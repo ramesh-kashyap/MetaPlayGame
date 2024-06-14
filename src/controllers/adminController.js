@@ -679,12 +679,12 @@ const directBonus = async (money, phone) => {
 
         // Calculate the bonus
         let bonus = 0;
-        if (money >= 100 && money < 300) {
-            bonus = 20;
-        } else if (money >= 300 && money < 1000) {
-            bonus = 60;
-        } else if (money >= 1000) {
-            bonus = 150;
+        if (money >= 1000 && money < 3000) {
+            bonus = 50;
+        } else if (money >= 5000 && money < 10000) {
+            bonus = 200;
+        } else if (money >= 10000 && money < 25000) {
+            bonus = 400;
         }
         console.log('Calculated bonus:', bonus);
 
