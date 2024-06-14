@@ -72,6 +72,9 @@ const initWebRouter = (app) => {
     router.get('/api/webapi/aiBonus', middlewareController, userController.getAIBonus); // register
     router.get('/api/webapi/getAIBalance', middlewareController, userController.getAIBalance); // get info account
 
+    router.get('/api/webapi/directTeamDetails', middlewareController, userController.directTeamDetails); // register
+
+
 // Game wallet Transfer
     router.get('/wallet/transferform', middlewareController, homeController.GameTransferPage);
     router.post('/api/webapi/fundTransferGame', middlewareController, userController.fundTransferGame); // register

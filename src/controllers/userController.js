@@ -3255,6 +3255,89 @@ const monthlyVipBonus = async () => {
     }
 };
 
+const directTeamDetails = async (req, res) => {
+    let auth = req.cookies.auth;
+    const timeNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    if (!auth) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+
+    const [user] = await connection.query('SELECT `phone`, `code`, `invite` FROM users WHERE `token` = ?', [auth]);
+    if (!user.length) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+
+    let userInfo = user[0];
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayDate = yesterday.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+
+    // Query to get direct subordinates
+    const [directSubordinates] = await connection.query('SELECT `id`, `phone` FROM users WHERE `invite` = ?', [userInfo.code]);
+    const numberOfRegister = directSubordinates.length;
+
+    // Initialize counts and sums
+    let depositNumber = 0;
+    let depositAmount = 0;
+    let firstDepositCount = 0;
+
+    if (numberOfRegister > 0) {
+        // Extract phones of direct subordinates
+        const phones = directSubordinates.map(sub => sub.phone);
+
+        // Query to get recharges of direct subordinates done yesterday
+        const [recharges] = await connection.query(
+            'SELECT `phone`, `money` FROM recharge WHERE `phone` IN (?) AND `status` = 1 AND `today` = ?',
+            [phones, yesterdayDate]
+        );
+
+        // Count the number of recharges
+        depositNumber = recharges.length;
+
+        // Sum the amount of recharges
+        depositAmount = recharges.reduce((sum, recharge) => sum + recharge.money, 0);
+
+        // Count the number of first deposits
+        for (let phone of phones) {
+            const [firstDepositCheck] = await connection.query(
+                'SELECT COUNT(*) as count FROM recharge WHERE `phone` = ? AND `status` = 1',
+                [phone]
+            );
+            if (firstDepositCheck[0].count === 1) {
+                const [firstDepositDate] = await connection.query(
+                    'SELECT `today` FROM recharge WHERE `phone` = ? AND `status` = 1',
+                    [phone]
+                );
+                if (firstDepositDate[0].today === yesterdayDate) {
+                    firstDepositCount++;
+                }
+            }
+        }
+    }
+
+    return res.status(200).json({
+        message: 'Success',
+        directSubordinates: {
+            numberOfRegister: numberOfRegister,
+            depositNumber: depositNumber,
+            depositAmount: depositAmount,
+            firstDepositCount: firstDepositCount
+        },
+        status: true,
+        timeStamp: timeNow,
+    });
+};
+
+
 
 module.exports = {
     userInfo,
@@ -3301,5 +3384,6 @@ module.exports = {
     getVipDetails,
     claimLevelUpBonus,
     vipHistory,
-    monthlyVipBonus
+    monthlyVipBonus,
+    directTeamDetails
 }
