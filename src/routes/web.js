@@ -45,6 +45,7 @@ const initWebRouter = (app) => {
     router.get('/VipRule', middlewareController, homeController.viprule);
     router.get('/vipHistory', middlewareController, homeController.vipHistory);
     router.get('/gamehistory', middlewareController, homeController.gamehistory);
+    router.get('/levelincome', middlewareController, homeController.levelincome);
 
 
 
